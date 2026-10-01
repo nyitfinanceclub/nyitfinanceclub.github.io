@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Finance Ledger — Vol. 1, Issue 1 · September 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1f2e; --ink-soft: #3d4657; --ink-muted: #6b7684;
+    --primary: #0066cc; --primary-light: #e6f0ff;
+    --paper: #ffffff; --paper-dark: #f5f7fa;
+    --white: #ffffff; --rule: #e0e6f0; --rule-heavy: #1a1f2e;
+    --green: #10b981; --red: #ef4444; --blue: #0066cc;
+    --gold: #f59e0b; --gold-light: #fef3e2; --gold-text: #b45309; --chip-bg: #1a1f2e; --chip-fg: #f59e0b;
+    --radius: 6px; --max: 820px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.65; padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px); font-weight: 400; }
+
+  /* TOPBAR */
+  .topbar { background: #1a1f2e; color: #6b7684; font-size: 12px; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #e0e6f0; }
+  .topbar-links { display: flex; gap: 20px; }
+  .topbar-links a { color: #0066cc; font-size: 12px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .topbar-links a:hover { color: #0052a3; }
+
+  /* MASTHEAD */
+  .masthead { max-width: var(--max); margin: 0 auto; padding: 32px 24px 20px; text-align: center; border-bottom: 2px solid var(--rule); background: var(--paper); }
+  .masthead-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
+  .masthead-name { font-family: 'Libre Baskerville', serif; font-size: clamp(42px,8vw,56px); font-weight: 700; line-height: 1.1; letter-spacing: -0.5px; color: var(--ink); }
+  .home-link { display: inline-block; text-decoration: none; cursor: pointer; transition: opacity .15s; }
+  .home-link:hover { opacity: .8; }
+  .home-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+  .masthead-name em { font-style: italic; color: var(--primary); }
+  .masthead-rule { border: none; border-top: 1px solid var(--rule); margin: 14px 0 12px; }
+  .masthead-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-muted); flex-wrap: wrap; gap: 8px; }
+  .masthead-badge { background: var(--primary); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: var(--radius); }
+
+  /* SHAREBAR */
+  .sharebar-wrap { background: var(--paper-dark); border-bottom: 1px solid var(--rule); }
+  .sharebar { max-width: var(--max); margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .sharebar-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .share-btn { font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--white); color: var(--ink); cursor: pointer; transition: all 0.2s; }
+  .share-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .sub-form { display: flex; gap: 8px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+  .sub-status { flex-basis: 100%; font-size: 12px; color: var(--green); text-align: right; min-height: 0; }
+  .sub-status:empty { display: none; }
+  .sub-status.error { color: var(--red); }
+  .sub-form input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+  .sub-form button:disabled { opacity: .7; cursor: wait; }
+  .sub-form input { font-size: 13px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--white); color: var(--ink); width: 180px; }
+  .sub-form button { font-size: 12px; font-weight: 600; padding: 6px 16px; background: var(--primary); color: white; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; }
+  .sub-form button:hover { background: #0052a3; }
+
+  /* NAV */
+  .nav-wrap { border-bottom: 2px solid var(--rule); background: var(--paper); }
+  .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 24px; display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-item { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 12px 16px; color: var(--ink-muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .nav-item:hover { color: var(--ink); }
+  .nav-item.on { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* MAIN */
+  .main { max-width: var(--max); margin: 0 auto; padding: 26px 20px 40px; }
+
+  /* SECTION */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 32px 0 18px; }
+  .sec-head:first-child { margin-top: 0; }
+  .sec-head-text { font-family: 'Libre Baskerville', serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; color: var(--ink); }
+  .sec-head-line { flex: 1; height: 1px; background: var(--rule-heavy); }
+
+  /* TICKER */
+  /* TICKER ANIMATION */
+  @keyframes tickerScroll {
+    0% { 
+      transform: translateX(0); 
+    }
+    100% { 
+      transform: translateX(-50%); 
+    }
+  }
+  
+  @keyframes tickerBlink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  
+  .ticker-strip { 
+    background: #111820; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    display: flex; 
+    gap: 24px; 
+    overflow: hidden; 
+    margin-bottom: 26px; 
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  
+  .ticker-strip::-webkit-scrollbar { 
+    display: none; 
+  }
+  
+  .ticker-items { 
+    display: flex; 
+    gap: 24px;
+    min-width: max-content;
+    animation: tickerScroll 75s linear infinite;
+    will-change: transform;
+  }
+  
+  .ticker-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    white-space: nowrap;
+    flex-shrink: 0;
+    animation: tickerBlink 3s ease-in-out infinite;
+  }
+  
+  .ticker-item:nth-child(2) { animation-delay: 0.3s; }
+  .ticker-item:nth-child(3) { animation-delay: 0.6s; }
+  .ticker-item:nth-child(4) { animation-delay: 0.9s; }
+  .ticker-item:nth-child(5) { animation-delay: 1.2s; }
+  .ticker-item:nth-child(6) { animation-delay: 1.5s; }
+  .ticker-item:nth-child(7) { animation-delay: 1.8s; }
+  .ticker-item:nth-child(8) { animation-delay: 2.1s; }
+  .ticker-item:nth-child(n+9) { animation-delay: 0s; }
+  .ticker-sym { font-size: 11px; font-weight: 700; color: var(--gold-text); }
+  .ticker-val { font-size: 12px; color: #c8d8e8; }
+  .ticker-chg { font-size: 11px; font-weight: 600; }
+  .up { color: #4caf80; } .dn { color: #e05555; } .fl { color: #8899aa; }
+
+  /* LEAD GRID */
+  .lead-grid { display: grid; grid-template-columns: 1fr 260px; gap: 24px; padding-bottom: 26px; border-bottom: 1px solid var(--rule); margin-bottom: 26px; }
+  .lead-kicker { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .lead-headline { font-family: 'Libre Baskerville', serif; font-size: 28px; font-weight: 700; line-height: 1.25; margin-bottom: 14px; color: var(--ink); }
+  .lead-deck { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 15px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 16px; }
+  .lead-body { font-size: 13.5px; color: var(--ink-soft); line-height: 1.8; }
+  .lead-body p + p { margin-top: 10px; }
+  .lead-byline { font-size: 11px; color: var(--ink-muted); margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .lead-byline strong { color: var(--gold-text); }
+
+  /* SIDEBAR */
+  .sidebar-head { font-family: 'Libre Baskerville', serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-bottom: 2px solid var(--rule-heavy); padding-bottom: 6px; margin-bottom: 12px; }
+  .brief { padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .brief:last-child { border-bottom: none; }
+  .brief-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 4px; }
+  .brief-title { font-family: 'Libre Baskerville', serif; font-size: 13.5px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+  .brief-body { font-size: 12px; color: var(--ink-soft); line-height: 1.55; }
+
+  /* MARKETS DEEP DIVE */
+  .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .mcard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px 20px; }
+  .mcard-title { font-family: 'Libre Baskerville', serif; font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--rule); padding-bottom: 10px; }
+  .mcard-title .mcard-icon { font-size: 16px; }
+  .mcard-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+  .mcard-stat:last-of-type { border-bottom: none; }
+  .mcard-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .mcard-value { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .mcard-chg { font-size: 11px; font-weight: 600; }
+  .mcard-desc { font-size: 12px; color: var(--ink-muted); margin-top: 12px; line-height: 1.6; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .mcard-btn { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600; padding: 5px 14px; border: 1px solid var(--rule-heavy); border-radius: 2px; color: var(--ink); cursor: pointer; background: transparent; }
+  .mcard-btn:hover { background: var(--gold-light); }
+
+  /* BREAKING NEWS BANNER */
+  .breaking { background: #c0392b; color: white; padding: 10px 20px; border-radius: var(--radius); margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; }
+  .breaking-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: white; color: #c0392b; padding: 2px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .breaking-text { font-size: 13px; font-weight: 500; line-height: 1.5; }
+
+  /* STORY CARDS */
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .story-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px 18px; }
+  .story-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .story-title { font-family: 'Libre Baskerville', serif; font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+  .story-body { font-size: 12.5px; color: var(--ink-soft); line-height: 1.65; }
+  .story-source { font-size: 10px; color: var(--ink-muted); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--rule); }
+
+  /* OPPORTUNITY CARDS */
+  .opp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 4px; }
+  .opp-card { border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; background: var(--white); }
+  .opp-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .opp-title { font-family: 'Libre Baskerville', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 5px; }
+  .opp-sub { font-size: 11.5px; color: var(--ink-muted); line-height: 1.5; }
+
+  /* CLUB UPDATE */
+  .update-box { background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; }
+  .update-title { font-family: 'Libre Baskerville', serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .update-body { font-size: 13px; color: var(--ink-soft); line-height: 1.72; }
+  .event-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .event-row:last-child { border-bottom: none; }
+  .event-date { min-width: 64px; text-align: center; background: var(--chip-bg); color: var(--chip-fg); border: 1px solid var(--chip-bg); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+  .event-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .event-loc { font-size: 11.5px; color: var(--ink-muted); }
+
+  /* SPOTLIGHT */
+  .spotlight { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px 20px; }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', serif; font-size: 18px; font-weight: 700; color: #1a1f2e; flex-shrink: 0; }
+  .spot-name { font-family: 'Libre Baskerville', serif; font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+  .spot-role { font-size: 12px; color: var(--gold-text); font-weight: 500; margin-bottom: 8px; }
+  .spot-bio { font-size: 13px; color: var(--ink-soft); line-height: 1.72; }
+  .spot-section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-muted); margin: 14px 0 6px; }
+  .spot-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .spot-tag { font-size: 11.5px; font-weight: 500; padding: 3px 10px; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink-soft); background: var(--paper-dark); }
+  .spot-advice { margin-top: 16px; background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; }
+  .spot-advice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .spot-advice p { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 14.5px; color: var(--ink); line-height: 1.75; }
+  @media (max-width: 600px) { .spotlight { flex-direction: column; gap: 12px; } }
+/* TIP */
+.tip-box {
+  background: #17202a;
+  border-radius: var(--radius);
+  padding: 22px 28px;
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.tip-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 60px;
+  font-weight: 700;
+  font-style: italic;
+  color: #d4af37;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tip-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #d4af37;
+  margin-bottom: 8px;
+}
+
+.tip-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: #e5e7eb;
+  line-height: 1.72;
+}
+  /* SOURCES */
+  .sources-bar { background: var(--paper-dark); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 18px; margin-top: 28px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sources-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-muted); }
+  .source-tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border: 1px solid var(--rule); border-radius: 2px; color: var(--ink-soft); background: var(--white); }
+
+  /* FOOTER */
+  .footer { background: #1a1f2e; margin-top: 40px; padding: 24px 24px; border-top: 1px solid var(--rule); }
+  .footer-inner { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-family: 'Libre Baskerville', serif; font-size: 18px; font-style: italic; color: var(--primary); }
+  .footer-sub { font-size: 12px; color: var(--ink-muted); margin-top: 4px; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+  .footer-links a:hover { opacity: 0.8; }
+
+
+  /* CLICKABLE BRIEFS */
+  .brief-link { display: block; color: var(--ink); text-decoration: none; cursor: pointer; }
+  .brief-link:hover { color: var(--gold-text); text-decoration: underline; text-underline-offset: 3px; }
+  .brief-more { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 600; color: var(--gold-text); text-decoration: none; }
+  .brief-more:hover { text-decoration: underline; }
+  .brief-link:focus-visible, .brief-more:focus-visible, .back-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+  /* FULL ARTICLE VIEW */
+  .article { max-width: 660px; margin: 0 auto; }
+  .back-btn { display: inline-block; font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--rule-heavy); border-radius: 2px; background: var(--white); color: var(--ink); cursor: pointer; margin-bottom: 22px; }
+  .back-btn:hover { background: var(--gold-light); }
+  .article-kicker { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px; }
+  .article-headline { font-family: 'Libre Baskerville', serif; font-size: clamp(24px,5vw,32px); font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+  .article-deck { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 15.5px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 14px; }
+  .article-byline { font-size: 11px; color: var(--ink-muted); padding: 10px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
+  .article-byline strong { color: var(--gold-text); }
+  .article-body { font-size: 15px; color: var(--ink-soft); line-height: 1.85; }
+  .article-body p + p { margin-top: 14px; }
+  .article-body h3 { font-family: 'Libre Baskerville', serif; font-size: 17px; color: var(--ink); margin: 26px 0 10px; }
+  .article-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin: 20px 0; }
+  .article-stat { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; }
+  .article-stat-val { font-family: 'Libre Baskerville', serif; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .article-stat-label { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+  .article-callout { background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; margin-top: 24px; }
+  .article-callout-title { font-family: 'Libre Baskerville', serif; font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .article-callout p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+  .article-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); flex-wrap: wrap; }
+  .article-nav a { font-size: 12px; font-weight: 600; color: var(--gold-text); text-decoration: none; cursor: pointer; }
+  .article-nav a:hover { text-decoration: underline; }
+
+
+  /* OPPORTUNITY LINKS */
+  a.opp-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: border-color .2s, box-shadow .2s; }
+  a.opp-card:hover { border-color: var(--primary); box-shadow: 0 2px 10px rgba(0,102,204,.12); }
+  a.opp-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .opp-cta { margin-top: auto; padding-top: 10px; font-size: 11.5px; font-weight: 600; color: var(--primary); }
+  .opp-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: auto; padding-top: 10px; }
+  .opp-cta-row a { font-size: 11.5px; font-weight: 600; color: var(--primary); text-decoration: none; }
+  .opp-cta-row a:hover, a.opp-card:hover .opp-cta { text-decoration: underline; }
+  .opp-note { font-size: 11.5px; color: var(--ink-muted); margin-top: 16px; }
+  div.opp-card { display: flex; flex-direction: column; }
+
+  /* MARKET BUTTONS */
+  .mcard { display: flex; flex-direction: column; }
+  .mcard-btn { align-self: flex-start; margin-top: auto; }
+  .mcard-desc { margin-bottom: 12px; }
+  .mcard-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .mcard-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  /* ASK THE LEDGER */
+  .ask { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 22px 26px; }
+  .ask-title { font-family: 'Libre Baskerville', serif; font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+  .ask-intro { font-size: 14px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 18px; }
+  .ask-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ask-field { display: flex; flex-direction: column; gap: 6px; }
+  .ask-field.full { grid-column: 1 / -1; }
+  .ask-field label { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .ask-field .hint { font-weight: 400; color: var(--ink-muted); }
+  .ask-form input, .ask-form select, .ask-form textarea { font: inherit; font-size: 14px; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); width: 100%; }
+  .ask-form textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+  .ask-form input:focus, .ask-form select:focus, .ask-form textarea:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
+  .ask-type { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ask-type input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .ask-type label { font-size: 13px; font-weight: 600; padding: 7px 14px; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; color: var(--ink-soft); background: var(--paper); }
+  .ask-type input:checked + label { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .ask-type input:focus-visible + label { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .ask-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+  .ask-check input { width: auto; }
+  .ask-actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .ask-submit { font-size: 13px; font-weight: 600; padding: 10px 22px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; }
+  .ask-submit:hover { background: #0052a3; }
+  .ask-submit:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .ask-status { font-size: 13px; color: var(--ink-soft); }
+  .ask-status.error { color: var(--red); }
+  .ask-foot { font-size: 12px; color: var(--ink-muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); line-height: 1.6; }
+  @media (max-width: 600px) { .ask-form { grid-template-columns: 1fr; } .ask { padding: 18px; } }
+  @media (prefers-reduced-motion: reduce) { .ticker-items, .ticker-item { animation: none !important; } }
+
+
+  /* PHOTOS */
+  .article-fig, .lead-fig { margin: 0 0 20px; }
+  .fig-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius); background: var(--paper-dark); border: 1px solid var(--rule); }
+  .fig-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .article-fig figcaption, .lead-fig figcaption { font-size: 11.5px; color: var(--ink-muted); line-height: 1.5; margin-top: 8px; }
+  .fig-credit { display: block; font-size: 10.5px; margin-top: 2px; }
+  .fig-credit a { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+  .lead-fig { margin-bottom: 18px; }
+
+
+  /* TIMELINE + SOURCES LINKS */
+  .timeline { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 6px 18px; margin-bottom: 10px; }
+  .tl-row { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-date { background: var(--chip-bg); color: var(--chip-fg); border: 1px solid var(--chip-bg); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; min-width: 56px; text-align: center; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .tl-body { font-size: 12px; color: var(--ink-soft); line-height: 1.55; margin-top: 2px; }
+  a.source-tag { text-decoration: none; transition: border-color .2s, color .2s; }
+  a.source-tag:hover { border-color: var(--primary); color: var(--primary); }
+  .story-source a { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+  .story-source a:hover { color: var(--primary); }
+  .data-note { font-size: 11px; color: var(--ink-muted); margin-top: 10px; }
+  .students-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .breaking-label { white-space: nowrap; }
+  @media (max-width: 600px) { .students-grid { grid-template-columns: 1fr; } .breaking { flex-direction: column; gap: 8px; } }
+
+
+  /* BANK VIEWS */
+  .bank-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 28px; }
+  .bank-card { background: var(--white); border: 1px solid var(--rule); border-top: 3px solid var(--primary); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; }
+  .bank-card .story-source { margin-top: auto; }
+  .bank-card .story-body { margin-bottom: 10px; }
+  .bank-name { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
+  .bank-take { font-family: 'Libre Baskerville', serif; font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; color: var(--ink); }
+  .global-card { margin-bottom: 8px; border-left: 3px solid var(--gold); }
+  @media (max-width: 760px) { .bank-grid { grid-template-columns: 1fr; } }
+
+
+  /* HEADLINE LINKS */
+  a.story-link { display: block; color: var(--ink); text-decoration: none; cursor: pointer; }
+  a.story-link:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+  a.story-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }
+  .story-card .brief-more, .bank-card .brief-more { margin: 8px 0 2px; }
+
+  .mcard-link { cursor: pointer; }
+  .mcard-link:hover { color: var(--primary); }
+  .mcard-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .opp-subhead { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px; }
+  .follow-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; padding: 7px 16px; background: var(--primary); color: #fff; border-radius: var(--radius); text-decoration: none; transition: background .2s; }
+  .follow-btn:hover { background: #0052a3; }
+  .follow-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  /* PAGE SECTIONS */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .lead-grid, .markets-grid, .story-grid { grid-template-columns: 1fr; }
+    .sidebar { border-top: 1px solid var(--rule); padding-top: 18px; }
+    .opp-grid { grid-template-columns: 1fr; }
+    .tip-box { flex-direction: column; gap: 6px; }
+    .sub-form { margin-left: 0; width: 100%; }
+    .sub-form input { flex: 1; width: auto; min-width: 0; }
+    .sub-status { text-align: left; }
+    .masthead-meta { justify-content: center; flex-direction: column; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #e5e7eb; --ink-soft: #cbd5e1; --ink-muted: #9ca3af;
+      --primary: #60a5fa;
+      --paper: #111827; --paper-dark: #1f2937; 
+      --white: #1f2937; --rule: #374151;
+      --rule-heavy: #6b7280;
+      --gold: #fbbf24; --gold-light: #2a2415; --gold-text: #fbbf24;
+      --chip-bg: #0f172a; --chip-fg: #fbbf24;
+    }
+    :root:not([data-theme="light"]) .event-date, :root:not([data-theme="light"]) .tl-date { border-color: #374151; }
+
+    .topbar {
+      background: #0f172a;
+      border-bottom-color: #374151;
+    }
+
+    .topbar-links a {
+      color: #60a5fa;
+    }
+
+    .masthead {
+      border-bottom-color: #374151;
+    }
+
+    .masthead-name em {
+      color: #60a5fa;
+    }
+
+    body {
+      background: #111827;
+      color: #e5e7eb;
+    }
+
+    .nav-wrap {
+      border-bottom-color: #374151;
+    }
+
+    .nav-item.on {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+
+    .footer {
+      background: #0f172a;
+      border-top-color: #374151;
+    }
+
+    .footer-brand,
+    .footer-links a {
+      color: #60a5fa;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>New York Institute of Technology &nbsp;·&nbsp; School of Management &nbsp;·&nbsp; Thursday, 1st October 2026</span>
+  <div class="topbar-links">
+    <a href="https://campusgroups.com/clubs/finance-club-nyc" target="_blank">Campus Groups</a>
+    <a href="https://www.instagram.com/nyitfinanceclub/" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div class="masthead">
+  <div class="masthead-eyebrow">Finance Club NYC — Official Monthly Publication</div>
+  <a href="#top-stories" class="masthead-name home-link" onclick="goHome(event)" title="Go to Top Stories">The Finance <em>Ledger</em></a>
+  <hr class="masthead-rule">
+  <div class="masthead-meta">
+    <span>Vol. 1 &nbsp;·&nbsp; Issue 1 &nbsp;·&nbsp; September 2026</span>
+    <span class="masthead-badge">Digital Edition</span>
+    <span>Free &nbsp;·&nbsp; Published Monthly</span>
+  </div>
+</div>
+
+<div class="sharebar-wrap">
+  <div class="sharebar">
+    <span class="sharebar-label">Share:</span>
+    <button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied ✓';setTimeout(()=>{this.textContent='Copy link'},2000)})">Copy link</button>
+    <button class="share-btn" onclick="window.location.href='mailto:?subject=The Finance Ledger - Finance Club NYC&body=Check out the latest issue of The Finance Ledger (Finance Club NYC monthly newsletter):%0A%0A' + window.location.href">Email</button>
+    <button class="share-btn" onclick="window.open('https://wa.me/?text=' + encodeURIComponent('The Finance Ledger - Finance Club NYC monthly newsletter: ' + window.location.href), '_blank')">WhatsApp</button>
+    <div class="sub-form">
+      <a class="follow-btn" href="https://www.instagram.com/nyitfinanceclub/" target="_blank" rel="noopener" aria-label="Follow NYIT Finance Club on Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Follow us on Instagram
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <div class="nav-item on" data-page="top-stories" onclick="showPage('top-stories',this)">Top Stories</div>
+    <div class="nav-item" data-page="markets" onclick="showPage('markets',this)">Markets</div>
+    <div class="nav-item" data-page="opportunities" onclick="showPage('opportunities',this)">Opportunities</div>
+    <div class="nav-item" data-page="club-events" onclick="showPage('club-events',this)">Club Events</div>
+    <div class="nav-item" data-page="spotlight" onclick="showPage('spotlight',this)">Spotlight</div>
+    <div class="nav-item" data-page="finance-tip" onclick="showPage('finance-tip',this)">Finance Tip</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ═══════════════════ TOP STORIES ═══════════════════ -->
+
+  <div id="top-stories" class="page active">
+
+    <div class="ticker-strip" aria-label="September 2026 market scorecard">
+      <div class="ticker-items">
+      <div class="ticker-item"><span class="ticker-sym">S&amp;P 500</span><span class="ticker-val">7,671</span><span class="ticker-chg dn">▼ −0.2% Sept</span></div><div class="ticker-item"><span class="ticker-sym">NASDAQ</span><span class="ticker-val">+1%+</span><span class="ticker-chg up">▲ Sept</span></div><div class="ticker-item"><span class="ticker-sym">DOW</span><span class="ticker-val">−3.5%</span><span class="ticker-chg dn">▼ Sept</span></div><div class="ticker-item"><span class="ticker-sym">10-YR</span><span class="ticker-val">~5.2%</span><span class="ticker-chg dn">▲ 19-yr high</span></div><div class="ticker-item"><span class="ticker-sym">FED RATE</span><span class="ticker-val">3.75–4.00%</span><span class="ticker-chg dn">▲ Hiked</span></div><div class="ticker-item"><span class="ticker-sym">BRENT</span><span class="ticker-val">~$106</span><span class="ticker-chg dn">▲ +17% Sept</span></div><div class="ticker-item"><span class="ticker-sym">GOLD</span><span class="ticker-val">~$4,400</span><span class="ticker-chg fl">— pressured</span></div><div class="ticker-item"><span class="ticker-sym">BTC</span><span class="ticker-val">~$83,000</span><span class="ticker-chg fl">— choppy</span></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="ticker-sym">S&amp;P 500</span><span class="ticker-val">7,671</span><span class="ticker-chg dn">▼ −0.2% Sept</span></div><div class="ticker-item"><span class="ticker-sym">NASDAQ</span><span class="ticker-val">+1%+</span><span class="ticker-chg up">▲ Sept</span></div><div class="ticker-item"><span class="ticker-sym">DOW</span><span class="ticker-val">−3.5%</span><span class="ticker-chg dn">▼ Sept</span></div><div class="ticker-item"><span class="ticker-sym">10-YR</span><span class="ticker-val">~5.2%</span><span class="ticker-chg dn">▲ 19-yr high</span></div><div class="ticker-item"><span class="ticker-sym">FED RATE</span><span class="ticker-val">3.75–4.00%</span><span class="ticker-chg dn">▲ Hiked</span></div><div class="ticker-item"><span class="ticker-sym">BRENT</span><span class="ticker-val">~$106</span><span class="ticker-chg dn">▲ +17% Sept</span></div><div class="ticker-item"><span class="ticker-sym">GOLD</span><span class="ticker-val">~$4,400</span><span class="ticker-chg fl">— pressured</span></div><div class="ticker-item"><span class="ticker-sym">BTC</span><span class="ticker-val">~$83,000</span><span class="ticker-chg fl">— choppy</span></div>
+      </div>
+    </div>
+
+    <div class="breaking">
+      <span class="breaking-label">Month in Review</span>
+      <span class="breaking-text">September 2026: the Fed hiked for the first time since 2023, the 10-year Treasury yield broke 5% for the first time since 2007, and oil jumped about 17% as the standoff over the Strait of Hormuz dragged on.</span>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-story">
+        <figure class="lead-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg?width=1280" alt="The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg" target="_blank" rel="noopener">AgnosticPreachersKid</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+        <div class="lead-kicker">Cover Story · September 2026</div>
+        <h1 class="lead-headline">The Month Interest Rates Came Back</h1>
+        <p class="lead-deck">A hot jobs report, stubborn inflation, and surging oil pushed the Fed into its first rate hike in three years, and sent bond yields to levels last seen before the 2008 financial crisis.</p>
+        <div class="lead-body">
+          <p>September opened with a surprise. The August jobs report, released on September 4, showed employers added 162,000 jobs, roughly three times what economists expected, while unemployment held at 4.1%. A week later, the August CPI report showed consumer prices up 3.4% from a year earlier, with gasoline alone driving more than a third of the monthly increase.</p>
+          <p>That combination left the Federal Reserve little room. On September 16, the FOMC voted 12–0 to raise the federal funds rate by a quarter point to 3.75–4.00%, its first increase since July 2023. Chair Kevin Warsh said inflation has been too high for too long, and 16 of 18 officials now project at least one more hike before the year ends.</p>
+          <p>The U.S. wasn't alone. The European Central Bank raised rates on September 10 and the Bank of Japan followed on September 18, lifting its rate to 1.25%, the highest since 1995. Meanwhile, the 10-year Treasury yield climbed past 5% and kept going, pushing 30-year mortgage rates to about 7.45%.</p>
+          <p>For students, the takeaway is simple: borrowing just got more expensive, saving just got more rewarding, and "higher for longer" is back as the phrase every finance interviewer will want you to explain.</p>
+        </div>
+        <div class="lead-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+        <div class="story-source" style="border-top:none;padding-top:4px;margin-top:4px;">Sources: <a href="https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.bls.gov/news.release/cpi.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a> · <a href="https://www.schwab.com/learn/story/fomc-meeting" target="_blank" rel="noopener">Charles Schwab</a> · <a href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-head">September's Biggest Stories</div>
+        <div class="brief">
+          <div class="brief-badge">Fed · Sept 16</div>
+          <a href="#article-fed" class="brief-title brief-link" onclick="openArticle(event,'article-fed')">Fed hikes 25bps, first increase since July 2023</a>
+          <div class="brief-body">Unanimous 12–0 vote takes rates to 3.75–4.00%. Most officials see another hike this year; markets put the odds of an October move near 75%.</div>
+          <a href="#article-fed" class="brief-more" onclick="openArticle(event,'article-fed')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">Markets · Month End</div>
+          <a href="#article-markets" class="brief-title brief-link" onclick="openArticle(event,'article-markets')">Stocks go nowhere as the 10-year yield hits a 19-year high</a>
+          <div class="brief-body">The S&amp;P 500 gave back its September gains, the Dow fell 3.5%, and financials had their worst month since March 2023.</div>
+          <a href="#article-markets" class="brief-more" onclick="openArticle(event,'article-markets')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">Oil · Hormuz</div>
+          <a href="#article-oil" class="brief-title brief-link" onclick="openArticle(event,'article-oil')">Brent jumps about 17% in September</a>
+          <div class="brief-body">Attacks on Gulf shipping and a failed bid to reopen the Strait of Hormuz pushed crude back above $105.</div>
+          <a href="#article-oil" class="brief-more" onclick="openArticle(event,'article-oil')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">Trade · Sept 24</div>
+          <a href="#article-summit" class="brief-title brief-link" onclick="openArticle(event,'article-summit')">Trump-Xi summit extends truce, cuts tariffs on $30B of goods</a>
+          <div class="brief-body">Xi's first White House state visit in over a decade produced a short truce extension and a targeted tariff deal.</div>
+          <a href="#article-summit" class="brief-more" onclick="openArticle(event,'article-summit')">Read full story</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">September at a Glance</div><div class="sec-head-line"></div></div>
+    <div class="timeline">
+      <div class="tl-row"><span class="tl-date">Sept 3</span><div><a class="tl-title story-link" href="#article-credit" onclick="openArticle(event,'article-credit')">Blackstone's flagship private credit fund caps withdrawals again</a><div class="tl-body">Investors asked to pull 10%; the fund paid out only half for a second straight quarter.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 4</span><div><a class="tl-title story-link" href="#article-jobs" onclick="openArticle(event,'article-jobs')">August jobs report blows past forecasts</a><div class="tl-body">+162,000 jobs vs. about 53,000 expected; unemployment steady at 4.1%.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 10</span><div><a class="tl-title story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">ECB raises rates to 2.50%</a><div class="tl-body">Its second hike of 2026, as eurozone inflation hit 3.3% on energy costs.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 11</span><div><a class="tl-title story-link" href="#article-inflation" onclick="openArticle(event,'article-inflation')">CPI shows inflation stuck at 3.4%</a><div class="tl-body">Gas prices were up more than 27% from a year earlier.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 14</span><div><a class="tl-title story-link" href="#article-banks" onclick="openArticle(event,'article-banks')">Bank of America warns on deal fees; bank stocks slide</a><div class="tl-body">BofA fell 5.1%, its worst day since April 2025. The 10-year yield closed above 5%.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 16</span><div><a class="tl-title story-link" href="#article-fed" onclick="openArticle(event,'article-fed')">Fed hikes 25bps to 3.75–4.00%</a><div class="tl-body">First increase since July 2023, on a unanimous vote.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 18</span><div><a class="tl-title story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Bank of Japan lifts rates to 1.25%</a><div class="tl-body">Highest since 1995, yet the yen still weakened.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 23</span><div><a class="tl-title story-link" href="#article-markets" onclick="openArticle(event,'article-markets')">Business activity surges; yields jump again</a><div class="tl-body">A flash PMI of 58.4, the highest since 2021, pushed the 10-year above 5.1%.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 24</span><div><a class="tl-title story-link" href="#article-summit" onclick="openArticle(event,'article-summit')">Trump hosts Xi at the White House</a><div class="tl-body">Trade truce extended two months; tariffs cut on $30 billion of goods.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Sept 28</span><div><a class="tl-title story-link" href="#article-oil" onclick="openArticle(event,'article-oil')">U.S. rejects Iran's plan to reopen Hormuz</a><div class="tl-body">Brent topped $107; the S&amp;P 500 fell 0.8% and wiped out its September gain.</div></div></div>
+    </div>
+    <div class="story-source" style="border-top:none;">Sources: <a href="https://www.bloomberg.com/news/articles/2026-09-03/blackstone-s-bcred-caps-redemptions-again-after-10-seek-to-exit" target="_blank" rel="noopener">Bloomberg</a> · <a href="https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136" target="_blank" rel="noopener">Il Foglio</a> · <a href="https://www.cnbc.com/2026/09/11/cpi-inflation-breakdown-august-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://qz.com/bank-of-america-ceo-investment-banking-fees-trading-revenue-091526" target="_blank" rel="noopener">Quartz (citing Bloomberg)</a> · <a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a> · <a href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a> · <a href="https://www.usnews.com/news/top-news/articles/2026-09-24/four-takeaways-from-trumps-summit-with-xi-in-washington" target="_blank" rel="noopener">Reuters via U.S. News</a> · <a href="https://www.aljazeera.com/economy/2026/9/28/oil-prices-surge-after-trump-rejects-irans-plan-to-reopen-strait-of-hormuz" target="_blank" rel="noopener">Al Jazeera</a> · <a href="https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a></div>
+
+    <div class="sec-head"><div class="sec-head-text">More Stories This Month</div><div class="sec-head-line"></div></div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="story-badge">Investment Banking</div>
+        <a class="story-title story-link" href="#article-banks" onclick="openArticle(event,'article-banks')">Bank Stocks Slide After BofA Warns on Q3 Deal Fees</a>
+        <div class="story-body">On September 14, Bank of America's CEO warned that third-quarter investment banking fees would come in lower. BofA shares dropped 5.1%, Goldman Sachs fell about 4%, and Morgan Stanley lost 3.6%. The rest of BofA's business held up: wealth management fees rose 10–15% in the quarter. It's a reminder that deal activity can stall even when the economy looks fine.</div>
+        <a href="#article-banks" class="brief-more" onclick="openArticle(event,'article-banks')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://qz.com/bank-of-america-ceo-investment-banking-fees-trading-revenue-091526" target="_blank" rel="noopener">Quartz (citing Bloomberg)</a> · <a href="https://finance.yahoo.com/markets/article/bank-of-america-leads-financial-services-stocks-lower-on-weak-wall-street-fee-forecast-202601947.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Private Credit</div>
+        <a class="story-title story-link" href="#article-credit" onclick="openArticle(event,'article-credit')">Private Credit Stress Drags Asset Managers Lower</a>
+        <div class="story-body">Blackstone's $77 billion private credit fund again let investors withdraw only half of the 10% they requested. Fitch put the trailing default rate for private credit at 6.3% through August. Blackstone shares fell about 21% in September and BlackRock about 8%. If you're interested in credit or alternatives, this is the story to follow.</div>
+        <a href="#article-credit" class="brief-more" onclick="openArticle(event,'article-credit')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.bloomberg.com/news/articles/2026-09-03/blackstone-s-bcred-caps-redemptions-again-after-10-seek-to-exit" target="_blank" rel="noopener">Bloomberg</a> · <a href="https://www.benzinga.com/markets/private-markets/26/09/61805046/blackstone-says-private-credits-global-crisis-fears-are-overblown" target="_blank" rel="noopener">Benzinga</a> · <a href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Jobs</div>
+        <a class="story-title story-link" href="#article-jobs" onclick="openArticle(event,'article-jobs')">Hiring Rebounds: 162,000 Jobs in August</a>
+        <div class="story-body">Employers added far more jobs than the roughly 53,000 economists expected, and June and July were revised up by a combined 55,000. One weak spot matters for finance students: the financial activities sector lost about 11,000 jobs. The September report comes out Friday, October 2.</div>
+        <a href="#article-jobs" class="brief-more" onclick="openArticle(event,'article-jobs')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://economics.td.com/us-employment" target="_blank" rel="noopener">TD Economics</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Global Central Banks</div>
+        <a class="story-title story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">ECB and Bank of Japan Hike Too</a>
+        <div class="story-body">The ECB raised its deposit rate to 2.50% on September 10, its second hike this year, as eurozone inflation rose to 3.3%. The Bank of Japan lifted rates to 1.25% on September 18 in a 7–2 vote. Even so, the yen slipped to about 156.6 per dollar, after the U.S. and Japan had already stepped in together to support it.</div>
+        <a href="#article-centralbanks" class="brief-more" onclick="openArticle(event,'article-centralbanks')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136" target="_blank" rel="noopener">Il Foglio</a> · <a href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Inflation</div>
+        <a class="story-title story-link" href="#article-inflation" onclick="openArticle(event,'article-inflation')">Energy Keeps Inflation Stuck at 3.4%</a>
+        <div class="story-body">Consumer prices rose 0.4% in August and 3.4% from a year earlier. Gas was up more than 27% year over year and airfares about 23%, both tied to the Middle East conflict. Wholesale prices ran even hotter at 5.4%. The September CPI report is due October 14.</div>
+        <a href="#article-inflation" class="brief-more" onclick="openArticle(event,'article-inflation')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.bls.gov/news.release/cpi.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://www.cnbc.com/2026/09/11/cpi-inflation-breakdown-august-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.cnbc.com/2026/09/10/ppi-inflation-report-august-2026.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Consumers</div>
+        <a class="story-title story-link" href="#article-consumers" onclick="openArticle(event,'article-consumers')">Confidence Sinks as Mortgage Rates Climb</a>
+        <div class="story-body">Consumer confidence fell to a 12-year low in September, and for the first time since September 2024, more people described current business conditions as bad than good. With 30-year mortgage rates near 7.45%, housing affordability is getting squeezed again.</div>
+        <a href="#article-consumers" class="brief-more" onclick="openArticle(event,'article-consumers')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-sept-29-2026" target="_blank" rel="noopener">TheStreet</a> · <a href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a></div>
+      </div>
+    </div>
+
+    
+    <div class="sec-head"><div class="sec-head-text">What the Big Banks Are Saying</div><div class="sec-head-line"></div></div>
+    <div class="bank-grid">
+      <div class="bank-card">
+        <div class="bank-name">J.P. Morgan</div>
+        <a class="bank-take story-link" href="#article-bankviews" onclick="openArticle(event,'article-bankviews')">"One more hike, then stop"</a>
+        <div class="story-body">J.P. Morgan's economists expect the Fed to raise rates one more time this year, in line with the dot plot. They see energy shocks from the Iran conflict and AI-driven demand as the forces keeping inflation sticky. Separately, J.P. Morgan flagged that diesel prices hit record highs in early September, rising faster than gasoline, which feeds straight into shipping costs and inflation.</div>
+        <a href="#article-bankviews" class="brief-more" onclick="openArticle(event,'article-bankviews')">Read full analysis</a>
+        <div class="story-source">Sources: <a href="https://finance.yahoo.com/economy/policy/articles/j-p-morgan-sees-fed-203300682.html" target="_blank" rel="noopener">J.P. Morgan via Yahoo Finance</a> · <a href="https://www.jpmorgan.com/insights/markets-and-economy/outlook" target="_blank" rel="noopener">J.P. Morgan Insights</a></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-name">TD Economics</div>
+        <a class="bank-take story-link" href="#article-bankviews" onclick="openArticle(event,'article-bankviews')">"Not one-and-done, but markets are overdoing it"</a>
+        <div class="story-body">TD called the hike well anticipated after the hot CPI report and rising oil. It thinks a single hike is unlikely to be enough, since one move would barely dent growth or inflation. But TD also argued that futures pricing nearly three more hikes over the next year is too aggressive, and if that much tightening happened, the Fed could be forced to reverse course in the second half of 2027.</div>
+        <a href="#article-bankviews" class="brief-more" onclick="openArticle(event,'article-bankviews')">Read full analysis</a>
+        <div class="story-source">Sources: <a href="https://economics.td.com/us-fomc-statement" target="_blank" rel="noopener">TD Economics</a></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-name">Bank of America</div>
+        <a class="bank-take story-link" href="#article-bankviews" onclick="openArticle(event,'article-bankviews')">"Bond yields are now the #1 fear"</a>
+        <div class="story-body">BofA's September Global Fund Manager Survey found investors pulling back from extreme optimism. The sentiment gauge fell to 7.0 from 8.0 and cash holdings rose to 3.9% from 3.5%. For the first time, a disorderly jump in bond yields (33%) topped the list of biggest risks, overtaking an AI bubble. Still, 55% of managers expect a "no landing" economy that keeps growing.</div>
+        <a href="#article-bankviews" class="brief-more" onclick="openArticle(event,'article-bankviews')">Read full analysis</a>
+        <div class="story-source">Sources: <a href="https://finvaulta.com/research/bank-of-america/global-fund-manager-survey-racing-the-frontier-2026-09-15" target="_blank" rel="noopener">BofA Fund Manager Survey (Finvaulta summary)</a> · <a href="https://www.webull.com/news/15582693216764928" target="_blank" rel="noopener">Webull News</a></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Global Watch: India</div><div class="sec-head-line"></div></div>
+    <div class="story-card global-card">
+      <div class="story-badge">Emerging Markets</div>
+      <a class="story-title story-link" href="#article-india" onclick="openArticle(event,'article-india')">Higher U.S. Yields and Oil Pull Money Out of India</a>
+      <div class="story-body">The Fed's hike and the 5% Treasury yield rippled all the way to Mumbai. Foreign investors pulled about ₹21,000 crore out of Indian stocks in September through the 18th, after two months of buying. That pushed 2026's total foreign selling to roughly ₹2.45 trillion, already more than all of 2025. The rupee weakened past 96 per dollar by September 29, pressured by expensive oil and strong U.S. yields. Nomura now expects India's central bank, the RBI, to raise rates at its October and December meetings. It's a clear example of how U.S. rates move money around the world: when safe U.S. bonds pay more, riskier markets have to pay more to keep investors.</div>
+      <a href="#article-india" class="brief-more" onclick="openArticle(event,'article-india')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.uniindia.com/business-economy/economy-fpis-indian-equities-20dc6/186166" target="_blank" rel="noopener">UNI India</a> · <a href="https://hdfcsky.com/news/inr-vs-usd-rate-september-29-2026" target="_blank" rel="noopener">HDFC Sky (PTI)</a> · <a href="https://www.freepressjournal.in/business/rbis-rate-pause-may-not-last-long-report-signals-two-interest-rate-hikes-in-2026" target="_blank" rel="noopener">Free Press Journal</a></div>
+    </div>
+
+    <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a><a class="source-tag" href="https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a><a class="source-tag" href="https://www.usnews.com/news/top-news/articles/2026-09-24/four-takeaways-from-trumps-summit-with-xi-in-washington" target="_blank" rel="noopener">Reuters via U.S. News</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-29-135304543.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.bls.gov/news.release/cpi.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-september-2026" target="_blank" rel="noopener">Kiplinger</a></div>
+    <p class="data-note">Market figures are as of the September 28–29 closes unless noted. Month-to-date changes are from the sources linked in each story.</p>
+  </div>
+
+  <!-- ═══════════════════ FULL ARTICLES ═══════════════════ -->
+
+  <div id="article-fed" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Fed · September 16</div>
+      <h1 class="article-headline">Fed Hikes 25bps, Its First Increase Since July 2023</h1>
+      <p class="article-deck">A unanimous vote, a hawkish dot plot, and a clear message from Chair Warsh: the inflation fight isn't over.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg?width=1280" alt="The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg" target="_blank" rel="noopener">AgnosticPreachersKid</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.75–4.00%</div><div class="article-stat-label">New fed funds range</div></div><div class="article-stat"><div class="article-stat-val">12–0</div><div class="article-stat-label">FOMC vote</div></div><div class="article-stat"><div class="article-stat-val">16 of 18</div><div class="article-stat-label">Officials seeing another 2026 hike</div></div><div class="article-stat"><div class="article-stat-val">Oct 28</div><div class="article-stat-label">Next Fed decision</div></div></div>
+      <div class="article-body"><p>On September 16, the Federal Open Market Committee voted 12–0 to raise the federal funds rate by a quarter point, from 3.50–3.75% to 3.75–4.00%. It was the Fed's first hike since July 2023, and markets saw it coming: futures had priced better than a 90% chance of a move.</p>
+ <h3>How we got here</h3>
+ <p>The Fed held rates steady at every meeting from January through July. But in July, three officials (Beth Hammack, Neel Kashkari, and Lorie Logan) had already dissented in favor of a hike. Then came a much stronger August jobs report and a CPI report showing inflation stuck at 3.4%, with energy prices doing much of the damage.</p>
+ <h3>What Warsh said</h3>
+ <p>Chair Kevin Warsh told reporters that inflation is too high and has been for too long, and described the move as removing "a dose of accommodation." That wording matters. It suggests the Fed didn't think rates were high enough to cool inflation before this hike.</p>
+ <h3>The dot plot</h3>
+ <p>The Fed's quarterly projections showed 16 of 18 officials expecting at least one more hike this year, up from nine in June. The median year-end projection rose to about 4.1%. Officials also lowered their unemployment forecast to 4.1% for both 2026 and 2027, a sign they see the economy as strong enough to handle higher rates.</p>
+ <h3>What happened after</h3>
+ <p>Stocks actually rose after the announcement. But strong business data a week later pushed Treasury yields to new highs, and by late September futures were pricing roughly a 75% chance of another hike at the October 28 meeting.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Credit card APRs and other variable-rate debt adjust quickly after a hike, so paying down balances is worth more now. On the flip side, high-yield savings accounts and CDs pay more. For interviews, be ready to explain why a central bank hikes into a strong jobs market with 3.4% inflation, and what "removing accommodation" signals.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a><a class="source-tag" href="https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.schwab.com/learn/story/fomc-meeting" target="_blank" rel="noopener">Charles Schwab</a><a class="source-tag" href="https://economics.td.com/us-fomc-statement" target="_blank" rel="noopener">TD Economics</a><a class="source-tag" href="https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-september-2026" target="_blank" rel="noopener">Kiplinger</a><a class="source-tag" href="https://www.fidelity.com/learning-center/trading-investing/the-fed-meeting" target="_blank" rel="noopener">Fidelity</a><a class="source-tag" href="https://cointelegraph.com/markets/bitcoin-fall-84k-treasury-yield-hits-19-year-high" target="_blank" rel="noopener">Cointelegraph</a></div>
+      <div class="article-nav">
+        <a href="#article-india" onclick="openArticle(event,'article-india')">Previous: India</a>
+        <a href="#article-markets" onclick="openArticle(event,'article-markets')">Next: Stocks and yields</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-markets" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Markets · Month End</div>
+      <h1 class="article-headline">Stocks Go Nowhere as the 10-Year Yield Hits a 19-Year High</h1>
+      <p class="article-deck">A roller-coaster month left the S&P 500 roughly flat, the Dow sharply lower, and bond investors nursing big losses.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/NYC_NYSE.jpg?width=1280" alt="The New York Stock Exchange on Wall Street." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The New York Stock Exchange on Wall Street. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:NYC_NYSE.jpg" target="_blank" rel="noopener">Arnoldius</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">7,671</div><div class="article-stat-label">S&P 500 (Sept 28 close)</div></div><div class="article-stat"><div class="article-stat-val">−3.5%</div><div class="article-stat-label">Dow in September</div></div><div class="article-stat"><div class="article-stat-val">~5.2%</div><div class="article-stat-label">10-yr yield, highest since 2007</div></div><div class="article-stat"><div class="article-stat-val">−6.3%</div><div class="article-stat-label">Financials in September</div></div></div>
+      <div class="article-body"><p>September was a tug-of-war between strong tech earnings optimism and rising interest rates. By the September 28 close, the S&amp;P 500 sat at 7,670.84, down about 0.2% for the month. The Dow was down about 3.5%, which would snap a five-month winning streak. The Nasdaq held up better, gaining more than 1%.</p>
+ <h3>The real story was bonds</h3>
+ <p>The 10-year Treasury yield closed above 5% on September 14 for the first time since 2007. It kept climbing after the Fed hike and a hot business-activity survey, and reached about 5.2% in the final week of the month. The 5-year yield also crossed 5% for the first time since 2007. Rising oil, sticky inflation, and a wave of borrowing by AI companies all added pressure.</p>
+ <h3>Why higher yields hurt stocks</h3>
+ <p>When safe Treasuries pay 5%, investors demand more from riskier assets like stocks. Higher yields also reduce the present value of future profits, which hits fast-growing tech companies hardest. That's why tech wobbled on days when yields jumped.</p>
+ <h3>Financials had a rough month</h3>
+ <p>The S&amp;P 500 financials sector fell about 6.3% in September, its worst month since March 2023. Bank of America's warning on deal fees hit bank stocks, and stress in private credit dragged asset managers down: Blackstone fell about 21% and BlackRock about 8%.</p>
+ <h3>The final week</h3>
+ <p>On September 28, the U.S. rejected Iran's proposal to reopen the Strait of Hormuz. Oil jumped, yields rose again, and the S&amp;P 500 fell 0.8%, wiping out its September gain. A day later, consumer confidence came in at a 12-year low.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>This month is a great case study in how bonds drive stocks. Notice who got hurt: long-duration assets (tech, bonds, housing) and firms that depend on deals and credit. Explaining that chain in an interview, from oil to inflation to yields to valuations, shows you actually understand markets.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-29-135304543.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-sept-29-2026" target="_blank" rel="noopener">TheStreet</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/583731" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://qz.com/bank-of-america-ceo-investment-banking-fees-trading-revenue-091526" target="_blank" rel="noopener">Quartz (citing Bloomberg)</a></div>
+      <div class="article-nav">
+        <a href="#article-fed" onclick="openArticle(event,'article-fed')">Previous: The Fed hike</a>
+        <a href="#article-oil" onclick="openArticle(event,'article-oil')">Next: Oil surge</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-oil" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Oil · Strait of Hormuz</div>
+      <h1 class="article-headline">Brent Jumps About 17% in September</h1>
+      <p class="article-deck">Renewed attacks on Gulf shipping and a failed plan to reopen the Strait of Hormuz pushed crude back above $100, and kept inflation fears alive.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/West_Texas_Pumpjack.JPG?width=1280" alt="An oil pumpjack in West Texas." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>An oil pumpjack in West Texas. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:West_Texas_Pumpjack.JPG" target="_blank" rel="noopener">Eric Kounce</a> / Wikimedia Commons, Public domain</span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~$106–107</div><div class="article-stat-label">Brent, late September</div></div><div class="article-stat"><div class="article-stat-val">+17%</div><div class="article-stat-label">Brent in September</div></div><div class="article-stat"><div class="article-stat-val">+10%</div><div class="article-stat-label">WTI in September</div></div><div class="article-stat"><div class="article-stat-val">3.4%</div><div class="article-stat-label">U.S. inflation it feeds</div></div></div>
+      <div class="article-body"><p>Oil was the single biggest driver of markets this month. Brent crude, the global benchmark, gained more than 17% in September and U.S. crude (WTI) rose more than 10%, according to CNBC. On September 24, Brent closed at $106.60 and WTI at $94.61.</p>
+ <h3>What's behind it</h3>
+ <p>The conflict between the U.S., Israel, and Iran, which began in late February, has choked traffic through the Strait of Hormuz, the channel that normally carries about a fifth of the world's oil. Strikes on tankers escalated in early September, and Iran-allied Houthi militants fired missiles toward Saudi Arabia's Red Sea export terminal at Yanbu.</p>
+ <h3>A deal that didn't happen</h3>
+ <p>Late in the month, Iran proposed reopening the strait within seven days. On September 28, President Trump rejected the plan, and Brent climbed above $107. Some ships are still getting through with U.S. military escorts: MarineTraffic counted 132 transits from September 21–27, up from 116 the week before. Still, JPMorgan estimated Middle East oil flows at about 17 million barrels a day, only a bit more than 70% of 2025 levels.</p>
+ <h3>Why it matters beyond the gas pump</h3>
+ <p>Energy is the main reason U.S. inflation is stuck at 3.4%. Gas prices were up more than 27% from a year earlier in August, and jet fuel costs have pushed airfares up about 23%. As long as oil stays high, the Fed has reason to keep hiking, which is why oil, bond yields, and stocks have been moving together all month.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What to watch</div><p>Watch weekly tanker traffic through Hormuz and any news from U.S.-Iran talks. A real reopening could send oil sharply lower and ease pressure on inflation and rates. A breakdown could push Brent higher still. It's a perfect example of how one geopolitical chokepoint can move every asset class at once.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/24/oil-iran-crude-kepler-trump-us-un-.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.aljazeera.com/economy/2026/9/28/oil-prices-surge-after-trump-rejects-irans-plan-to-reopen-strait-of-hormuz" target="_blank" rel="noopener">Al Jazeera</a><a class="source-tag" href="https://www.aljazeera.com/economy/2026/9/7/oil-prices-surge-as-us-iran-strikes-intensify-in-strait-of-hormuz" target="_blank" rel="noopener">Al Jazeera</a><a class="source-tag" href="https://www.cnbc.com/2026/09/11/cpi-inflation-breakdown-august-2026.html" target="_blank" rel="noopener">CNBC</a></div>
+      <div class="article-nav">
+        <a href="#article-markets" onclick="openArticle(event,'article-markets')">Previous: Stocks and yields</a>
+        <a href="#article-summit" onclick="openArticle(event,'article-summit')">Next: Trump-Xi summit</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-summit" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Trade · September 24</div>
+      <h1 class="article-headline">Trump-Xi Summit Extends Truce, Cuts Tariffs on $30 Billion of Goods</h1>
+      <p class="article-deck">Xi Jinping's first White House state visit in more than a decade delivered a short truce extension and a targeted tariff deal, but no grand bargain.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/WhiteHouseSouthFacade.JPG?width=1280" alt="The White House, where President Trump hosted Xi Jinping for a state visit on September 24." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The White House, where President Trump hosted Xi Jinping for a state visit on September 24. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:WhiteHouseSouthFacade.JPG" target="_blank" rel="noopener">Matt H. Wade</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">Sept 24</div><div class="article-stat-label">Summit date</div></div><div class="article-stat"><div class="article-stat-val">$30B</div><div class="article-stat-label">Goods getting tariff cuts</div></div><div class="article-stat"><div class="article-stat-val">+2 months</div><div class="article-stat-label">Trade truce extension</div></div><div class="article-stat"><div class="article-stat-val">10+ years</div><div class="article-stat-label">Since last Chinese state visit</div></div></div>
+      <div class="article-body"><p>President Trump hosted Chinese President Xi Jinping at the White House on Thursday, September 24, for a state visit centered on trade, artificial intelligence, and the broader rivalry between the two countries.</p>
+ <h3>The trade truce, extended</h3>
+ <p>The truce that ended last year's trade war was set to expire in mid-November. Treasury Secretary Scott Bessent said the two sides agreed to extend it by two months, into January. That's shorter than many hoped, though some analysts think the tight timeline gives both sides leverage for future talks.</p>
+ <h3>A $30 billion tariff deal</h3>
+ <p>After the summit, the two countries agreed to cut tariffs on about $30 billion of goods, including agricultural exports, toys, and small appliances. Trade Representative Jamieson Greer said more details would follow, and a new Board of Trade will handle further negotiations.</p>
+ <h3>What didn't get solved</h3>
+ <p>There was no comprehensive agreement on the bigger issues, like rare earth minerals, soybean purchases, or Taiwan. The leaders will meet again soon: Trump is set to travel to China for APEC in November, and Xi is scheduled to attend the G20 in Miami in December.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What to watch</div><p>The truce now runs into January, so watch the Board of Trade talks and the November APEC meeting. Rare earths are the key pressure point for chips, EVs, and defense supply chains. Trade policy feeds directly into inflation and corporate earnings, which makes it a strong topic for interviews.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.usnews.com/news/top-news/articles/2026-09-24/four-takeaways-from-trumps-summit-with-xi-in-washington" target="_blank" rel="noopener">Reuters via U.S. News</a><a class="source-tag" href="https://www.cnbc.com/2026/09/25/trump-xi-summit-takeaways.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.foxnews.com/politics/us-china-strike-deal-lower-tariffs-30b-goods-trump-xi-washington-summit" target="_blank" rel="noopener">Fox News</a><a class="source-tag" href="https://foreignpolicy.com/2026/09/24/trump-xi-white-house-ai-trade-tariffs-taiwan-critical-minerals/" target="_blank" rel="noopener">Foreign Policy</a></div>
+      <div class="article-nav">
+        <a href="#article-oil" onclick="openArticle(event,'article-oil')">Previous: Oil surge</a>
+        <a href="#article-inflation" onclick="openArticle(event,'article-inflation')">Next: Inflation</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-inflation" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Inflation · August CPI</div>
+      <h1 class="article-headline">Energy Keeps Inflation Stuck at 3.4%</h1>
+      <p class="article-deck">Gas, diesel, and airfares pushed prices higher in August, and the report sealed the case for a Fed rate hike.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.4%</div><div class="article-stat-label">CPI, year over year</div></div><div class="article-stat"><div class="article-stat-val">+0.4%</div><div class="article-stat-label">CPI, August vs. July</div></div><div class="article-stat"><div class="article-stat-val">+27%</div><div class="article-stat-label">Gas prices vs. a year ago</div></div><div class="article-stat"><div class="article-stat-val">5.4%</div><div class="article-stat-label">Wholesale inflation (PPI)</div></div></div>
+      <div class="article-body"><p>The Bureau of Labor Statistics reported on September 11 that consumer prices rose 0.4% in August, up from 0.1% in July. Compared with a year earlier, prices were up 3.4%, the same pace as July and in line with forecasts. That's still well above the Fed's 2% goal, which inflation has now exceeded for more than five years.</p>
+ <h3>Energy did the heavy lifting</h3>
+ <p>Gasoline prices rose 3.9% in the month and accounted for more than a third of the overall increase. From a year earlier, gas was up more than 27% and energy prices overall about 16%. The conflict with Iran, which passed its six-month mark at the end of August, is the main reason.</p>
+ <h3>It's spreading beyond the pump</h3>
+ <p>Higher jet fuel costs pushed airfares up nearly 3% in August and more than 23% from a year ago. Shelter costs rose 0.3%, faster than July's 0.1%. Economists at Capital Economics told CNBC the risks to inflation look tilted to the upside.</p>
+ <h3>Wholesale prices ran even hotter</h3>
+ <p>The day before, the Producer Price Index showed wholesale inflation at 5.4% from a year earlier, a bit above forecasts. Energy prices at the wholesale level jumped 4.2% in a single month, led by a 24.1% surge in diesel. Wholesale costs often show up in consumer prices later, which is why the Fed watches them closely.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What's next</div><p>The September CPI report comes out on October 14, two weeks before the Fed's October 28 decision. If energy keeps pushing prices up, another rate hike becomes more likely.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.bls.gov/news.release/cpi.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.cnbc.com/2026/09/11/cpi-inflation-breakdown-august-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.foxbusiness.com/economy/cpi-inflation-august-2026" target="_blank" rel="noopener">Fox Business</a><a class="source-tag" href="https://www.cnbc.com/2026/09/10/ppi-inflation-report-august-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.kiplinger.com/investing/economy/cpi-report-august-2026-what-to-expect" target="_blank" rel="noopener">Kiplinger</a></div>
+      <div class="article-nav">
+        <a href="#article-summit" onclick="openArticle(event,'article-summit')">Previous: Trump-Xi summit</a>
+        <a href="#article-jobs" onclick="openArticle(event,'article-jobs')">Next: Jobs report</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-jobs" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Jobs · August Report</div>
+      <h1 class="article-headline">Hiring Rebounds: 162,000 Jobs in August</h1>
+      <p class="article-deck">A much stronger-than-expected jobs report ended a slow summer and pushed the Fed closer to raising rates.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">+162K</div><div class="article-stat-label">Jobs added in August</div></div><div class="article-stat"><div class="article-stat-val">~53K</div><div class="article-stat-label">What economists expected</div></div><div class="article-stat"><div class="article-stat-val">4.1%</div><div class="article-stat-label">Unemployment rate</div></div><div class="article-stat"><div class="article-stat-val">+55K</div><div class="article-stat-label">Upward revisions, June–July</div></div></div>
+      <div class="article-body"><p>The Bureau of Labor Statistics said on September 4 that employers added 162,000 jobs in August, about three times the consensus forecast of 53,000. The unemployment rate held at 4.1%, as expected.</p>
+ <h3>Where the jobs came from</h3>
+ <p>Hiring was broad. Leisure and hospitality added about 62,000 jobs, mostly at restaurants and bars, and local government education rebounded by roughly 42,000 after a weak July. Private employers added about 127,000 jobs, and the share of industries adding workers hit its highest level since December 2024.</p>
+ <h3>The weak spots</h3>
+ <p>Two sectors lost jobs: information shed about 23,000 and financial activities about 11,000. That's worth noting if you're job hunting in finance. The unemployment rate for college graduates stayed low at 2.7%.</p>
+ <h3>Revisions and wages</h3>
+ <p>June and July were revised up by a combined 55,000, lifting the three-month average to about 71,000 jobs a month. Average hourly earnings rose 0.3% to $37.75, and labor force participation edged up to 61.6%.</p>
+ <h3>Why it mattered for the Fed</h3>
+ <p>After the report, futures raised the odds of a September hike to about 60%, and the CPI report a week later sealed it. President Trump called it a great jobs number but argued the Fed should cut, not hike.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What's next</div><p>The September jobs report is due Friday, October 2. A strong number would keep an October rate hike on the table; a weak one could give the Fed a reason to pause.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://economics.td.com/us-employment" target="_blank" rel="noopener">TD Economics</a><a class="source-tag" href="https://hiringlab.indeed.com/2026/09/04/august-2026-jobs-report-rebound-without-real-relief/" target="_blank" rel="noopener">Indeed Hiring Lab</a><a class="source-tag" href="https://www.roberthalf.com/us/en/insights/research/august-2026-jobs-report-employers-add-162-000-jobs" target="_blank" rel="noopener">Robert Half</a></div>
+      <div class="article-nav">
+        <a href="#article-inflation" onclick="openArticle(event,'article-inflation')">Previous: Inflation</a>
+        <a href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Next: ECB & Bank of Japan</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-centralbanks" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Global · Central Banks</div>
+      <h1 class="article-headline">ECB and Bank of Japan Hike Too</h1>
+      <p class="article-deck">The Fed wasn't alone. Energy-driven inflation pushed central banks around the world to raise rates in September.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">2.50%</div><div class="article-stat-label">ECB deposit rate</div></div><div class="article-stat"><div class="article-stat-val">1.25%</div><div class="article-stat-label">Bank of Japan rate</div></div><div class="article-stat"><div class="article-stat-val">3.75%</div><div class="article-stat-label">Bank of England (held)</div></div><div class="article-stat"><div class="article-stat-val">~156.6</div><div class="article-stat-label">Yen per dollar after BOJ</div></div></div>
+      <div class="article-body"><p>September was a month of global tightening. Three of the world's biggest central banks raised rates within about a week of each other.</p>
+ <h3>European Central Bank: September 10</h3>
+ <p>The ECB raised its three key rates by a quarter point, taking the deposit rate to 2.50%. It was the second hike of 2026, after a first move in June and a pause in July, when a Gulf truce briefly looked likely to ease energy prices. That truce fell apart. Eurozone inflation rose to 3.3% in August from 2.9% in July, driven by energy prices up 14.3% from a year earlier. President Christine Lagarde said future decisions will be made meeting by meeting, and ECB staff expect inflation to average 3.0% this year.</p>
+ <h3>Bank of Japan: September 18</h3>
+ <p>The BOJ raised its policy rate to 1.25%, the highest since 1995, just three months after its previous hike. Two of nine board members voted against it. Surprisingly, the yen weakened about 0.45% to roughly 156.6 per dollar, even though the U.S. and Japan had coordinated to support the currency. Japan's rates are still far below U.S. rates, so the move didn't change the math for investors much.</p>
+ <h3>Bank of England: held</h3>
+ <p>The Bank of England kept its rate at 3.75%, in a 6–3 vote.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>When several central banks tighten at once, borrowing gets more expensive worldwide and currencies move based on who hikes more. That's why the dollar stayed strong and the yen stayed weak despite Japan's hike, a great example of rate differentials for interviews.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136" target="_blank" rel="noopener">Il Foglio</a><a class="source-tag" href="https://cryptobriefing.com/ecb-lagarde-no-debate-future-rate-path/" target="_blank" rel="noopener">Crypto Briefing</a><a class="source-tag" href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.financecalendar.com/event/bank-of-japan-rate-decision-september-2026/" target="_blank" rel="noopener">Finance Calendar</a></div>
+      <div class="article-nav">
+        <a href="#article-jobs" onclick="openArticle(event,'article-jobs')">Previous: Jobs report</a>
+        <a href="#article-banks" onclick="openArticle(event,'article-banks')">Next: Bank stocks</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-banks" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Investment Banking · September 14</div>
+      <h1 class="article-headline">Bank Stocks Slide After BofA Warns on Q3 Deal Fees</h1>
+      <p class="article-deck">A warning from Bank of America's CEO dragged Wall Street banks lower and raised questions about deal activity.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">−5.1%</div><div class="article-stat-label">BofA shares, Sept 14</div></div><div class="article-stat"><div class="article-stat-val">~−4%</div><div class="article-stat-label">Goldman Sachs</div></div><div class="article-stat"><div class="article-stat-val">−3.6%</div><div class="article-stat-label">Morgan Stanley</div></div><div class="article-stat"><div class="article-stat-val">−6.3%</div><div class="article-stat-label">Financials in September</div></div></div>
+      <div class="article-body"><p>On Monday, September 14, Bank of America CEO Brian Moynihan warned that the bank's investment banking fees would be lower in the third quarter. BofA stock closed at $59.47, down 5.1%, its worst day since April 2025.</p>
+ <h3>The rest of Wall Street followed</h3>
+ <p>Goldman Sachs fell about 4%, Morgan Stanley 3.6%, and Citigroup 1.9%, according to Bloomberg data cited by Quartz. JPMorgan and Wells Fargo slipped 1–2%. Citi offered a slightly better picture the same day, saying its investment banking revenue was on pace for low-single-digit growth, with trading up mid-single digits.</p>
+ <h3>Not all bad news</h3>
+ <p>Moynihan said the rest of BofA's business was performing as expected. Net interest income growth was at the top of its 6–8% forecast range, and wealth management fees were up 10–15% in the quarter. He described the underlying economy as good.</p>
+ <h3>Why it's a big shift</h3>
+ <p>Earlier in the year, deal-making was booming. Goldman's investment banking fees jumped 52% in the first half of 2026 to about $6.2 billion. A slowdown now, with rates and bond yields rising, would be a notable turn. By month end, the S&amp;P 500 financials sector was down about 6.3%, its worst month since March 2023.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Investment banking deal flow is sensitive to rates and market swings. If you're recruiting, watch the big banks' third-quarter earnings in mid-October for clues about hiring. Areas like wealth management, trading, and credit look steadier right now.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://qz.com/bank-of-america-ceo-investment-banking-fees-trading-revenue-091526" target="_blank" rel="noopener">Quartz (citing Bloomberg)</a><a class="source-tag" href="https://finance.yahoo.com/markets/article/bank-of-america-leads-financial-services-stocks-lower-on-weak-wall-street-fee-forecast-202601947.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/goldmans-ib-fees-jump-52-143300586.html" target="_blank" rel="noopener">Yahoo Finance (Zacks)</a><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a></div>
+      <div class="article-nav">
+        <a href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Previous: ECB & Bank of Japan</a>
+        <a href="#article-credit" onclick="openArticle(event,'article-credit')">Next: Private credit</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-credit" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Private Credit</div>
+      <h1 class="article-headline">Private Credit Stress Drags Asset Managers Lower</h1>
+      <p class="article-deck">Investors kept trying to pull money out of private credit funds, and the stocks of the firms that run them sank.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">$77B</div><div class="article-stat-label">Blackstone's BCRED fund</div></div><div class="article-stat"><div class="article-stat-val">5%</div><div class="article-stat-label">Withdrawal cap per quarter</div></div><div class="article-stat"><div class="article-stat-val">6.3%</div><div class="article-stat-label">Private credit default rate</div></div><div class="article-stat"><div class="article-stat-val">~−21%</div><div class="article-stat-label">Blackstone stock in September</div></div></div>
+      <div class="article-body"><p>Private credit, loans made by investment firms instead of banks, grew into a roughly $1.8 trillion market. This year it has come under pressure, and September added to the strain.</p>
+ <h3>Withdrawals capped again</h3>
+ <p>On September 3, Bloomberg reported that Blackstone's $77 billion Private Credit Fund (BCRED), the largest of its kind, let investors withdraw only half of the 10% they asked for. It was the second quarter in a row. Funds like this limit withdrawals to 5% a quarter, and other managers hit the same wall: Cliffwater's flagship fund capped redemptions at 5% after investors asked for about 16%.</p>
+ <h3>Loan quality is slipping</h3>
+ <p>Fitch put the private credit default rate at 6.3% over the 12 months through August. Blackstone said its weakest 5% of loans were valued at about 60 cents on the dollar, compared with about 95 cents for the fund's broader senior loan portfolio. Concerns have centered on loans to software companies.</p>
+ <h3>The stocks took a hit</h3>
+ <p>Blackstone shares fell about 21% in September and BlackRock about 8%, according to CNBC. Apollo and Blue Owl also slid. Some analysts also point to the firms' big bets on financing AI data centers, at a time when some projects are being delayed.</p>
+ <h3>Some signs of relief</h3>
+ <p>Withdrawal requests at several managers eased slightly in the third quarter. At Ares, requests fell to 13.1% of shares from 14.4%, and at Apollo to 14.7% from 16.8%. Blackstone President Jon Gray said he expects investor confidence to recover.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>Private credit is one of the fastest-growing corners of finance and a big recruiter. Understanding why "semi-liquid" funds limit withdrawals, and what happens when loans go bad, is a strong interview topic right now.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.bloomberg.com/news/articles/2026-09-03/blackstone-s-bcred-caps-redemptions-again-after-10-seek-to-exit" target="_blank" rel="noopener">Bloomberg</a><a class="source-tag" href="https://www.benzinga.com/markets/private-markets/26/09/61805046/blackstone-says-private-credits-global-crisis-fears-are-overblown" target="_blank" rel="noopener">Benzinga</a><a class="source-tag" href="https://www.benzinga.com/markets/equities/26/09/62012444/apollo-global-blue-owl-and-blackstone-shares-slide-even-as-private-credit-fears-fade" target="_blank" rel="noopener">Benzinga</a><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a></div>
+      <div class="article-nav">
+        <a href="#article-banks" onclick="openArticle(event,'article-banks')">Previous: Bank stocks</a>
+        <a href="#article-consumers" onclick="openArticle(event,'article-consumers')">Next: Consumers</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-consumers" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Economy · Consumers</div>
+      <h1 class="article-headline">Confidence Sinks as Mortgage Rates Climb</h1>
+      <p class="article-deck">Businesses are booming, but everyday Americans are feeling worse about the economy.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">12-year low</div><div class="article-stat-label">Consumer confidence</div></div><div class="article-stat"><div class="article-stat-val">~7.45%</div><div class="article-stat-label">30-year mortgage rate</div></div><div class="article-stat"><div class="article-stat-val">58.4</div><div class="article-stat-label">Business activity (PMI)</div></div><div class="article-stat"><div class="article-stat-val">3.4%</div><div class="article-stat-label">Inflation</div></div></div>
+      <div class="article-body"><p>Consumer confidence fell to a 12-year low in September, according to the Conference Board data reported on September 29. For the first time since September 2024, consumers' view of current business conditions turned negative.</p>
+ <h3>What people are worried about</h3>
+ <p>Views of the job market also got worse, though they stayed in positive territory. Looking six months ahead, consumers expected both business conditions and the job market to weaken. With gas up more than 27% from a year ago, it's not hard to see why.</p>
+ <h3>Borrowing is getting expensive</h3>
+ <p>As the 10-year Treasury yield climbed above 5%, the average 30-year mortgage rate reached about 7.45%, its highest since April 2024, according to CNBC. Higher rates make homes, cars, and credit card balances more expensive to finance.</p>
+ <h3>A split economy</h3>
+ <p>The mood is very different in the business world. S&amp;P Global's flash survey showed U.S. business activity growing at its fastest pace since July 2021, with a reading of 58.4. Reuters described economic sentiment as poor even as businesses spend heavily on investment. That gap between strong business data and gloomy consumers is one of the big puzzles heading into the fall.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>If you're thinking about a car loan or a big purchase on credit, rates are the highest they've been in a while. It's a good time to build savings, which now earn more, and to pay down variable-rate debt.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-sept-29-2026" target="_blank" rel="noopener">TheStreet</a><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://digg.com/world-business/yy8sp23a" target="_blank" rel="noopener">Digg (citing CNBC & FT)</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://www.usnews.com/news/top-news/articles/2026-09-24/four-takeaways-from-trumps-summit-with-xi-in-washington" target="_blank" rel="noopener">U.S. News</a></div>
+      <div class="article-nav">
+        <a href="#article-credit" onclick="openArticle(event,'article-credit')">Previous: Private credit</a>
+        <a href="#article-bankviews" onclick="openArticle(event,'article-bankviews')">Next: Big bank views</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-bankviews" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Analysis · Wall Street Views</div>
+      <h1 class="article-headline">What the Big Banks Think Comes Next</h1>
+      <p class="article-deck">J.P. Morgan, TD, and Bank of America each weighed in on the Fed, inflation, and markets this month. Here's what they said.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">1 more</div><div class="article-stat-label">J.P. Morgan's Fed hike call</div></div><div class="article-stat"><div class="article-stat-val">~3</div><div class="article-stat-label">Hikes futures price (TD: too many)</div></div><div class="article-stat"><div class="article-stat-val">3.9%</div><div class="article-stat-label">Fund manager cash (BofA)</div></div><div class="article-stat"><div class="article-stat-val">33%</div><div class="article-stat-label">Say bond yields are top risk</div></div></div>
+      <div class="article-body"><h3>J.P. Morgan: one more hike, then stop</h3>
+ <p>In a note from late September, J.P. Morgan's chief U.S. economist Michael Feroli said the bank expects the Fed to raise rates once more later this year, in line with the Fed's own dot plot. The bank sees energy shocks from the Iran war and AI-driven demand as the main reasons inflation is sticky. Feroli also said any changes to the Fed's policy framework under Chair Warsh would need broad support from the full committee. Separately, J.P. Morgan noted that diesel prices hit record highs in early September, rising faster than gasoline.</p>
+ <p>One lesson for students: in July, J.P. Morgan's research team forecast Brent crude averaging about $86 in the third quarter. By late September, Brent was above $105. Even the best forecasters get surprised when geopolitics shifts.</p>
+ <h3>TD Economics: not one-and-done, but markets overshoot</h3>
+ <p>TD said the hike was widely expected after the hot CPI report and rising oil prices, and that the hawkish dot plot reassured markets. It argued a single hike would be too small to matter for growth or inflation, so more are likely. But TD also said futures pricing of nearly three more hikes over the next year looked overstated, and that if it happened, the Fed could have to reverse quickly in the second half of 2027.</p>
+ <h3>Bank of America: bond yields are the new top fear</h3>
+ <p>BofA's monthly Global Fund Manager Survey, taken September 4–10, showed investors cooling from extreme optimism. The sentiment gauge fell to 7.0 from 8.0, and cash holdings rose to 3.9% from 3.5%, the biggest monthly jump since March. A disorderly rise in bond yields became the number one tail risk at 33%, overtaking an AI bubble. Still, 55% of managers expect a "no landing" economy that keeps growing, and 79% think the biggest AI companies won't cut spending this year.</p></div>
+      <div class="article-callout"><div class="article-callout-title">How to use this</div><p>Big bank research is a great way to learn how professionals think. Notice how each bank starts from the same data but emphasizes different risks. In interviews, being able to say "J.P. Morgan expects X, but TD thinks markets are overpricing Y" shows you follow the debate.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://finance.yahoo.com/economy/policy/articles/j-p-morgan-sees-fed-203300682.html" target="_blank" rel="noopener">J.P. Morgan via Yahoo Finance</a><a class="source-tag" href="https://www.jpmorgan.com/insights/markets-and-economy/outlook" target="_blank" rel="noopener">J.P. Morgan Insights</a><a class="source-tag" href="https://www.jpmorgan.com/insights/global-research/commodities/oil-prices" target="_blank" rel="noopener">J.P. Morgan Global Research</a><a class="source-tag" href="https://economics.td.com/us-fomc-statement" target="_blank" rel="noopener">TD Economics</a><a class="source-tag" href="https://finvaulta.com/research/bank-of-america/global-fund-manager-survey-racing-the-frontier-2026-09-15" target="_blank" rel="noopener">Finvaulta (BofA FMS summary)</a><a class="source-tag" href="https://atranicapital.substack.com/p/september-2026-bank-of-america-global" target="_blank" rel="noopener">Atrani Capital (BofA FMS summary)</a><a class="source-tag" href="https://www.webull.com/news/15582693216764928" target="_blank" rel="noopener">Webull News</a></div>
+      <div class="article-nav">
+        <a href="#article-consumers" onclick="openArticle(event,'article-consumers')">Previous: Consumers</a>
+        <a href="#article-india" onclick="openArticle(event,'article-india')">Next: India</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-india" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Global Watch · India</div>
+      <h1 class="article-headline">Higher U.S. Yields and Oil Pull Money Out of India</h1>
+      <p class="article-deck">The Fed's hike and $100-plus oil sent foreign investors heading for the exits in one of the world's fastest-growing economies.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~₹21,000 cr</div><div class="article-stat-label">Foreign selling, Sept 1–18</div></div><div class="article-stat"><div class="article-stat-val">~₹2.45 tn</div><div class="article-stat-label">Foreign selling in 2026</div></div><div class="article-stat"><div class="article-stat-val">96.13</div><div class="article-stat-label">Rupee per dollar, Sept 29</div></div><div class="article-stat"><div class="article-stat-val">Oct & Dec</div><div class="article-stat-label">Nomura's RBI hike call</div></div></div>
+      <div class="article-body"><p>Foreign portfolio investors (FPIs) had returned to Indian stocks in July and August, investing about ₹20,200 crore and ₹29,630 crore. In September, they reversed course.</p>
+ <h3>The selling built through the month</h3>
+ <p>FPIs pulled out about ₹7,443 crore in the first week of September, about ₹13,138 crore by September 11, and about ₹20,974 crore by September 18. That pushed total foreign selling for 2026 to roughly ₹2.45 trillion, already more than all of 2025. In the first half of the month, selling hit 14 of 23 sectors, led by financial services and autos, while healthcare attracted buying.</p>
+ <h3>Why: oil and U.S. yields</h3>
+ <p>India imports most of its oil, so expensive crude widens its trade gap, raises inflation, and weakens the rupee. At the same time, a 5% U.S. Treasury yield makes safe American bonds more attractive than emerging markets. Analysts at Geojit and YES Securities pointed to both as the main pressures.</p>
+ <h3>The rupee and stocks</h3>
+ <p>On September 29, the rupee fell to about 96.13 per dollar and the Sensex dropped about 500 points in early trade, after FIIs sold about ₹5,353 crore the previous day.</p>
+ <h3>What's next for India's central bank</h3>
+ <p>Nomura now expects the Reserve Bank of India to raise rates at both its October and December meetings, warning that inflation could top 6%, even as it forecasts 7% economic growth for the fiscal year.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>This is how Fed policy travels around the world. When U.S. rates rise, money flows out of riskier markets, their currencies weaken, and their central banks may have to hike too. It's a key concept for anyone interested in global markets or international finance.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.uniindia.com/business-economy/economy-fpi-outflows/178247" target="_blank" rel="noopener">UNI India</a><a class="source-tag" href="https://www.uniindia.com/business-economy/economy-fpis-indian-equities-20dc6/186166" target="_blank" rel="noopener">UNI India</a><a class="source-tag" href="https://www.freepressjournal.in/business/fpis-dump-rs-7443-crore-in-september-first-week-2026-equity-exodus-hits-rs-232-lakh-crore" target="_blank" rel="noopener">Free Press Journal</a><a class="source-tag" href="https://www.freepressjournal.in/business/rbis-rate-pause-may-not-last-long-report-signals-two-interest-rate-hikes-in-2026" target="_blank" rel="noopener">Free Press Journal</a><a class="source-tag" href="https://hdfcsky.com/news/inr-vs-usd-rate-september-29-2026" target="_blank" rel="noopener">HDFC Sky (PTI)</a><a class="source-tag" href="https://www.finnovate.in/learn/blog/fpi-flows-september-2026-first-fortnight" target="_blank" rel="noopener">Finnovate</a></div>
+      <div class="article-nav">
+        <a href="#article-bankviews" onclick="openArticle(event,'article-bankviews')">Previous: Big bank views</a>
+        <a href="#article-fed" onclick="openArticle(event,'article-fed')">Next: The Fed hike</a>
+      </div>
+    </article>
+  </div>
+
+  <!-- ═══════════════════ MARKET EXPLAINERS ═══════════════════ -->
+  <div id="article-equities" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Equities</div>
+      <h1 class="article-headline">Stocks in September: A Flat Month With Big Moves Underneath</h1>
+      <p class="article-deck">The headline index barely moved, but sectors told very different stories. Here's how to read what happened.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/NYC_NYSE.jpg?width=1280" alt="The New York Stock Exchange on Wall Street." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The New York Stock Exchange on Wall Street. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:NYC_NYSE.jpg" target="_blank" rel="noopener">Arnoldius</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">7,671</div><div class="article-stat-label">S&P 500 (Sept 28)</div></div><div class="article-stat"><div class="article-stat-val">−0.2%</div><div class="article-stat-label">S&P 500 in September</div></div><div class="article-stat"><div class="article-stat-val">+1%+</div><div class="article-stat-label">Nasdaq in September</div></div><div class="article-stat"><div class="article-stat-val">−3.5%</div><div class="article-stat-label">Dow in September</div></div></div>
+      <div class="article-body"><p>By the September 28 close, the S&amp;P 500 was about 0.2% lower for the month at 7,670.84. The Nasdaq was up more than 1%, while the Dow was down about 3.5%. For the third quarter as a whole, the S&amp;P 500 and Nasdaq were each up about 2%.</p>
+ <h3>Three indexes, three stories</h3>
+ <p>The <strong>S&amp;P 500</strong> tracks 500 large U.S. companies weighted by size, so it's the best single read on the market. The <strong>Nasdaq Composite</strong> leans heavily on tech, which held up better this month. The <strong>Dow</strong> holds just 30 stocks weighted by share price, and it has a bigger tilt toward banks and industrials, which is part of why it lagged.</p>
+ <h3>Sector split</h3>
+ <p>Financials were the weakest spot, down about 6.3% for the month, the sector's worst month since March 2023. Energy producers benefited from oil's surge. Tech swung day to day with bond yields.</p>
+ <h3>What moved the market</h3>
+ <p>Rising Treasury yields were the main headwind. The 10-year yield passed 5% in mid-September and reached about 5.2% late in the month. When bonds pay that much, investors get pickier about stocks.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Try this yourself</div><p>Pick three stocks from different sectors, like a bank, an oil producer, and a chipmaker, and look up how each did in September on Yahoo Finance or Google Finance. Write one sentence on why they moved differently. That habit builds exactly the market sense interviewers test for.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-29-135304543.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+      <div class="article-nav">
+        <a href="#article-commodities" onclick="openArticle(event,'article-commodities','markets')">Previous: Commodities & crypto</a>
+        <a href="#article-rates" onclick="openArticle(event,'article-rates','markets')">Next: Fixed income & rates</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-rates" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Fixed Income & Rates</div>
+      <h1 class="article-headline">Rates 101: The Fed Hike and the 5% 10-Year</h1>
+      <p class="article-deck">The Fed started raising rates again, and the bond market went further. Here's how the pieces fit together.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.75–4.00%</div><div class="article-stat-label">Fed funds range</div></div><div class="article-stat"><div class="article-stat-val">~5.2%</div><div class="article-stat-label">10-year Treasury</div></div><div class="article-stat"><div class="article-stat-val">~7.45%</div><div class="article-stat-label">30-year mortgage rate</div></div><div class="article-stat"><div class="article-stat-val">~75%</div><div class="article-stat-label">Odds of an Oct 28 hike</div></div></div>
+      <div class="article-body"><p>On September 16 the Fed raised its target range by 25 basis points to 3.75–4.00%. But the bigger move came in the bond market: the 10-year Treasury yield topped 5% on September 14 for the first time since 2007, then rose to about 5.2% in the final week of the month.</p>
+ <h3>Fed funds rate vs. the 10-year yield</h3>
+ <p>The <strong>fed funds rate</strong> is the overnight rate banks charge each other, and the Fed sets it directly. The <strong>10-year Treasury yield</strong> is set by the market. It reflects where investors expect rates, inflation, and growth to go over the next decade. This month, strong data, high oil, and heavy borrowing by AI companies all pushed it up.</p>
+ <h3>Why bond prices fall when yields rise</h3>
+ <p>A bond pays a fixed coupon. When new bonds start paying more, older lower-paying bonds become less attractive, so their prices drop until their yields match the market. Rising yields always mean falling prices for existing bonds. It's one of the most common interview questions out there.</p>
+ <h3>What's next</h3>
+ <p>The median Fed projection points to about 4.1% by year end, implying one more hike. Futures were pricing roughly a 75% chance of that hike coming at the October 28 meeting.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Mortgage rates near 7.45% make buying a home harder, and variable-rate debt costs more. But Treasury bills, CDs, and high-yield savings accounts now pay some of the best rates in years. If you're recruiting, be ready to explain the price-yield relationship and why long-term yields can rise even faster than the Fed moves.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a><a class="source-tag" href="https://economics.td.com/us-fomc-statement" target="_blank" rel="noopener">TD Economics</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/583731" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://cointelegraph.com/markets/bitcoin-fall-84k-treasury-yield-hits-19-year-high" target="_blank" rel="noopener">Cointelegraph</a></div>
+      <div class="article-nav">
+        <a href="#article-equities" onclick="openArticle(event,'article-equities','markets')">Previous: Equities</a>
+        <a href="#article-fx" onclick="openArticle(event,'article-fx','markets')">Next: Foreign exchange</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-fx" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Foreign Exchange</div>
+      <h1 class="article-headline">Currencies: A Month of Central Bank Hikes</h1>
+      <p class="article-deck">The Fed, ECB, and Bank of Japan all raised rates in September. Here's why the yen still ended up weak.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">2.50%</div><div class="article-stat-label">ECB deposit rate (Sept 10)</div></div><div class="article-stat"><div class="article-stat-val">1.25%</div><div class="article-stat-label">BOJ rate (Sept 18)</div></div><div class="article-stat"><div class="article-stat-val">3.75%</div><div class="article-stat-label">Bank of England (held)</div></div><div class="article-stat"><div class="article-stat-val">~156.6</div><div class="article-stat-label">Yen per dollar after BOJ</div></div></div>
+      <div class="article-body"><p>September brought a wave of central bank decisions. The ECB raised its deposit rate to 2.50% on September 10. The Fed hiked on September 16. The Bank of Japan raised its rate to 1.25% on September 18, the highest since 1995. The Bank of England held at 3.75%.</p>
+ <h3>How to read a currency quote</h3>
+ <p>USD/JPY at 156.6 means one U.S. dollar buys about 156.6 yen. If that number goes up, the dollar is getting stronger against the yen.</p>
+ <h3>Why rate hikes usually strengthen a currency</h3>
+ <p>Money tends to flow where it earns more. When a central bank raises rates, holding that currency pays better, so demand rises. That's the textbook view.</p>
+ <h3>The yen puzzle</h3>
+ <p>Even after its hike, the Bank of Japan's rate is far below the Fed's, so the incentive to hold dollars over yen barely changed. The yen weakened about 0.45% after the decision, to around 156.6 per dollar, even though the U.S. and Japan had already intervened together to support it. Two board members voted against the hike, which also softened its impact.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>The gap between two countries' interest rates is one of the biggest drivers of exchange rates. A weak yen makes Japanese exports cheaper and affects any company, or investor, doing business across borders. Understanding rate differentials is a big plus for markets and corporate finance roles.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136" target="_blank" rel="noopener">Il Foglio</a><a class="source-tag" href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a></div>
+      <div class="article-nav">
+        <a href="#article-rates" onclick="openArticle(event,'article-rates','markets')">Previous: Fixed income & rates</a>
+        <a href="#article-commodities" onclick="openArticle(event,'article-commodities','markets')">Next: Commodities & crypto</a>
+      </div>
+    </article>
+  </div>
+
+  <div id="article-commodities" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Commodities & Crypto</div>
+      <h1 class="article-headline">Oil, Gold, and Bitcoin in September</h1>
+      <p class="article-deck">Oil surged, gold struggled against rising yields, and bitcoin traded like a risk asset.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 1st October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/West_Texas_Pumpjack.JPG?width=1280" alt="An oil pumpjack in West Texas." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>An oil pumpjack in West Texas. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:West_Texas_Pumpjack.JPG" target="_blank" rel="noopener">Eric Kounce</a> / Wikimedia Commons, Public domain</span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">$106.60</div><div class="article-stat-label">Brent close, Sept 24</div></div><div class="article-stat"><div class="article-stat-val">+17%</div><div class="article-stat-label">Brent in September</div></div><div class="article-stat"><div class="article-stat-val">~$4,400</div><div class="article-stat-label">Gold, early September</div></div><div class="article-stat"><div class="article-stat-val">~$83,000</div><div class="article-stat-label">Bitcoin, Sept 24</div></div></div>
+      <div class="article-body"><p>Brent crude gained more than 17% in September and closed at $106.60 on September 24, as the conflict with Iran kept traffic through the Strait of Hormuz far below normal. U.S. crude (WTI) closed that day at $94.61.</p>
+ <h3>Brent vs. WTI</h3>
+ <p><strong>Brent</strong> is the global benchmark, priced off North Sea crude. <strong>WTI</strong> is the U.S. benchmark, priced in Oklahoma. Brent reacts more to Middle East supply shocks because so much seaborne oil normally moves through Hormuz, which is why the gap between the two is so wide right now.</p>
+ <h3>Why gold struggled</h3>
+ <p>Gold pays no interest. When Treasury yields rise, holding bonds or cash becomes more rewarding than holding gold. Gold fell to about $4,370 an ounce on September 1 as yields and the dollar climbed, and rising yields kept pressure on it through the month.</p>
+ <h3>Crypto as a risk asset</h3>
+ <p>Bitcoin fell below $84,000 on September 24, touching about $83,200, as the 10-year yield hit its highest level since 2007. Lately it has traded more like a high-risk tech stock than a hedge, falling when rates jump.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What to watch</div><p>If a Hormuz deal comes together, oil could drop quickly, and yields, gold, and crypto would likely react too. Watch gas prices as well; they usually follow crude within a few weeks.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/24/oil-iran-crude-kepler-trump-us-un-.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.aljazeera.com/economy/2026/9/28/oil-prices-surge-after-trump-rejects-irans-plan-to-reopen-strait-of-hormuz" target="_blank" rel="noopener">Al Jazeera</a><a class="source-tag" href="https://www.khaleejtimes.com/business/gold-falls-to-two-week-low-as-rising-treasury-yields-dollar-weigh" target="_blank" rel="noopener">Khaleej Times</a><a class="source-tag" href="https://cointelegraph.com/markets/bitcoin-fall-84k-treasury-yield-hits-19-year-high" target="_blank" rel="noopener">Cointelegraph</a></div>
+      <div class="article-nav">
+        <a href="#article-fx" onclick="openArticle(event,'article-fx','markets')">Previous: Foreign exchange</a>
+        <a href="#article-equities" onclick="openArticle(event,'article-equities','markets')">Next: Equities</a>
+      </div>
+    </article>
+  </div>
+
+  <!-- ═══════════════════ MARKETS ═══════════════════ -->
+  <div id="markets" class="page">
+
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Markets Deep Dive — September 2026</div><div class="sec-head-line"></div></div>
+
+    <div class="breaking">
+      <span class="breaking-label">Month End</span>
+      <span class="breaking-text">Figures as of the September 24–29 sessions, from the sources linked below. September changes are month to date.</span>
+    </div>
+
+    <div class="markets-grid">
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-equities','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-equities','markets')"><span class="mcard-icon">📈</span> Equities</div>
+        <div class="mcard-stat"><span class="mcard-label">S&amp;P 500</span><span><span class="mcard-value">7,671</span> &nbsp;<span class="mcard-chg dn">−0.2% Sept</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">NASDAQ Comp.</span><span><span class="mcard-value">+1%+</span> &nbsp;<span class="mcard-chg up">in Sept</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Dow Jones</span><span><span class="mcard-value">−3.5%</span> &nbsp;<span class="mcard-chg dn">in Sept</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Financials sector</span><span><span class="mcard-value">−6.3%</span> &nbsp;<span class="mcard-chg dn">in Sept</span></span></div>
+        <div class="mcard-desc">A flat month for the S&amp;P 500 hid big sector swings. Tech held up; financials had their worst month since March 2023 as bank deal fees and private credit came under pressure. Rising bond yields were the main headwind.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-equities','markets')" aria-label="Learn more about equities">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-rates','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-rates','markets')"><span class="mcard-icon">🏦</span> Fixed Income &amp; Rates</div>
+        <div class="mcard-stat"><span class="mcard-label">Fed Funds Rate</span><span><span class="mcard-value">3.75–4.00%</span> &nbsp;<span class="mcard-chg dn">▲ Hiked Sept 16</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">10-Year Treasury</span><span><span class="mcard-value">~5.2%</span> &nbsp;<span class="mcard-chg dn">▲ Highest since 2007</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">30-Yr Mortgage</span><span><span class="mcard-value">~7.45%</span> &nbsp;<span class="mcard-chg dn">▲ Highest since Apr 2024</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Next Fed Decision</span><span><span class="mcard-value">Oct 28</span> &nbsp;<span class="mcard-chg fl">~75% hike odds</span></span></div>
+        <div class="mcard-desc">The Fed hiked for the first time since 2023, and the bond market moved even more: the 10-year yield broke 5% and kept climbing on strong data, high oil, and heavy AI-related borrowing.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-rates','markets')" aria-label="Learn more about fixed income and rates">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-fx','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-fx','markets')"><span class="mcard-icon">🌐</span> Foreign Exchange</div>
+        <div class="mcard-stat"><span class="mcard-label">ECB Deposit Rate</span><span><span class="mcard-value">2.50%</span> &nbsp;<span class="mcard-chg dn">▲ Hiked Sept 10</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Bank of Japan</span><span><span class="mcard-value">1.25%</span> &nbsp;<span class="mcard-chg dn">▲ Highest since 1995</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Bank of England</span><span><span class="mcard-value">3.75%</span> &nbsp;<span class="mcard-chg fl">— Held</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">USD / JPY</span><span><span class="mcard-value">~156.6</span> &nbsp;<span class="mcard-chg up">Yen weaker post-BOJ</span></span></div>
+        <div class="mcard-desc">Three major central banks raised rates in September. The yen still weakened after the BOJ hike because Japanese rates remain far below U.S. rates.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-fx','markets')" aria-label="Learn more about foreign exchange">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-commodities','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-commodities','markets')"><span class="mcard-icon">🛢️</span> Commodities &amp; Crypto</div>
+        <div class="mcard-stat"><span class="mcard-label">Brent Crude</span><span><span class="mcard-value">$106.60</span> &nbsp;<span class="mcard-chg dn">▲ +17% Sept</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">WTI Crude</span><span><span class="mcard-value">$94.61</span> &nbsp;<span class="mcard-chg dn">▲ +10% Sept</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Gold</span><span><span class="mcard-value">~$4,400</span> &nbsp;<span class="mcard-chg fl">Pressured by yields</span></span></div>
+        <div class="mcard-stat"><span class="mcard-label">Bitcoin</span><span><span class="mcard-value">~$83,000</span> &nbsp;<span class="mcard-chg fl">Fell with yields</span></span></div>
+        <div class="mcard-desc">Oil was the month's biggest macro story, driven by the standoff over the Strait of Hormuz. Gold and bitcoin both struggled as Treasury yields climbed.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-commodities','markets')" aria-label="Learn more about commodities and crypto">Learn More →</button>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">What This Means for Finance Students</div><div class="sec-head-line"></div></div>
+    <div style="background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin-bottom:28px;">
+      <div class="students-grid">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-text);margin-bottom:8px;">Your Money</div>
+          <div style="font-size:13px;color:var(--ink-soft);line-height:1.7;">Rates are rising, so variable-rate debt like credit cards costs more, and mortgages near 7.45% make housing tougher. The upside: savings accounts, CDs, and Treasury bills pay some of the best rates in years. Gas and airfare are still up sharply from last year, so budget for that too.</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-text);margin-bottom:8px;">Your Career</div>
+          <div style="font-size:13px;color:var(--ink-soft);line-height:1.7;">Bank of America's fee warning and the financial sector's 6.3% drop show deal activity is cooling, and the financial activities sector lost jobs in August. Rates, credit, and commodities are where the action is. Be ready to walk an interviewer through this month's chain: oil → inflation → Fed → yields → stock valuations.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Coming Up in October</div><div class="sec-head-line"></div></div>
+    <div class="timeline" style="margin-bottom:8px;">
+      <div class="tl-row"><span class="tl-date">Oct 2</span><div><div class="tl-title">September jobs report</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 14</span><div><div class="tl-title">September CPI inflation report</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 28</span><div><div class="tl-title">Fed rate decision</div><div class="tl-body">Markets see roughly a 75% chance of another hike.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 29</span><div><div class="tl-title">ECB rate decision</div></div></div>
+    </div>
+
+    <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/09/28/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.bloomberg.com/news/articles/2026-09-27/stock-market-today-dow-s-p-live-updates" target="_blank" rel="noopener">Bloomberg</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-sept-29-135304543.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm" target="_blank" rel="noopener">Federal Reserve</a><a class="source-tag" href="https://tradingeconomics.com/united-states/government-bond-yield/news/586168" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://www.cnbc.com/2026/09/24/oil-iran-crude-kepler-trump-us-un-.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136" target="_blank" rel="noopener">Il Foglio</a><a class="source-tag" href="https://cointelegraph.com/markets/bitcoin-fall-84k-treasury-yield-hits-19-year-high" target="_blank" rel="noopener">Cointelegraph</a><a class="source-tag" href="https://www.khaleejtimes.com/business/gold-falls-to-two-week-low-as-rising-treasury-yields-dollar-weigh" target="_blank" rel="noopener">Khaleej Times</a><a class="source-tag" href="https://www.bls.gov/news.release/cpi.htm" target="_blank" rel="noopener">BLS</a></div>
+  </div>
+
+  <!-- ═══════════════════ OPPORTUNITIES ═══════════════════ -->
+  <div id="opportunities" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Opportunity Corner</div><div class="sec-head-line"></div></div>
+    <div class="opp-subhead">Internships &amp; Free Reading</div>
+    <div class="opp-grid">
+      <a class="opp-card" href="https://careers.bankofamerica.com/content/enterprise/careers/us/en/careers/students/job-search.html?ref=search&amp;start=0&amp;rows=10&amp;search=getAllJobs&amp;filters=division%3DGlobal+Corporate+%26+Investment+Banking" target="_blank" rel="noopener"><div class="opp-badge">Internship</div><div class="opp-title">Bank of America — Investment Banking Internships</div><div class="opp-sub">Live list of open student roles in Global Corporate &amp; Investment Banking</div><div class="opp-cta">See open roles ↗</div></a>
+      <a class="opp-card" href="https://search.jobs.barclays/early-careers" target="_blank" rel="noopener"><div class="opp-badge">Internship</div><div class="opp-title">Barclays — Summer Internship Program</div><div class="opp-sub">Internships in Investment Banking, Capital Markets, Markets &amp; more · NYC</div><div class="opp-cta">See open internships ↗</div></a>
+      <a class="opp-card" href="https://www.jpmorganchase.com/careers" target="_blank" rel="noopener"><div class="opp-badge">Internship</div><div class="opp-title">J.P. Morgan — Summer Analyst Programs</div><div class="opp-sub">Investment Banking, Markets, Corporate Analyst &amp; more · Search "summer analyst"</div><div class="opp-cta">See open roles ↗</div></a>
+      <a class="opp-card" href="https://www.goldmansachs.com/careers/students/programs-and-internships/americas/2027-summer-analyst-program" target="_blank" rel="noopener"><div class="opp-badge">Internship</div><div class="opp-title">Goldman Sachs — 2027 Summer Analyst Program</div><div class="opp-sub">Applications for select businesses are open now · 9–10 week internship · NYC &amp; other U.S. cities</div><div class="opp-cta">Apply on Goldman Sachs ↗</div></a>
+      <a class="opp-card" href="https://www.morganstanley.com/people-opportunities/students-graduates" target="_blank" rel="noopener"><div class="opp-badge">Internship</div><div class="opp-title">Morgan Stanley — Students &amp; Graduates</div><div class="opp-sub">Summer Analyst programs in Investment Banking, Markets, Wealth Management &amp; more</div><div class="opp-cta">See open programs ↗</div></a>
+      <a class="opp-card" href="https://www.gutenberg.org/ebooks/26841" target="_blank" rel="noopener"><div class="opp-badge">Free Classic · Gutenberg</div><div class="opp-title">Successful Stock Speculation (1922)</div><div class="opp-sub">A short, public-domain classic explaining market terms, when to buy and sell, and how the money market moves stock prices. Some details are dated, but it's a fun read on how investors thought 100 years ago.</div><div class="opp-cta">Download free ↗</div></a>
+    </div>
+    <p class="opp-note" style="margin-top:12px;">Heads up: these links go to each bank's official student careers page, which always shows the internships that are open right now. Big-bank investment banking internships for Summer 2028 are expected to open around December 2026 to January 2027, so check back often and get your résumé ready. <a href="https://ibinterviewquestions.com/blog/ib-summer-internship-applications" target="_blank" rel="noopener" style="color:var(--primary)">Recruiting timeline source</a>.</p>
+
+    
+    <p class="opp-note">Links open in a new tab. Deadlines and availability change often, so confirm details on each site before applying. Know an opportunity we missed? <a href="mailto:financenyc@nyit.edu?subject=Opportunity for The Finance Ledger" style="color:var(--primary)">Send it to us</a>.</p>
+  </div>
+
+  <!-- ═══════════════════ CLUB EVENTS ═══════════════════ -->
+  <div id="club-events" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Club Events — October 2026</div><div class="sec-head-line"></div></div>
+    <div class="update-box">
+      <div class="update-title">October 2026 Events</div>
+      <div class="update-body" style="margin:-2px 0 6px;font-size:12.5px;">Room details will be posted on Campus Groups and Instagram. More fall events coming in next month's issue.</div>
+      <div class="update-body">
+        <div class="event-row"><span class="event-date">Oct 15</span><div><div class="event-name">Beginner Python for Finance Workshop</div><div class="event-loc">Room TBD · In collaboration with SWE &amp; SHPE · Hosted by Lily</div></div></div>
+        <div class="event-row"><span class="event-date">Oct 22</span><div><div class="event-name">General Body Meeting (GBM) — Kickoff</div><div class="event-loc">16 West, Room 822 · Free Hours (12:45–2:00 PM) · Open to all SOM students · Hosted by Henil &amp; Aman</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SPOTLIGHT ═══════════════════ -->
+  <div id="spotlight" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Faculty Spotlight</div><div class="sec-head-line"></div></div>
+    <div class="spotlight">
+      <div class="avatar">MK</div>
+      <div>
+        <div class="spot-name">Dr. Mingyuan Kong</div>
+        <div class="spot-role">Assistant Professor of Finance &nbsp;·&nbsp; School of Management, New York Tech &nbsp;·&nbsp; Ph.D. in Finance, Baruch College (CUNY)</div>
+        <div class="spot-bio">Dr. Mingyuan Kong is an Assistant Professor of Finance at New York Institute of Technology’s School of Management. He earned his Ph.D. in Finance from Baruch College, City University of New York. His research interests include empirical asset pricing, behavioral finance, textual analysis in finance, big data, financial economics, and machine learning. At New York Tech, he teaches courses in investments, portfolio management, fixed income, and corporate finance.</div>
+        <div class="spot-section-label">Research Interests</div>
+        <div class="spot-tags">
+          <span class="spot-tag">Empirical Asset Pricing</span>
+          <span class="spot-tag">Behavioral Finance</span>
+          <span class="spot-tag">Textual Analysis</span>
+          <span class="spot-tag">Big Data</span>
+          <span class="spot-tag">Financial Economics</span>
+          <span class="spot-tag">Machine Learning</span>
+        </div>
+        <div class="spot-section-label">Courses He Teaches</div>
+        <div class="spot-tags">
+          <span class="spot-tag">Investments</span>
+          <span class="spot-tag">Portfolio Management</span>
+          <span class="spot-tag">Fixed Income</span>
+          <span class="spot-tag">Corporate Finance</span>
+        </div>
+      </div>
+    </div>
+    <div class="spot-advice">
+      <div class="spot-advice-label">His Advice to Finance Students</div>
+      <p>His advice to students interested in finance is to build a strong foundation in financial concepts while also gaining practical experience. He encourages students to follow financial markets, develop analytical and technical skills, and explore different areas of finance to better understand their career interests.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FINANCE TIP ═══════════════════ -->
+  <div id="finance-tip" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Finance Tip of the Month</div><div class="sec-head-line"></div></div>
+    <div class="tip-box">
+      <div class="tip-num">#1</div>
+      <div>
+        <div class="tip-label">September 2026 — Save First, Spend Second</div>
+        <div class="tip-text">"Every time you get paid, put a little money into savings first, even just $10 or $20. Then spend what's left. Keep that savings in a high-yield savings account, which is a regular savings account that pays you more interest. Right now, interest rates are higher, so your savings grow faster there. One more thing: if you use a credit card, try to pay the full bill every month. That way you never pay interest, which is extra money the bank charges you for borrowing."</div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Ask the Ledger</div><div class="sec-head-line"></div></div>
+    <div class="ask" id="ask-the-ledger">
+      <div class="ask-title">Got a finance question? Want to share your take?</div>
+      <p class="ask-intro">Send us anything about money, markets, careers, or this month's news. Confused about the Fed hike? Wondering how to start investing, or how to prep for a finance interview? Disagree with something we wrote? We'll answer the best questions and feature student opinions in next month's issue.</p>
+      <div class="ask-form">
+        <div class="ask-field full">
+          <label>What are you sending?</label>
+          <div class="ask-type" role="radiogroup">
+            <input type="radio" name="ask-kind" id="kind-q" value="Question" checked><label for="kind-q">A question</label>
+            <input type="radio" name="ask-kind" id="kind-o" value="Opinion"><label for="kind-o">An opinion</label>
+          </div>
+        </div>
+        <div class="ask-field">
+          <label for="ask-name">Name <span class="hint">(optional)</span></label>
+          <input type="text" id="ask-name" placeholder="First name is fine">
+        </div>
+        <div class="ask-field">
+          <label for="ask-topic">Topic</label>
+          <select id="ask-topic">
+            <option>Personal finance &amp; budgeting</option>
+            <option>Investing &amp; the stock market</option>
+            <option>Interest rates &amp; the economy</option>
+            <option>Careers, internships &amp; interviews</option>
+            <option>Crypto &amp; alternative assets</option>
+            <option>Something in this issue</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="ask-field full">
+          <label for="ask-msg" id="ask-msg-label">Your question</label>
+          <textarea id="ask-msg" placeholder="e.g. Should I pay off my credit card first or start investing?"></textarea>
+        </div>
+        <div class="ask-field full">
+          <label class="ask-check"><input type="checkbox" id="ask-anon"> Keep me anonymous if this gets published</label>
+        </div>
+        <div class="ask-actions">
+          <button class="ask-submit" type="button" onclick="sendAsk()">Send to the Ledger</button>
+          <span class="ask-status" id="ask-status" role="status"></span>
+        </div>
+      </div>
+      <p class="ask-foot">This opens your email app with your message ready to send to financenyc@nyit.edu. Answers are for learning, not personal financial advice.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div>
+      <a href="#top-stories" class="footer-brand home-link" onclick="goHome(event)" title="Go to Top Stories">The Finance Ledger</a>
+      <div class="footer-sub">Finance Club NYC &nbsp;·&nbsp; New York Institute of Technology &nbsp;·&nbsp; School of Management &nbsp;·&nbsp; Published monthly</div>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:financenyc@nyit.edu?subject=Story Submission for The Finance Ledger">Submit a Story</a>
+      <a href="mailto:financenyc@nyit.edu?subject=Contact - The Finance Ledger">Contact</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('on');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Open a full article. navId = the nav tab that stays highlighted (default: Top Stories)
+  function openArticle(e, id, navId) {
+    if (e) e.preventDefault();
+    navId = navId || 'top-stories';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('on', n.dataset.page === navId));
+    history.replaceState(null, '', '#' + id);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Jump to a main section by id (used by "Back to Markets")
+  function goTo(e, id) {
+    if (e) e.preventDefault();
+    showPage(id, document.querySelector('.nav-item[data-page="' + id + '"]'));
+  }
+
+  // Clicking "The Finance Ledger" (masthead or footer) returns to Top Stories
+  function goHome(e) {
+    if (e) e.preventDefault();
+    const firstTab = document.querySelector('.nav-item');
+    showPage('top-stories', firstTab);
+    firstTab.scrollIntoView({block: 'nearest', inline: 'start'});
+  }
+
+  // Ask the Ledger: switch label/placeholder between question and opinion
+  document.querySelectorAll('input[name="ask-kind"]').forEach(r => r.addEventListener('change', () => {
+    const q = document.getElementById('kind-q').checked;
+    document.getElementById('ask-msg-label').textContent = q ? 'Your question' : 'Your opinion';
+    document.getElementById('ask-msg').placeholder = q
+      ? 'e.g. Should I pay off my credit card first or start investing?'
+      : 'e.g. I think the Fed is hiking too fast because...';
+  }));
+
+  // Ask the Ledger: build the email and open the mail app
+  function sendAsk() {
+    const status = document.getElementById('ask-status');
+    const msg = document.getElementById('ask-msg').value.trim();
+    if (!msg) {
+      status.textContent = 'Write your message first, then send.';
+      status.className = 'ask-status error';
+      document.getElementById('ask-msg').focus();
+      return;
+    }
+    const kind = document.querySelector('input[name="ask-kind"]:checked').value;
+    const name = document.getElementById('ask-name').value.trim() || 'Not given';
+    const topic = document.getElementById('ask-topic').value;
+    const anon = document.getElementById('ask-anon').checked ? 'Yes' : 'No';
+    const subject = 'Ask the Ledger: ' + kind + ' (' + topic + ')';
+    const body = 'Type: ' + kind + '\nTopic: ' + topic + '\nName: ' + name + '\nAnonymous if published: ' + anon + '\n\n' + msg;
+    window.location.href = 'mailto:financenyc@nyit.edu?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    status.textContent = 'Your email app should open now. Hit send there to submit.';
+    status.className = 'ask-status';
+  }
+
+  // Open a page directly from a shared link like ...#article-rates
+  (function () {
+    const id = location.hash.slice(1);
+    const el = id && document.getElementById(id);
+    if (!el || !el.classList.contains('page')) return;
+    if (el.classList.contains('article-page')) {
+      openArticle(null, id, ['article-equities','article-rates','article-fx','article-commodities'].includes(id) ? 'markets' : 'top-stories');
+    } else {
+      goTo(null, id);
+    }
+  })();
+</script>
+</body>
+</html>
