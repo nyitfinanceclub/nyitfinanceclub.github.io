@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Finance Ledger — Vol. 1, Issue 2 · October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1f2e; --ink-soft: #3d4657; --ink-muted: #6b7684;
+    --primary: #0066cc; --primary-light: #e6f0ff;
+    --paper: #ffffff; --paper-dark: #f5f7fa;
+    --white: #ffffff; --rule: #e0e6f0; --rule-heavy: #1a1f2e;
+    --green: #10b981; --red: #ef4444; --blue: #0066cc;
+    --gold: #f59e0b; --gold-light: #fef3e2; --gold-text: #b45309; --chip-bg: #1a1f2e; --chip-fg: #f59e0b;
+    --radius: 6px; --max: 820px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.65; padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px); font-weight: 400; }
+
+  /* TOPBAR */
+  .topbar { background: #1a1f2e; color: #6b7684; font-size: 12px; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #e0e6f0; }
+  .topbar-links { display: flex; gap: 20px; }
+  .topbar-links a { color: #0066cc; font-size: 12px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .topbar-links a:hover { color: #0052a3; }
+
+  /* MASTHEAD */
+  .masthead { max-width: var(--max); margin: 0 auto; padding: 32px 24px 20px; text-align: center; border-bottom: 2px solid var(--rule); background: var(--paper); }
+  .masthead-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; }
+  .masthead-name { font-family: 'Libre Baskerville', serif; font-size: clamp(42px,8vw,56px); font-weight: 700; line-height: 1.1; letter-spacing: -0.5px; color: var(--ink); }
+  .home-link { display: inline-block; text-decoration: none; cursor: pointer; transition: opacity .15s; }
+  .home-link:hover { opacity: .8; }
+  .home-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+  .masthead-name em { font-style: italic; color: var(--primary); }
+  .masthead-rule { border: none; border-top: 1px solid var(--rule); margin: 14px 0 12px; }
+  .masthead-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-muted); flex-wrap: wrap; gap: 8px; }
+  .masthead-badge { background: var(--primary); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: var(--radius); }
+
+  /* SHAREBAR */
+  .sharebar-wrap { background: var(--paper-dark); border-bottom: 1px solid var(--rule); }
+  .sharebar { max-width: var(--max); margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .sharebar-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .share-btn { font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--white); color: var(--ink); cursor: pointer; transition: all 0.2s; }
+  .share-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .sub-form { display: flex; gap: 8px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+  .sub-status { flex-basis: 100%; font-size: 12px; color: var(--green); text-align: right; min-height: 0; }
+  .sub-status:empty { display: none; }
+  .sub-status.error { color: var(--red); }
+  .sub-form input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+  .sub-form button:disabled { opacity: .7; cursor: wait; }
+  .sub-form input { font-size: 13px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--white); color: var(--ink); width: 180px; }
+  .sub-form button { font-size: 12px; font-weight: 600; padding: 6px 16px; background: var(--primary); color: white; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; }
+  .sub-form button:hover { background: #0052a3; }
+
+  /* NAV */
+  .nav-wrap { border-bottom: 2px solid var(--rule); background: var(--paper); position: sticky; top: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+  .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 24px; display: flex; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-item { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 12px 16px; color: var(--ink-muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+  .nav-item:hover { color: var(--ink); }
+  .nav-item.on { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* MAIN */
+  .main { max-width: var(--max); margin: 0 auto; padding: 26px 20px 40px; }
+
+  /* SECTION */
+  .sec-head { display: flex; align-items: center; gap: 12px; margin: 32px 0 18px; }
+  .sec-head:first-child { margin-top: 0; }
+  .sec-head-text { font-family: 'Libre Baskerville', serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; color: var(--ink); }
+  .sec-head-line { flex: 1; height: 1px; background: var(--rule-heavy); }
+
+  /* TICKER */
+  /* TICKER ANIMATION */
+  @keyframes tickerScroll {
+    0% { 
+      transform: translateX(0); 
+    }
+    100% { 
+      transform: translateX(-50%); 
+    }
+  }
+  
+  @keyframes tickerBlink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+  
+  .ticker-strip { 
+    background: #111820; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    display: flex; 
+    gap: 24px; 
+    overflow: hidden; 
+    margin-bottom: 26px; 
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  
+  .ticker-strip::-webkit-scrollbar { 
+    display: none; 
+  }
+  
+  .ticker-items { 
+    display: flex; 
+    gap: 24px;
+    min-width: max-content;
+    animation: tickerScroll 75s linear infinite;
+    will-change: transform;
+  }
+  
+  .ticker-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    white-space: nowrap;
+    flex-shrink: 0;
+    animation: tickerBlink 3s ease-in-out infinite;
+  }
+  
+  .ticker-item:nth-child(2) { animation-delay: 0.3s; }
+  .ticker-item:nth-child(3) { animation-delay: 0.6s; }
+  .ticker-item:nth-child(4) { animation-delay: 0.9s; }
+  .ticker-item:nth-child(5) { animation-delay: 1.2s; }
+  .ticker-item:nth-child(6) { animation-delay: 1.5s; }
+  .ticker-item:nth-child(7) { animation-delay: 1.8s; }
+  .ticker-item:nth-child(8) { animation-delay: 2.1s; }
+  .ticker-item:nth-child(n+9) { animation-delay: 0s; }
+  .ticker-sym { font-size: 11px; font-weight: 700; color: var(--gold-text); }
+  .ticker-val { font-size: 12px; color: #c8d8e8; }
+  .ticker-chg { font-size: 11px; font-weight: 600; }
+  .up { color: #4caf80; } .dn { color: #e05555; } .fl { color: #8899aa; }
+
+  /* LEAD GRID */
+  .lead-grid { display: grid; grid-template-columns: 1fr 260px; gap: 24px; padding-bottom: 26px; border-bottom: 1px solid var(--rule); margin-bottom: 26px; }
+  .lead-kicker { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .lead-headline { font-family: 'Libre Baskerville', serif; font-size: 28px; font-weight: 700; line-height: 1.25; margin-bottom: 14px; color: var(--ink); }
+  .lead-deck { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 15px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 16px; }
+  .lead-body { font-size: 13.5px; color: var(--ink-soft); line-height: 1.8; }
+  .lead-body p + p { margin-top: 10px; }
+  .lead-byline { font-size: 11px; color: var(--ink-muted); margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .lead-byline strong { color: var(--gold-text); }
+
+  /* SIDEBAR */
+  .sidebar-head { font-family: 'Libre Baskerville', serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-bottom: 2px solid var(--rule-heavy); padding-bottom: 6px; margin-bottom: 12px; }
+  .brief { padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .brief:last-child { border-bottom: none; }
+  .brief-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 4px; }
+  .brief-title { font-family: 'Libre Baskerville', serif; font-size: 13.5px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+  .brief-body { font-size: 12px; color: var(--ink-soft); line-height: 1.55; }
+
+  /* MARKETS DEEP DIVE */
+  .markets-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .mcard { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px 20px; }
+  .mcard-title { font-family: 'Libre Baskerville', serif; font-size: 15px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--rule); padding-bottom: 10px; }
+  .mcard-title .mcard-icon { font-size: 16px; }
+  .mcard-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+  .mcard-stat:last-of-type { border-bottom: none; }
+  .mcard-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .mcard-value { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .mcard-chg { font-size: 11px; font-weight: 600; }
+  .mcard-desc { font-size: 12px; color: var(--ink-muted); margin-top: 12px; line-height: 1.6; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .mcard-btn { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600; padding: 5px 14px; border: 1px solid var(--rule-heavy); border-radius: 2px; color: var(--ink); cursor: pointer; background: transparent; }
+  .mcard-btn:hover { background: var(--gold-light); }
+
+  /* BREAKING NEWS BANNER */
+  .breaking { background: #c0392b; color: white; padding: 10px 20px; border-radius: var(--radius); margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; }
+  .breaking-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: white; color: #c0392b; padding: 2px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .breaking-text { font-size: 13px; font-weight: 500; line-height: 1.5; }
+
+  /* STORY CARDS */
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .story-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px 18px; }
+  .story-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .story-title { font-family: 'Libre Baskerville', serif; font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+  .story-body { font-size: 12.5px; color: var(--ink-soft); line-height: 1.65; }
+  .story-source { font-size: 10px; color: var(--ink-muted); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--rule); }
+
+  /* OPPORTUNITY CARDS */
+  .opp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 4px; }
+  .opp-card { border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; background: var(--white); }
+  .opp-badge { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .opp-title { font-family: 'Libre Baskerville', serif; font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 5px; }
+  .opp-sub { font-size: 11.5px; color: var(--ink-muted); line-height: 1.5; }
+
+  /* CLUB UPDATE */
+  .update-box { background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; }
+  .update-title { font-family: 'Libre Baskerville', serif; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .update-body { font-size: 13px; color: var(--ink-soft); line-height: 1.72; }
+  .event-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .event-row:last-child { border-bottom: none; }
+  .event-date { min-width: 64px; text-align: center; background: var(--chip-bg); color: var(--chip-fg); border: 1px solid var(--chip-bg); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+  .event-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .event-loc { font-size: 11.5px; color: var(--ink-muted); }
+
+  /* SPOTLIGHT */
+  .spotlight { display: flex; gap: 16px; align-items: flex-start; background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 18px 20px; }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', serif; font-size: 18px; font-weight: 700; color: #1a1f2e; flex-shrink: 0; }
+  .spot-name { font-family: 'Libre Baskerville', serif; font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+  .spot-role { font-size: 12px; color: var(--gold-text); font-weight: 500; margin-bottom: 8px; }
+  .spot-bio { font-size: 13px; color: var(--ink-soft); line-height: 1.72; }
+  .spot-section-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-muted); margin: 14px 0 6px; }
+  .spot-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .spot-tag { font-size: 11.5px; font-weight: 500; padding: 3px 10px; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink-soft); background: var(--paper-dark); }
+  .spot-advice { margin-top: 16px; background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; }
+  .spot-advice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 6px; }
+  .spot-advice p { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 14.5px; color: var(--ink); line-height: 1.75; }
+  @media (max-width: 600px) { .spotlight { flex-direction: column; gap: 12px; } }
+/* TIP */
+.tip-box {
+  background: #17202a;
+  border-radius: var(--radius);
+  padding: 22px 28px;
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.tip-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 60px;
+  font-weight: 700;
+  font-style: italic;
+  color: #d4af37;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tip-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #d4af37;
+  margin-bottom: 8px;
+}
+
+.tip-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: #e5e7eb;
+  line-height: 1.72;
+}
+  /* SOURCES */
+  .sources-bar { background: var(--paper-dark); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 18px; margin-top: 28px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sources-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-muted); }
+  .source-tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border: 1px solid var(--rule); border-radius: 2px; color: var(--ink-soft); background: var(--white); }
+
+  /* FOOTER */
+  .footer { background: #1a1f2e; margin-top: 40px; padding: 24px 24px; border-top: 1px solid var(--rule); }
+  .footer-inner { max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-brand { font-family: 'Libre Baskerville', serif; font-size: 18px; font-style: italic; color: var(--primary); }
+  .footer-sub { font-size: 12px; color: var(--ink-muted); margin-top: 4px; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+  .footer-links a:hover { opacity: 0.8; }
+
+
+  /* CLICKABLE BRIEFS */
+  .brief-link { display: block; color: var(--ink); text-decoration: none; cursor: pointer; }
+  .brief-link:hover { color: var(--gold-text); text-decoration: underline; text-underline-offset: 3px; }
+  .brief-more { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 600; color: var(--gold-text); text-decoration: none; }
+  .brief-more:hover { text-decoration: underline; }
+  .brief-link:focus-visible, .brief-more:focus-visible, .back-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+  /* FULL ARTICLE VIEW */
+  .article { max-width: 660px; margin: 0 auto; }
+  .back-btn { display: inline-block; font-size: 12px; font-weight: 600; padding: 6px 14px; border: 1px solid var(--rule-heavy); border-radius: 2px; background: var(--white); color: var(--ink); cursor: pointer; margin-bottom: 22px; }
+  .back-btn:hover { background: var(--gold-light); }
+  .article-kicker { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-text); margin-bottom: 8px; }
+  .article-headline { font-family: 'Libre Baskerville', serif; font-size: clamp(24px,5vw,32px); font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+  .article-deck { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 15.5px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 14px; }
+  .article-byline { font-size: 11px; color: var(--ink-muted); padding: 10px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
+  .article-byline strong { color: var(--gold-text); }
+  .article-body { font-size: 15px; color: var(--ink-soft); line-height: 1.85; }
+  .article-body p + p { margin-top: 14px; }
+  .article-body h3 { font-family: 'Libre Baskerville', serif; font-size: 17px; color: var(--ink); margin: 26px 0 10px; }
+  .article-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin: 20px 0; }
+  .article-stat { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; }
+  .article-stat-val { font-family: 'Libre Baskerville', serif; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .article-stat-label { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+  .article-callout { background: var(--gold-light); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; margin-top: 24px; }
+  .article-callout-title { font-family: 'Libre Baskerville', serif; font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .article-callout p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+  .article-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--rule); flex-wrap: wrap; }
+  .article-nav a { font-size: 12px; font-weight: 600; color: var(--gold-text); text-decoration: none; cursor: pointer; }
+  .article-nav a:hover { text-decoration: underline; }
+
+
+  /* OPPORTUNITY LINKS */
+  a.opp-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: border-color .2s, box-shadow .2s; }
+  a.opp-card:hover { border-color: var(--primary); box-shadow: 0 2px 10px rgba(0,102,204,.12); }
+  a.opp-card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .opp-cta { margin-top: auto; padding-top: 10px; font-size: 11.5px; font-weight: 600; color: var(--primary); }
+  .opp-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: auto; padding-top: 10px; }
+  .opp-cta-row a { font-size: 11.5px; font-weight: 600; color: var(--primary); text-decoration: none; }
+  .opp-cta-row a:hover, a.opp-card:hover .opp-cta { text-decoration: underline; }
+  .opp-note { font-size: 11.5px; color: var(--ink-muted); margin-top: 16px; }
+  div.opp-card { display: flex; flex-direction: column; }
+
+  /* MARKET BUTTONS */
+  .mcard { display: flex; flex-direction: column; }
+  .mcard-btn { align-self: flex-start; margin-top: auto; }
+  .mcard-desc { margin-bottom: 12px; }
+  .mcard-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .mcard-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  /* ASK THE LEDGER */
+  .ask { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 22px 26px; }
+  .ask-title { font-family: 'Libre Baskerville', serif; font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+  .ask-intro { font-size: 14px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 18px; }
+  .ask-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ask-field { display: flex; flex-direction: column; gap: 6px; }
+  .ask-field.full { grid-column: 1 / -1; }
+  .ask-field label { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .ask-field .hint { font-weight: 400; color: var(--ink-muted); }
+  .ask-form input, .ask-form select, .ask-form textarea { font: inherit; font-size: 14px; padding: 9px 12px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); width: 100%; }
+  .ask-form textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+  .ask-form input:focus, .ask-form select:focus, .ask-form textarea:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
+  .ask-type { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ask-type input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .ask-type label { font-size: 13px; font-weight: 600; padding: 7px 14px; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; color: var(--ink-soft); background: var(--paper); }
+  .ask-type input:checked + label { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .ask-type input:focus-visible + label { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .ask-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+  .ask-check input { width: auto; }
+  .ask-actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .ask-submit { font-size: 13px; font-weight: 600; padding: 10px 22px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; }
+  .ask-submit:hover { background: #0052a3; }
+  .ask-submit:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .ask-status { font-size: 13px; color: var(--ink-soft); }
+  .ask-status.error { color: var(--red); }
+  .ask-foot { font-size: 12px; color: var(--ink-muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); line-height: 1.6; }
+  @media (max-width: 600px) { .ask-form { grid-template-columns: 1fr; } .ask { padding: 18px; } }
+  @media (prefers-reduced-motion: reduce) { .ticker-items, .ticker-item { animation: none !important; } }
+
+
+  /* PHOTOS */
+  .article-fig, .lead-fig { margin: 0 0 20px; }
+  .fig-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius); background: var(--paper-dark); border: 1px solid var(--rule); }
+  .fig-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .article-fig figcaption, .lead-fig figcaption { font-size: 11.5px; color: var(--ink-muted); line-height: 1.5; margin-top: 8px; }
+  .fig-credit { display: block; font-size: 10.5px; margin-top: 2px; }
+  .fig-credit a { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+  .lead-fig { margin-bottom: 18px; }
+
+
+  /* TIMELINE + SOURCES LINKS */
+  .timeline { background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius); padding: 6px 18px; margin-bottom: 10px; }
+  .tl-row { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-date { background: var(--chip-bg); color: var(--chip-fg); border: 1px solid var(--chip-bg); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; min-width: 56px; text-align: center; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .tl-body { font-size: 12px; color: var(--ink-soft); line-height: 1.55; margin-top: 2px; }
+  a.source-tag { text-decoration: none; transition: border-color .2s, color .2s; }
+  a.source-tag:hover { border-color: var(--primary); color: var(--primary); }
+  .story-source a { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+  .story-source a:hover { color: var(--primary); }
+  .data-note { font-size: 11px; color: var(--ink-muted); margin-top: 10px; }
+  .students-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .breaking-label { white-space: nowrap; }
+  @media (max-width: 600px) { .students-grid { grid-template-columns: 1fr; } .breaking { flex-direction: column; gap: 8px; } }
+
+
+  /* BANK VIEWS */
+  .bank-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 28px; }
+  .bank-card { background: var(--white); border: 1px solid var(--rule); border-top: 3px solid var(--primary); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; }
+  .bank-card .story-source { margin-top: auto; }
+  .bank-card .story-body { margin-bottom: 10px; }
+  .bank-name { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
+  .bank-take { font-family: 'Libre Baskerville', serif; font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; color: var(--ink); }
+  .global-card { margin-bottom: 8px; border-left: 3px solid var(--gold); }
+  @media (max-width: 760px) { .bank-grid { grid-template-columns: 1fr; } }
+
+
+  /* HEADLINE LINKS */
+  a.story-link { display: block; color: var(--ink); text-decoration: none; cursor: pointer; }
+  a.story-link:hover { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+  a.story-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }
+  .story-card .brief-more, .bank-card .brief-more { margin: 8px 0 2px; }
+
+  .mcard-link { cursor: pointer; }
+  .mcard-link:hover { color: var(--primary); }
+  .mcard-link:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .opp-subhead { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 12px; }
+  .follow-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; padding: 7px 16px; background: var(--primary); color: #fff; border-radius: var(--radius); text-decoration: none; transition: background .2s; }
+  .follow-btn:hover { background: #0052a3; }
+  .follow-long { display: none; } /* icons + names keep all three buttons on one row */
+  .follow-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  /* PAGE SECTIONS */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .lead-grid, .markets-grid, .story-grid { grid-template-columns: 1fr; }
+    .sidebar { border-top: 1px solid var(--rule); padding-top: 18px; }
+    .opp-grid { grid-template-columns: 1fr; }
+    .tip-box { flex-direction: column; gap: 6px; }
+    .sub-form { margin-left: 0; width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .follow-btn { justify-content: center; padding: 9px 10px; font-size: 12.5px; }
+    .follow-long { display: none; }
+    .sharebar { padding: 12px 16px; gap: 8px; }
+    .share-btn { flex: 1; text-align: center; padding: 7px 8px; }
+    .nav-inner { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 8px; overflow: visible; }
+    .nav-item { text-align: center; padding: 11px 4px; font-size: 11px; letter-spacing: 0.6px; }
+    .sub-form input { flex: 1; width: auto; min-width: 0; }
+    .sub-status { text-align: left; }
+    .masthead-meta { justify-content: center; flex-direction: column; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #e5e7eb; --ink-soft: #cbd5e1; --ink-muted: #9ca3af;
+      --primary: #60a5fa;
+      --paper: #111827; --paper-dark: #1f2937; 
+      --white: #1f2937; --rule: #374151;
+      --rule-heavy: #6b7280;
+      --gold: #fbbf24; --gold-light: #2a2415; --gold-text: #fbbf24;
+      --chip-bg: #0f172a; --chip-fg: #fbbf24;
+    }
+    :root:not([data-theme="light"]) .event-date, :root:not([data-theme="light"]) .tl-date { border-color: #374151; }
+
+    .topbar {
+      background: #0f172a;
+      border-bottom-color: #374151;
+    }
+
+    .topbar-links a {
+      color: #60a5fa;
+    }
+
+    .masthead {
+      border-bottom-color: #374151;
+    }
+
+    .masthead-name em {
+      color: #60a5fa;
+    }
+
+    body {
+      background: #111827;
+      color: #e5e7eb;
+    }
+
+    .nav-wrap {
+      border-bottom-color: #374151;
+    }
+
+    .nav-item.on {
+      color: #60a5fa;
+      border-bottom-color: #60a5fa;
+    }
+
+    .footer {
+      background: #0f172a;
+      border-top-color: #374151;
+    }
+
+    .footer-brand,
+    .footer-links a {
+      color: #60a5fa;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>New York Institute of Technology &nbsp;·&nbsp; School of Management &nbsp;·&nbsp; Thursday, 29th October 2026</span>
+  <div class="topbar-links">
+    <a href="https://campusgroups.com/clubs/finance-club-nyc" target="_blank">Campus Groups</a>
+    <a href="https://www.instagram.com/nyitfinanceclub/" target="_blank">Instagram</a>
+    <a href="https://www.linkedin.com/in/nyit-finance-club-nyc-638096440/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://discord.gg/p4aPgcM6g" target="_blank" rel="noopener">Discord</a>
+  </div>
+</div>
+
+<div class="masthead">
+  <div class="masthead-eyebrow">Finance Club NYC — Official Monthly Publication</div>
+  <a href="#top-stories" class="masthead-name home-link" onclick="goHome(event)" title="Go to Top Stories">The Finance <em>Ledger</em></a>
+  <hr class="masthead-rule">
+  <div class="masthead-meta">
+    <span>Vol. 1 &nbsp;·&nbsp; Issue 2 &nbsp;·&nbsp; October 2026</span>
+    <span class="masthead-badge">Digital Edition</span>
+    <span>Free &nbsp;·&nbsp; Published Monthly</span>
+  </div>
+</div>
+
+<div class="sharebar-wrap">
+  <div class="sharebar">
+    <span class="sharebar-label">Share:</span>
+    <button class="share-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied ✓';setTimeout(()=>{this.textContent='Copy link'},2000)})">Copy link</button>
+    <button class="share-btn" onclick="window.location.href='mailto:?subject=The Finance Ledger - Finance Club NYC&body=Check out the latest issue of The Finance Ledger (Finance Club NYC monthly newsletter):%0A%0A' + window.location.href">Email</button>
+    <button class="share-btn" onclick="window.open('https://wa.me/?text=' + encodeURIComponent('The Finance Ledger - Finance Club NYC monthly newsletter: ' + window.location.href), '_blank')">WhatsApp</button>
+    <div class="sub-form">
+      <a class="follow-btn" href="https://www.instagram.com/nyitfinanceclub/" target="_blank" rel="noopener" aria-label="Follow NYIT Finance Club on Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        <span><span class="follow-long">Follow us on </span>Instagram</span>
+      </a>
+      <a class="follow-btn" href="https://www.linkedin.com/in/nyit-finance-club-nyc-638096440/" target="_blank" rel="noopener" aria-label="Follow NYIT Finance Club NYC on LinkedIn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+        <span><span class="follow-long">Follow us on </span>LinkedIn</span>
+      </a>
+      <a class="follow-btn" href="https://discord.gg/p4aPgcM6g" target="_blank" rel="noopener" aria-label="Join NYIT Finance Club on Discord">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.39 2.8a13.7 13.7 0 0 0-.63 1.29 18.4 18.4 0 0 0-5.52 0 12.6 12.6 0 0 0-.64-1.29A19.7 19.7 0 0 0 3.67 4.37C.54 9.05-.31 13.6.11 18.1a19.9 19.9 0 0 0 6.04 3.06c.49-.67.92-1.38 1.3-2.12a12.9 12.9 0 0 1-2.04-.98c.17-.13.34-.26.5-.39a14.2 14.2 0 0 0 12.18 0c.16.13.33.27.5.39-.65.39-1.33.71-2.05.98.38.74.81 1.45 1.3 2.12a19.8 19.8 0 0 0 6.05-3.06c.5-5.21-.85-9.72-3.57-13.73zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42zm7.97 0c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42z"/></svg>
+        <span><span class="follow-long">Join us on </span>Discord</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <div class="nav-item on" data-page="top-stories" onclick="showPage('top-stories',this)">Top Stories</div>
+    <div class="nav-item" data-page="markets" onclick="showPage('markets',this)">Markets</div>
+    <div class="nav-item" data-page="opportunities" onclick="showPage('opportunities',this)">Opportunities</div>
+    <div class="nav-item" data-page="club-events" onclick="showPage('club-events',this)">Club Events</div>
+    <div class="nav-item" data-page="spotlight" onclick="showPage('spotlight',this)">Spotlight</div>
+    <div class="nav-item" data-page="finance-tip" onclick="showPage('finance-tip',this)">Finance Tip</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ═══════════════════ TOP STORIES ═══════════════════ -->
+
+  <div id="top-stories" class="page active">
+
+    <div class="ticker-strip" aria-label="October 2026 market scorecard">
+      <div class="ticker-items">
+      <div class="ticker-item"><span class="ticker-sym">S&amp;P 500</span><span class="ticker-val">7,744</span><span class="ticker-chg up">▲ +0.3% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">NASDAQ</span><span class="ticker-val">26,550</span><span class="ticker-chg up">▲ +0.3% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">DOW</span><span class="ticker-val">52,475</span><span class="ticker-chg up">▲ +0.2% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">10-YR</span><span class="ticker-val">~5.0%</span><span class="ticker-chg fl">— near 2007 highs</span></div><div class="ticker-item"><span class="ticker-sym">FED RATE</span><span class="ticker-val">3.75–4.00%</span><span class="ticker-chg fl">— Held Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">BRENT</span><span class="ticker-val">~$114.50</span><span class="ticker-chg dn">▲ ~+17% in a month</span></div><div class="ticker-item"><span class="ticker-sym">GOLD</span><span class="ticker-val">~$4,020</span><span class="ticker-chg dn">▼ ~−3.6% in a month</span></div><div class="ticker-item"><span class="ticker-sym">BTC</span><span class="ticker-val">~$80,000</span><span class="ticker-chg dn">▼ off mid-Oct highs</span></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="ticker-sym">S&amp;P 500</span><span class="ticker-val">7,744</span><span class="ticker-chg up">▲ +0.3% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">NASDAQ</span><span class="ticker-val">26,550</span><span class="ticker-chg up">▲ +0.3% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">DOW</span><span class="ticker-val">52,475</span><span class="ticker-chg up">▲ +0.2% Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">10-YR</span><span class="ticker-val">~5.0%</span><span class="ticker-chg fl">— near 2007 highs</span></div><div class="ticker-item"><span class="ticker-sym">FED RATE</span><span class="ticker-val">3.75–4.00%</span><span class="ticker-chg fl">— Held Oct 28</span></div><div class="ticker-item"><span class="ticker-sym">BRENT</span><span class="ticker-val">~$114.50</span><span class="ticker-chg dn">▲ ~+17% in a month</span></div><div class="ticker-item"><span class="ticker-sym">GOLD</span><span class="ticker-val">~$4,020</span><span class="ticker-chg dn">▼ ~−3.6% in a month</span></div><div class="ticker-item"><span class="ticker-sym">BTC</span><span class="ticker-val">~$80,000</span><span class="ticker-chg dn">▼ off mid-Oct highs</span></div>
+      </div>
+    </div>
+
+    <div class="breaking">
+      <span class="breaking-label">Month in Review</span>
+      <span class="breaking-text">October 2026: the Fed paused after September's hike but two officials wanted another, inflation climbed to 3.7%, oil swung from below $100 back to about $115, and Alphabet had the worst day in its history.</span>
+    </div>
+
+    <div class="lead-grid">
+      <div class="lead-story">
+        <figure class="lead-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg?width=1280" alt="The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg" target="_blank" rel="noopener">AgnosticPreachersKid</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+        <div class="lead-kicker">Cover Story · October 2026</div>
+        <h1 class="lead-headline">The Fed Hits Pause, but the Inflation Fight Isn't Over</h1>
+        <p class="lead-deck">A weak jobs report talked the Fed out of a second hike in October. A hot inflation report and $115 oil mean December is still very much in play.</p>
+        <div class="lead-body">
+          <p>Last month the big question was whether the Fed would hike again in October. Early in the month, the answer started to look like no. The September jobs report, released October 2, showed employers added only 29,000 jobs, far below forecasts, and unemployment ticked up to 4.2%. Markets quickly cut the odds of an October hike to around 14%, from roughly 70% earlier that week.</p>
+          <p>Then inflation pushed back. The September CPI report on October 14 showed prices up 3.7% from a year earlier, the fastest pace in months, with gasoline alone up 9.1% in a single month. Oil, which briefly slipped below $100 at the start of October, climbed back to about $115 as attacks on Gulf energy sites and tanker traffic picked up.</p>
+          <p>On October 28, the Fed split the difference. It held rates at 3.75–4.00% in a 10–2 vote, with Governor Lisa Cook and Cleveland Fed President Beth Hammack dissenting in favor of another quarter-point hike. The statement upgraded the economy to "expanding at a strong pace" and said inflation remains elevated. Futures now put the odds of a December hike above 80%.</p>
+          <p>For students, the lesson is that the Fed is now balancing two signals pointing in opposite directions: a cooling job market and inflation that refuses to settle. Being able to explain why the Fed waited, and what would make it move in December, is exactly the kind of thinking interviewers want to hear.</p>
+        </div>
+        <div class="lead-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+        <div class="story-source" style="border-top:none;padding-top:4px;margin-top:4px;">Sources: <a href="https://finance.yahoo.com/economy/articles/september-2026-jobs-report-payrolls-123334753.html" target="_blank" rel="noopener">Yahoo Finance</a> · <a href="https://www.forexfactory.com/news/1429690-the-us-employment-situation-september-2026" target="_blank" rel="noopener">Forex Factory</a> · <a href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://tradingeconomics.com/commodity/brent-crude-oil" target="_blank" rel="noopener">Trading Economics</a> · <a href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Fox Business</a></div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-head">October's Biggest Stories</div>
+        <div class="brief">
+          <div class="brief-badge">Fed · Oct 28</div>
+          <a href="#article-fed" class="brief-title brief-link" onclick="openArticle(event,'article-fed')">Fed holds at 3.75–4.00%, two officials vote to hike</a>
+          <div class="brief-body">A 10–2 split. Chair Warsh also announced the Fed will hold one fewer rate-setting meeting starting in 2027. December hike odds sit above 80%.</div>
+          <a href="#article-fed" class="brief-more" onclick="openArticle(event,'article-fed')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">Oil · Middle East</div>
+          <a href="#article-oil" class="brief-title brief-link" onclick="openArticle(event,'article-oil')">Brent swings from under $100 back to about $115</a>
+          <div class="brief-body">Attacks on Saudi energy sites and tanker traffic near Hormuz sent oil up about 17% in a month, before peace-talk hopes cooled it slightly.</div>
+          <a href="#article-oil" class="brief-more" onclick="openArticle(event,'article-oil')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">Big Tech · Oct 29</div>
+          <a href="#article-bigtech" class="brief-title brief-link" onclick="openArticle(event,'article-bigtech')">Alphabet has its worst day ever; Microsoft beats</a>
+          <div class="brief-body">Alphabet fell about 13% after missing forecasts and posting negative free cash flow, while Microsoft's Azure grew 48%.</div>
+          <a href="#article-bigtech" class="brief-more" onclick="openArticle(event,'article-bigtech')">Read full story</a>
+        </div>
+        <div class="brief">
+          <div class="brief-badge">IPO · Oct 26</div>
+          <a href="#article-anthropic" class="brief-title brief-link" onclick="openArticle(event,'article-anthropic')">Anthropic files to go public on the Nasdaq</a>
+          <div class="brief-body">The Claude maker's S-1 shows $16.3 billion in first-half revenue. Its IPO could be one of the largest ever.</div>
+          <a href="#article-anthropic" class="brief-more" onclick="openArticle(event,'article-anthropic')">Read full story</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">October at a Glance</div><div class="sec-head-line"></div></div>
+    <div class="timeline">
+      <div class="tl-row"><span class="tl-date">Oct 2</span><div><a class="tl-title story-link" href="#article-jobs" onclick="openArticle(event,'article-jobs')">September jobs report badly misses</a><div class="tl-body">+29,000 jobs vs. about 90,000 expected; unemployment up to 4.2%. October hike odds collapse.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 6</span><div><a class="tl-title story-link" href="#article-markets" onclick="openArticle(event,'article-markets')">Nasdaq closes at a record 27,599.89</a><div class="tl-body">AI and chip stocks carried tech to an all-time high.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 13</span><div><a class="tl-title story-link" href="#article-banks" onclick="openArticle(event,'article-banks')">Big banks report Q3 earnings</a><div class="tl-body">Goldman Sachs crushes estimates; JPMorgan posts a rare miss.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 14</span><div><a class="tl-title story-link" href="#article-inflation" onclick="openArticle(event,'article-inflation')">CPI jumps to 3.7%</a><div class="tl-body">Gasoline up 9.1% in one month; core inflation also runs hotter than expected.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 22–23</span><div><a class="tl-title story-link" href="#article-markets" onclick="openArticle(event,'article-markets')">Stocks pull back</a><div class="tl-body">The S&amp;P 500 fell about 1.2% on October 22 and slipped again the next day.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 26</span><div><a class="tl-title story-link" href="#article-anthropic" onclick="openArticle(event,'article-anthropic')">Anthropic files its IPO paperwork</a><div class="tl-body">Plans to list on the Nasdaq under the ticker ANT.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 27</span><div><a class="tl-title story-link" href="#article-consumers" onclick="openArticle(event,'article-consumers')">Consumer confidence rebounds</a><div class="tl-body">Index jumps to 91.7, the highest since June.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 28</span><div><a class="tl-title story-link" href="#article-fed" onclick="openArticle(event,'article-fed')">Fed holds rates, 10–2</a><div class="tl-body">Two dissenters wanted a hike; S&amp;P 500 posts its third straight gain.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Oct 29</span><div><a class="tl-title story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">ECB holds; Lagarde says she'll leave early</a><div class="tl-body">The ECB kept its deposit rate at 2.50%, the same day Alphabet sank about 13%.</div></div></div>
+    </div>
+    <div class="story-source" style="border-top:none;">Sources: <a href="https://www.forexfactory.com/news/1429690-the-us-employment-situation-september-2026" target="_blank" rel="noopener">Forex Factory</a> · <a href="https://en.wikipedia.org/wiki/Closing_milestones_of_the_Nasdaq_Composite" target="_blank" rel="noopener">Wikipedia (Nasdaq milestones)</a> · <a href="https://www.cnbc.com/2026/10/13/bank-earnings-live-updates.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://fred.stlouisfed.org/series/sp500" target="_blank" rel="noopener">FRED</a> · <a href="https://tech-insider.org/ie/?p=2161" target="_blank" rel="noopener">Tech Insider</a> · <a href="https://pro.thestreet.com/market-commentary/consumer-confidence-rebounds-to-highest-since-june" target="_blank" rel="noopener">TheStreet</a> · <a href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+
+    <div class="sec-head"><div class="sec-head-text">More Stories This Month</div><div class="sec-head-line"></div></div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="story-badge">Investment Banking</div>
+        <a class="story-title story-link" href="#article-banks" onclick="openArticle(event,'article-banks')">Bank Earnings Beat September's Gloomy Warnings</a>
+        <div class="story-body">After last month's fee warning from Bank of America, the big banks mostly held up. Goldman's investment banking fees rose 21% to $3.22 billion, with record advisory fees. JPMorgan posted a rare earnings miss, and BofA's fees fell 11%. Banks said deal activity paused in late September but called their pipelines robust.</div>
+        <a href="#article-banks" class="brief-more" onclick="openArticle(event,'article-banks')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.cnbc.com/2026/10/13/bank-earnings-live-updates.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://prospectrockpartners.com/q3-2026-bank-earnings-ib-pay-headcount-pipeline/" target="_blank" rel="noopener">Prospect Rock Partners</a> · <a href="https://qz.com/jpmorgan-goldman-sachs-bank-earnings-third-quarter-101326" target="_blank" rel="noopener">Quartz</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Inflation</div>
+        <a class="story-title story-link" href="#article-inflation" onclick="openArticle(event,'article-inflation')">Inflation Climbs to 3.7% as Gas Prices Spike</a>
+        <div class="story-body">Consumer prices rose 0.6% in September, and gasoline jumped 9.1% in a single month, accounting for more than half of the increase. Core inflation, which excludes food and energy, also came in hotter than expected at 2.6% from a year earlier.</div>
+        <a href="#article-inflation" class="brief-more" onclick="openArticle(event,'article-inflation')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://www.cnbc.com/2026/10/14/cpi-inflation-report-september-2026.html" target="_blank" rel="noopener">CNBC</a> · <a href="https://economics.td.com/us-cpi" target="_blank" rel="noopener">TD Economics</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Jobs</div>
+        <a class="story-title story-link" href="#article-jobs" onclick="openArticle(event,'article-jobs')">Hiring Stalls: Just 29,000 Jobs in September</a>
+        <div class="story-body">Economists expected roughly 90,000 new jobs. July and August were also revised down by a combined 60,000, and wages rose only 0.1% for the month. The weak report is a big reason the Fed decided to wait in October.</div>
+        <a href="#article-jobs" class="brief-more" onclick="openArticle(event,'article-jobs')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://finance.yahoo.com/economy/articles/september-2026-jobs-report-payrolls-123334753.html" target="_blank" rel="noopener">Yahoo Finance</a> · <a href="https://www.ftportfolios.com/Commentary/EconomicResearch/2026/10/2/nonfarm-payrolls-increased-29,000-in-september" target="_blank" rel="noopener">First Trust</a> · <a href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">BLS</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Markets</div>
+        <a class="story-title story-link" href="#article-markets" onclick="openArticle(event,'article-markets')">Stocks: A Record, a Wobble, and a Recovery</a>
+        <div class="story-body">The Nasdaq hit a record on October 6, then stocks pulled back in late October before bouncing for three straight days into the Fed decision. The S&amp;P 500 closed October 28 at 7,743.98, about 1% above where it ended September's final week.</div>
+        <a href="#article-markets" class="brief-more" onclick="openArticle(event,'article-markets')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://en.wikipedia.org/wiki/Closing_milestones_of_the_Nasdaq_Composite" target="_blank" rel="noopener">Wikipedia (Nasdaq milestones)</a> · <a href="https://fred.stlouisfed.org/series/sp500" target="_blank" rel="noopener">FRED</a> · <a href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Consumers</div>
+        <a class="story-title story-link" href="#article-consumers" onclick="openArticle(event,'article-consumers')">Shoppers Feel Better Despite Higher Prices</a>
+        <div class="story-body">The Conference Board's consumer confidence index jumped 7.5 points in October to 91.7, its highest since June and well above forecasts. It's a sharp turnaround from September's 12-year low, though people still plan to spend less on services and big-ticket items.</div>
+        <a href="#article-consumers" class="brief-more" onclick="openArticle(event,'article-consumers')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://pro.thestreet.com/market-commentary/consumer-confidence-rebounds-to-highest-since-june" target="_blank" rel="noopener">TheStreet</a> · <a href="https://finance.yahoo.com/markets/stocks/articles/stock-market-news-oct-28-081900420.html" target="_blank" rel="noopener">Yahoo Finance (Zacks)</a></div>
+      </div>
+      <div class="story-card">
+        <div class="story-badge">Currencies</div>
+        <a class="story-title story-link" href="#article-fx" onclick="openArticle(event,'article-fx','markets')">The Yen Edges Toward Japan's 160 'Red Line'</a>
+        <div class="story-body">The dollar has traded between about 156 and 159 yen all month. Japan has already spent about ¥27 trillion defending the yen this year whenever the dollar topped 160. The Bank of Japan decides on rates Friday, with a hold expected.</div>
+        <a href="#article-fx" class="brief-more" onclick="openArticle(event,'article-fx','markets')">Read full story</a>
+        <div class="story-source">Sources: <a href="https://www.fxstreet.com/analysis/160-is-still-the-yens-red-line-202610291555" target="_blank" rel="noopener">FXStreet</a> · <a href="https://www.fxstreet.com/news/japanese-yen-struggles-for-direction-as-boj-interest-rate-decision-looms-202610291819" target="_blank" rel="noopener">FXStreet</a></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">What the Pros Are Saying</div><div class="sec-head-line"></div></div>
+    <div class="bank-grid">
+      <div class="bank-card">
+        <div class="bank-name">TD Economics</div>
+        <a class="bank-take story-link" href="#article-inflation" onclick="openArticle(event,'article-inflation')">Hot core inflation strengthens the case for another hike</a>
+        <div class="story-body">After the September CPI report, TD's economists said core prices disappointed hopes for cooling and that the data strengthen the case for an additional near-term rate hike. Their point: this wasn't only about gas prices.</div>
+        <div class="story-source">Sources: <a href="https://economics.td.com/us-cpi" target="_blank" rel="noopener">TD Economics</a></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-name">Capital.com</div>
+        <a class="bank-take story-link" href="#article-bigtech" onclick="openArticle(event,'article-bigtech')">Markets now want proof that AI pays</a>
+        <div class="story-body">Senior analyst Daniela Hathorn said Alphabet's and Microsoft's results told competing stories about AI profits. Her takeaway is that investors are no longer rewarding heavy AI spending on its own and want evidence it produces lasting profits.</div>
+        <div class="story-source">Sources: <a href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-oct-29-134623155.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-name">UBS Global Wealth Management</div>
+        <a class="bank-take story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">The ECB's pause is a 'hawkish pause'</a>
+        <div class="story-body">A UBS economist said the ECB's October hold should be read as a hawkish pause rather than the end of its tightening cycle. Money markets agreed, pricing about a 67% chance of a December ECB hike.</div>
+        <div class="story-source">Sources: <a href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a></div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Global Watch: Europe</div><div class="sec-head-line"></div></div>
+    <div class="story-card global-card">
+      <div class="story-badge">Central Banks</div>
+      <a class="story-title story-link" href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Lagarde to Step Down Early as French Borrowing Costs Surge</a>
+      <div class="story-body">On October 29, ECB President Christine Lagarde announced she will leave in February 2027, about nine months before her term ends. Hours later, the ECB held its deposit rate at 2.50% after two hikes this year, but said another hike in December is still on the table because high energy prices are pushing up inflation risks. The bigger worry in Europe right now is France: its government bond yields have climbed to their highest since 2002 amid political and budget turmoil. Lagarde said the ECB has tools to step in if bond markets become disorderly, but didn't signal any immediate move. For students, it's a live example of how a country's debt problems can become a central bank problem.</div>
+      <a href="#article-centralbanks" class="brief-more" onclick="openArticle(event,'article-centralbanks')">Read full story</a>
+      <div class="story-source">Sources: <a href="https://www.irishtimes.com/business/2026/10/29/ecb-holds-rates-steady-as-lagardes-departure-overshadows-decision/" target="_blank" rel="noopener">Irish Times</a> · <a href="https://kuwaittimes.com/article/52630/business/ecb-holds-rates-says-it-has-tools-to-calm-markets-as-french-debt-fears-rise/" target="_blank" rel="noopener">Kuwait Times (AFP)</a> · <a href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a></div>
+    </div>
+
+    <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Fox Business</a><a class="source-tag" href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.cnbc.com/2026/10/28/oil-price-today-wti-brent-hormuz.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.iposcoop.com/the-ipo-buzz-anthropic-ant-proposed-files-its-s-1/" target="_blank" rel="noopener">IPO Scoop</a><a class="source-tag" href="https://www.cnbc.com/2026/10/13/bank-earnings-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-october-2026" target="_blank" rel="noopener">Kiplinger</a></div>
+    <p class="data-note">Market figures are as of the October 28 close unless noted. Moves on October 29 were still in progress when this issue went out.</p>
+  </div>
+
+  <!-- ═══════════════════ FULL ARTICLES ═══════════════════ -->
+
+  <div id="article-fed" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Fed · October 28</div>
+      <h1 class="article-headline">Fed Holds at 3.75–4.00%, but Two Officials Wanted a Hike</h1>
+      <p class="article-deck">The Fed paused after September's increase. The two dissents, and a sunnier view of the economy, keep December in play.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg?width=1280" alt="The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The Marriner S. Eccles Building in Washington, D.C., headquarters of the Federal Reserve Board. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:Marriner_S._Eccles_Federal_Reserve_Board_Building.jpg" target="_blank" rel="noopener">AgnosticPreachersKid</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.75–4.00%</div><div class="article-stat-label">Fed funds range (unchanged)</div></div><div class="article-stat"><div class="article-stat-val">10–2</div><div class="article-stat-label">FOMC vote</div></div><div class="article-stat"><div class="article-stat-val">~83%</div><div class="article-stat-label">Odds of a December hike</div></div><div class="article-stat"><div class="article-stat-val">Dec 9</div><div class="article-stat-label">Next Fed decision</div></div></div>
+      <div class="article-body"><p>On October 28, the Federal Open Market Committee voted 10–2 to keep the federal funds rate at 3.75–4.00%, where it has been since September's quarter-point hike. The decision was widely expected: a Reuters survey found 94 of 100 economists predicted a hold.</p>
+ <h3>The two dissenters</h3>
+ <p>Governor Lisa Cook and Cleveland Fed President Beth Hammack both voted to raise rates by another quarter point. In September, the vote to hike had been unanimous, so a split this time tells you some officials think the Fed is moving too slowly.</p>
+ <h3>What changed in the statement</h3>
+ <p>The Fed described the economy as expanding at a "strong pace," an upgrade from "solid" in September. It noted resilient consumer spending, strong productivity, and robust business investment, but said inflation remains elevated. It also said it wants more information before acting again, which is why it waited.</p>
+ <h3>Warsh's other news</h3>
+ <p>Chair Kevin Warsh announced that starting in 2027, one of the Fed's eight yearly meetings will focus only on long-term strategy, with no rate vote. He also made clear he doesn't like giving markets hints about future moves, saying "I don't believe in forward guidance" outside of a crisis. Asked about next week's midterm elections, he said politics played no role in the decision.</p>
+ <h3>What's priced in</h3>
+ <p>After the decision, the CME FedWatch tool showed about an 83% chance of a hike at the December 8–9 meeting. That meeting will also include a new dot plot showing where officials expect rates to go.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Rates didn't move this month, so your credit card APR and savings yields should stay about where they are. But most of the market expects one more hike in December, so the window to lock in a high CD rate or pay down variable-rate debt is still open. In interviews, be ready to explain why a central bank might wait even when inflation is rising.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://investinglive.com/central-banks/the-full-statement-from-the-october-2026-fomc-rate-decision/" target="_blank" rel="noopener">FOMC statement (investingLive)</a><a class="source-tag" href="https://www.cnbc.com/2026/10/28/fed-meeting-today-live-updates.html" target="_blank" rel="noopener">CNBC Live</a><a class="source-tag" href="https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Fox Business</a><a class="source-tag" href="https://seekingalpha.com/article/4958991-feds-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Seeking Alpha</a><a class="source-tag" href="https://www.ebc.com/forex/fed-october-2026-rate-decision" target="_blank" rel="noopener">EBC (Reuters poll)</a><a class="source-tag" href="https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-october-2026" target="_blank" rel="noopener">Kiplinger</a></div>
+      <div class="article-nav">
+        <a href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Previous: ECB &amp; Bank of Japan</a>
+        <a href="#article-inflation" onclick="openArticle(event,'article-inflation')">Next: Inflation</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-inflation" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Inflation · September CPI</div>
+      <h1 class="article-headline">Inflation Climbs to 3.7% as Gas Prices Spike</h1>
+      <p class="article-deck">The September CPI report showed prices rising faster, and not just at the pump.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.7%</div><div class="article-stat-label">Inflation, year over year</div></div><div class="article-stat"><div class="article-stat-val">+0.6%</div><div class="article-stat-label">Monthly increase</div></div><div class="article-stat"><div class="article-stat-val">+9.1%</div><div class="article-stat-label">Gasoline in one month</div></div><div class="article-stat"><div class="article-stat-val">2.6%</div><div class="article-stat-label">Core inflation, y/y</div></div></div>
+      <div class="article-body"><p>The Bureau of Labor Statistics said on October 14 that consumer prices rose 0.6% in September, up from 0.4% in August. From a year earlier, inflation rose to 3.7%, up from 3.4% and a bit above the 3.6% economists expected.</p>
+ <h3>Gas did most of the work</h3>
+ <p>The gasoline index jumped 9.1% in a single month and accounted for more than half of the overall increase. That traces straight back to the conflict in the Middle East and the disruptions to oil shipments through the Strait of Hormuz.</p>
+ <h3>But it's not only gas</h3>
+ <p>Core CPI, which leaves out food and energy, rose 0.3% for the month and 2.6% from a year earlier, both slightly hotter than forecast. TD Economics noted that core prices failed to cool as hoped, and said the report strengthens the case for another near-term rate hike. Food prices, meanwhile, were flat for the month.</p>
+ <h3>Why the Fed still waited</h3>
+ <p>The Fed's favorite inflation gauge is the PCE index, not CPI. Its September core reading, released October 29, rose 0.3% for the month, matching expectations. Combined with the weak jobs report, that gave the Fed room to hold in October.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What's next</div><p>The October CPI report comes out November 10, a month before the Fed's December decision. If gas prices keep climbing with oil, another hike becomes even more likely.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.cnbc.com/2026/10/14/cpi-inflation-report-september-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://economics.td.com/us-cpi" target="_blank" rel="noopener">TD Economics</a><a class="source-tag" href="https://nexo.com/blog/markets-today-october-29" target="_blank" rel="noopener">Nexo Markets Today</a></div>
+      <div class="article-nav">
+        <a href="#article-fed" onclick="openArticle(event,'article-fed')">Previous: The Fed</a>
+        <a href="#article-jobs" onclick="openArticle(event,'article-jobs')">Next: Jobs report</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-jobs" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Jobs · September Report</div>
+      <h1 class="article-headline">Hiring Stalls: Just 29,000 Jobs in September</h1>
+      <p class="article-deck">A much weaker-than-expected jobs report flipped the odds of an October rate hike almost overnight.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">+29K</div><div class="article-stat-label">Jobs added in September</div></div><div class="article-stat"><div class="article-stat-val">~90K</div><div class="article-stat-label">What economists expected</div></div><div class="article-stat"><div class="article-stat-val">4.2%</div><div class="article-stat-label">Unemployment rate</div></div><div class="article-stat"><div class="article-stat-val">−60K</div><div class="article-stat-label">Revisions, July–August</div></div></div>
+      <div class="article-body"><p>The Bureau of Labor Statistics said on October 2 that employers added just 29,000 jobs in September. Economists had expected around 90,000, and the number was below the prior year's average of about 45,000 a month.</p>
+ <h3>Revisions made it worse</h3>
+ <p>July and August were revised down by a combined 60,000 jobs. August, which first came in at a strong 162,000 and helped push the Fed to hike in September, was cut to about 133,000.</p>
+ <h3>Wages and unemployment</h3>
+ <p>The unemployment rate ticked up to 4.2% from 4.1%. Average hourly earnings rose only 0.1% to $37.81, and are up 3.0% from a year earlier. That's slower than 3.7% inflation, which means the typical worker's paycheck is losing buying power.</p>
+ <h3>The market reaction</h3>
+ <p>The odds of an October rate hike fell to about 14%, from roughly 70% earlier that week. Oil also dipped below $100 that day. Not every economist read the report as bad news, though: First Trust pointed out that a different survey of households showed a big jump in employment.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What's next</div><p>The October jobs report is due Friday, November 6. Another weak number would make December harder for the Fed; a rebound would make a hike more likely.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://finance.yahoo.com/economy/articles/september-2026-jobs-report-payrolls-123334753.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.ftportfolios.com/Commentary/EconomicResearch/2026/10/2/nonfarm-payrolls-increased-29,000-in-september" target="_blank" rel="noopener">First Trust</a><a class="source-tag" href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.forexfactory.com/news/1429690-the-us-employment-situation-september-2026" target="_blank" rel="noopener">Forex Factory</a><a class="source-tag" href="https://www.whendomarketsopen.com/economic-calendar/jobs-report-2026-10-02/" target="_blank" rel="noopener">WhenDoMarketsOpen</a></div>
+      <div class="article-nav">
+        <a href="#article-inflation" onclick="openArticle(event,'article-inflation')">Previous: Inflation</a>
+        <a href="#article-oil" onclick="openArticle(event,'article-oil')">Next: Oil</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-oil" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Oil · Middle East</div>
+      <h1 class="article-headline">Brent Swings From Under $100 Back to About $115</h1>
+      <p class="article-deck">Oil started October below $100. By the end of the month, attacks on Gulf energy sites had pushed it up about 17%.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/West_Texas_Pumpjack.JPG?width=1280" alt="An oil pumpjack in West Texas." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>An oil pumpjack in West Texas. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:West_Texas_Pumpjack.JPG" target="_blank" rel="noopener">Eric Kounce</a> / Wikimedia Commons, Public domain</span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~$114.50</div><div class="article-stat-label">Brent, Oct 29</div></div><div class="article-stat"><div class="article-stat-val">~$101.75</div><div class="article-stat-label">WTI, Oct 29</div></div><div class="article-stat"><div class="article-stat-val">~+17%</div><div class="article-stat-label">Brent over the past month</div></div><div class="article-stat"><div class="article-stat-val">~60%</div><div class="article-stat-label">Hormuz traffic vs. normal</div></div></div>
+      <div class="article-body"><p>Last issue, oil was the month's biggest story as Brent jumped about 17% in September. October looked like it might bring relief: Brent briefly fell below $100 on October 2. It didn't last. By late October, Brent was trading around $114 to $117 a barrel, up roughly 17% over the past month.</p>
+ <h3>What pushed prices back up</h3>
+ <p>A wave of attacks on tankers near the Strait of Hormuz pushed Brent above $117 in the last week of October. Iran-allied Houthi militants also said they hit Saudi Arabia's Ras Tanura refinery with a missile. An ANZ Research note said traffic through Hormuz is running at about 60% of normal, and Gulf crude exports have fallen for four straight weeks.</p>
+ <h3>The risk premium</h3>
+ <p>One investment chief told CNBC that geopolitical uncertainty has added roughly $20 a barrel to oil prices. Global inventories have also fallen sharply after eight months of conflict, so there's less of a cushion if supply gets disrupted again. CNBC also reported that the U.S. may be preparing to renew strikes on Iran after the midterm elections.</p>
+ <h3>A slight cooldown at month end</h3>
+ <p>Prices eased on October 29 after reports that Vice President JD Vance sent a letter to Iranian officials to try to revive peace talks, and after Saudi diplomats held meetings in Tehran.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Gas prices follow crude oil within a few weeks, so expect to keep paying more at the pump. Watch the gap between Brent and WTI: it's unusually wide because Brent reacts more to Middle East supply problems. It's a great talking point if you're interested in commodities.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://tradingeconomics.com/commodity/brent-crude-oil" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://www.cnbc.com/2026/10/28/oil-price-today-wti-brent-hormuz.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/amp/2026/10/29/oil-prices-fall-as-peace-hopes-offset-fears-of-growing-middle-east-conflict.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/2026/10/26/oil-prices-today-wti-brent.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.archyde.com/oil-prices-rise-as-middle-east-supply-risks-persist-amid-ongoing-tensions/" target="_blank" rel="noopener">Archyde (ANZ note)</a><a class="source-tag" href="https://www.whendomarketsopen.com/economic-calendar/jobs-report-2026-10-02/" target="_blank" rel="noopener">WhenDoMarketsOpen</a></div>
+      <div class="article-nav">
+        <a href="#article-jobs" onclick="openArticle(event,'article-jobs')">Previous: Jobs report</a>
+        <a href="#article-bigtech" onclick="openArticle(event,'article-bigtech')">Next: Big Tech earnings</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-bigtech" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Big Tech · Earnings</div>
+      <h1 class="article-headline">Alphabet Has Its Worst Day Ever as Microsoft Beats</h1>
+      <p class="article-deck">Two of the biggest AI spenders reported on the same night, and investors rewarded only one of them.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~−13%</div><div class="article-stat-label">Alphabet stock, Oct 29</div></div><div class="article-stat"><div class="article-stat-val">$2.12</div><div class="article-stat-label">Alphabet EPS vs. $2.94 expected</div></div><div class="article-stat"><div class="article-stat-val">+48%</div><div class="article-stat-label">Microsoft Azure growth</div></div><div class="article-stat"><div class="article-stat-val">−$9.07B</div><div class="article-stat-label">Alphabet free cash flow</div></div></div>
+      <div class="article-body"><p>Alphabet and Microsoft both reported quarterly results after the close on October 28. The next morning, they went in opposite directions.</p>
+ <h3>Alphabet's miss</h3>
+ <p>Alphabet earned $2.12 a share, well below the $2.94 analysts expected, and its revenue came up short too. It also reported negative free cash flow of about $9.07 billion, meaning its spending on data centers and equipment was bigger than the cash its businesses brought in. The stock fell about 13% on October 29, its steepest drop since it went public in 2004, wiping out roughly $500 billion in market value.</p>
+ <h3>Microsoft's beat</h3>
+ <p>Microsoft beat expectations, with adjusted earnings of $4.89 a share versus $4.72 expected. Its Azure cloud business grew 48%. Microsoft is also spending heavily on AI, but its cash from operations still covered that spending with plenty to spare.</p>
+ <h3>Software stocks got hit too</h3>
+ <p>ServiceNow fell about 18% after missing earnings expectations, and Fortinet dropped about 26% on slowing product sales. Amazon reports after the close on October 29, and Apple reports on November 2.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>The market's question has shifted from "who's spending on AI?" to "whose AI spending is paying off?" Free cash flow is the number that answered it this week. If you're preparing for interviews, practice explaining the difference between earnings and free cash flow, and why investors care about both.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://www.tipranks.com/news/stock-market-today-oct-29-nasdaq-futures-fall-as-alphabet-earnings-spook-investors" target="_blank" rel="noopener">TipRanks</a><a class="source-tag" href="https://qsgcap.substack.com/p/qsg-daily-report-thursday-october-5f3" target="_blank" rel="noopener">QSG Daily Report</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-today-oct-29-134623155.html" target="_blank" rel="noopener">Yahoo Finance</a><a class="source-tag" href="https://finance.yahoo.com/quote/MSFT/" target="_blank" rel="noopener">Yahoo Finance (MSFT)</a><a class="source-tag" href="https://www.stocktitan.net/articles/stock-market-today-live-october-29-2026" target="_blank" rel="noopener">Stock Titan</a></div>
+      <div class="article-nav">
+        <a href="#article-oil" onclick="openArticle(event,'article-oil')">Previous: Oil</a>
+        <a href="#article-anthropic" onclick="openArticle(event,'article-anthropic')">Next: Anthropic IPO</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-anthropic" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">IPO · October 26</div>
+      <h1 class="article-headline">Anthropic Files to Go Public on the Nasdaq</h1>
+      <p class="article-deck">The AI company behind Claude made its IPO paperwork public, giving investors their first full look at its finances.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">ANT</div><div class="article-stat-label">Proposed Nasdaq ticker</div></div><div class="article-stat"><div class="article-stat-val">$16.3B</div><div class="article-stat-label">Revenue, first half of 2026</div></div><div class="article-stat"><div class="article-stat-val">~$75B</div><div class="article-stat-label">Possible IPO size (estimates)</div></div><div class="article-stat"><div class="article-stat-val">$141.1B</div><div class="article-stat-label">Capital raised through June 30</div></div></div>
+      <div class="article-body"><p>On Monday, October 26, Anthropic filed its S-1 registration statement with the SEC. It plans to list its Class A shares on the Nasdaq Global Select Market under the ticker ANT. The company had filed confidentially in June, so this was the first time its detailed financials became public.</p>
+ <h3>What the filing shows</h3>
+ <p>Anthropic reported $16.3 billion in revenue for the first half of 2026, but it is not profitable. Most of its large reported net loss comes from non-cash accounting adjustments tied to convertible notes, and its operating loss for the period was about $693 million. As of June 30, it had raised about $141.1 billion in total capital, and as of September 30 it had more than 11,900 customers paying it at least $100,000 a year.</p>
+ <h3>How big could it be?</h3>
+ <p>The filing doesn't set a price or share count yet. IPO watchers expect it could raise around $75 billion, comparable to SpaceX's record IPO, and earlier reports put the figure as high as $100 billion. Anthropic's last private funding round, in May 2026, valued it at about $965 billion.</p>
+ <h3>What happens next</h3>
+ <p>Next comes a roadshow, where the company and its bankers pitch the shares to big investors, followed by pricing and the first day of trading. No listing date has been set.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>A mega-IPO touches almost every part of Wall Street: underwriting fees for the banks running the deal, valuation work for analysts, and demand from fund managers. If you're interested in equity capital markets, follow how this deal gets priced. A good interview question to practice: how would you value a fast-growing company that isn't profitable yet?</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://tech-insider.org/ie/?p=2161" target="_blank" rel="noopener">Tech Insider</a><a class="source-tag" href="https://ground.news/article/9102ecab-a655-4b43-85b3-0b698ef3d930" target="_blank" rel="noopener">Ground News</a><a class="source-tag" href="https://www.iposcoop.com/the-ipo-buzz-anthropic-ant-proposed-files-its-s-1/" target="_blank" rel="noopener">IPO Scoop</a><a class="source-tag" href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a></div>
+      <div class="article-nav">
+        <a href="#article-bigtech" onclick="openArticle(event,'article-bigtech')">Previous: Big Tech earnings</a>
+        <a href="#article-banks" onclick="openArticle(event,'article-banks')">Next: Bank earnings</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-banks" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Investment Banking · Q3 Earnings</div>
+      <h1 class="article-headline">Bank Earnings Beat September's Gloomy Warnings</h1>
+      <p class="article-deck">After a fee warning sank bank stocks in September, the big banks' actual results were mostly solid.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">+21%</div><div class="article-stat-label">Goldman IB fees, to $3.22B</div></div><div class="article-stat"><div class="article-stat-val">$1.65B</div><div class="article-stat-label">Goldman advisory fees (record)</div></div><div class="article-stat"><div class="article-stat-val">$5.57</div><div class="article-stat-label">JPMorgan EPS (a rare miss)</div></div><div class="article-stat"><div class="article-stat-val">−11%</div><div class="article-stat-label">BofA IB fees</div></div></div>
+      <div class="article-body"><p>Last issue covered Bank of America's September 14 warning about weak third-quarter deal fees, which dragged bank stocks down. When the big banks reported on October 13 and 14, the picture was better than that warning suggested.</p>
+ <h3>Goldman Sachs: the standout</h3>
+ <p>Goldman earned $17.01 a share on $18.68 billion in revenue, its second-best quarter ever. Investment banking fees rose 21% from a year earlier to $3.22 billion, beating estimates by about $384 million, and advisory fees hit a quarterly record of $1.65 billion. Equities trading was especially strong.</p>
+ <h3>JPMorgan: a rare miss</h3>
+ <p>JPMorgan earned $5.57 a share, below expectations, partly because of a $658 million loss on investment securities. Its investment banking fees still rose 14% from a year earlier, though they fell 8% from the second quarter. CEO Jamie Dimon said client activity moderated somewhat during the quarter.</p>
+ <h3>Bank of America and the pipeline</h3>
+ <p>BofA's investment banking fees fell 11%, matching its earlier warning. Across the industry, banks described a pause in deal activity in late September but said their backlogs heading into the fourth quarter remain robust. Goldman's backlog did shrink, mostly because deals closed and turned into fees.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What this means for you</div><p>Deal-making slowed but didn't collapse, and trading desks are busy. If you're recruiting, that's encouraging news for both banking and markets roles. Also notice the gap between a headline and the data: September's warning sounded scary, but the full results told a more balanced story.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/13/bank-earnings-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.goldmansachs.com/pressroom/press-releases/current/pdfs/2026-q3-results.pdf" target="_blank" rel="noopener">Goldman Sachs Q3 release</a><a class="source-tag" href="https://qz.com/jpmorgan-goldman-sachs-bank-earnings-third-quarter-101326" target="_blank" rel="noopener">Quartz</a><a class="source-tag" href="https://prospectrockpartners.com/q3-2026-bank-earnings-ib-pay-headcount-pipeline/" target="_blank" rel="noopener">Prospect Rock Partners</a></div>
+      <div class="article-nav">
+        <a href="#article-anthropic" onclick="openArticle(event,'article-anthropic')">Previous: Anthropic IPO</a>
+        <a href="#article-markets" onclick="openArticle(event,'article-markets')">Next: Stocks in October</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-markets" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Markets · October</div>
+      <h1 class="article-headline">Stocks: A Record, a Wobble, and a Recovery</h1>
+      <p class="article-deck">The Nasdaq hit an all-time high early in the month. Then AI doubts and higher oil made the ride bumpier.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/NYC_NYSE.jpg?width=1280" alt="The New York Stock Exchange on Wall Street." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The New York Stock Exchange on Wall Street. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:NYC_NYSE.jpg" target="_blank" rel="noopener">Arnoldius</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">7,743.98</div><div class="article-stat-label">S&amp;P 500, Oct 28 close</div></div><div class="article-stat"><div class="article-stat-val">27,599.89</div><div class="article-stat-label">Nasdaq record close, Oct 6</div></div><div class="article-stat"><div class="article-stat-val">52,475</div><div class="article-stat-label">Dow, Oct 28 close</div></div><div class="article-stat"><div class="article-stat-val">16.91</div><div class="article-stat-label">VIX, Oct 28</div></div></div>
+      <div class="article-body"><p>October started strong for tech. On October 6, the Nasdaq Composite closed at a record 27,599.89, helped by the AI and chip rally.</p>
+ <h3>The late-month wobble</h3>
+ <p>Stocks slipped in the second half of the month. The S&amp;P 500 fell about 1.2% on October 22, to 7,663, and dipped again the next day to about 7,624, as oil climbed and investors grew nervous about AI spending.</p>
+ <h3>Three straight gains into the Fed</h3>
+ <p>Stocks then rallied for three days in a row. On October 28, the day of the Fed decision, the S&amp;P 500 closed at 7,743.98, the Nasdaq at 26,549.85, and the Dow at 52,475.10. That left the S&amp;P 500 about 1% above its September 28 close, and still below its 52-week high of about 7,845.</p>
+ <h3>Narrow leadership</h3>
+ <p>One warning sign: on October 28, the equal-weight version of the S&amp;P 500 actually slipped slightly while the regular index rose. That means a handful of giant companies did most of the lifting, which is exactly why Alphabet's drop the next day hit the indexes so hard.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>Index levels can hide what's happening underneath. When a few mega-cap stocks drive most of the gains, the market becomes more fragile to bad news from any one of them. Comparing the regular and equal-weight S&amp;P 500 is a simple way to check how broad a rally really is.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://en.wikipedia.org/wiki/Closing_milestones_of_the_Nasdaq_Composite" target="_blank" rel="noopener">Wikipedia (Nasdaq milestones)</a><a class="source-tag" href="https://fred.stlouisfed.org/series/sp500" target="_blank" rel="noopener">FRED</a><a class="source-tag" href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://cappnotes.substack.com/p/closing-look-wednesday-october-28" target="_blank" rel="noopener">Cappnotes</a><a class="source-tag" href="https://finance.yahoo.com/quote/%5EGSPC/" target="_blank" rel="noopener">Yahoo Finance (S&amp;P 500)</a></div>
+      <div class="article-nav">
+        <a href="#article-banks" onclick="openArticle(event,'article-banks')">Previous: Bank earnings</a>
+        <a href="#article-consumers" onclick="openArticle(event,'article-consumers')">Next: Consumers</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-consumers" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Consumers · October</div>
+      <h1 class="article-headline">Shoppers Feel Better Despite Higher Prices</h1>
+      <p class="article-deck">Consumer confidence bounced back from September's 12-year low, but people still plan to spend carefully.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">91.7</div><div class="article-stat-label">Confidence index, October</div></div><div class="article-stat"><div class="article-stat-val">+7.5</div><div class="article-stat-label">Points gained in October</div></div><div class="article-stat"><div class="article-stat-val">81.0</div><div class="article-stat-label">What economists expected</div></div><div class="article-stat"><div class="article-stat-val">120.4</div><div class="article-stat-label">Present Situation Index</div></div></div>
+      <div class="article-body"><p>The Conference Board's Consumer Confidence Index rose 7.5 points in October to 91.7, its highest reading since June and far above the 81.0 economists expected. It was the first increase in four months, and September was revised up to 84.2.</p>
+ <h3>What improved</h3>
+ <p>The Conference Board said the gain was driven mainly by better views of business conditions, both now and in the months ahead. The Present Situation Index, which measures how people feel about today's business and job conditions, rose to 120.4 from 111.8.</p>
+ <h3>The catch</h3>
+ <p>Even with better moods, consumers said they plan to spend less on services and on big-ticket items like appliances and cars. With gas prices up and wages growing more slowly than inflation, people are feeling better but not splurging.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>Consumer spending drives roughly two-thirds of the U.S. economy, so economists watch confidence closely. But surveys don't always match what people actually do. Comparing what consumers say with what they spend is a useful habit when reading economic data.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://pro.thestreet.com/market-commentary/consumer-confidence-rebounds-to-highest-since-june" target="_blank" rel="noopener">TheStreet</a><a class="source-tag" href="https://finance.yahoo.com/markets/stocks/articles/stock-market-news-oct-28-081900420.html" target="_blank" rel="noopener">Yahoo Finance (Zacks)</a></div>
+      <div class="article-nav">
+        <a href="#article-markets" onclick="openArticle(event,'article-markets')">Previous: Stocks in October</a>
+        <a href="#article-centralbanks" onclick="openArticle(event,'article-centralbanks')">Next: ECB &amp; Bank of Japan</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-centralbanks" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goHome(event)">← Back to Top Stories</button>
+      <div class="article-kicker">Global · Central Banks</div>
+      <h1 class="article-headline">ECB Holds as Lagarde Plans an Early Exit; Bank of Japan Up Next</h1>
+      <p class="article-deck">Like the Fed, the ECB paused in October but kept a December hike on the table.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">2.50%</div><div class="article-stat-label">ECB deposit rate (held)</div></div><div class="article-stat"><div class="article-stat-val">~67%</div><div class="article-stat-label">Odds of a December ECB hike</div></div><div class="article-stat"><div class="article-stat-val">1.25%</div><div class="article-stat-label">Bank of Japan rate</div></div><div class="article-stat"><div class="article-stat-val">~158</div><div class="article-stat-label">Yen per dollar</div></div></div>
+      <div class="article-body"><p>October was a pause month for the world's big central banks after September's wave of hikes.</p>
+ <h3>European Central Bank: October 29</h3>
+ <p>The ECB kept its deposit rate at 2.50%, as expected, after raising it twice this year. It warned that inflation risks are tilted to the upside because of the recent surge in oil and gas prices. Lagarde said the board debated a hike, and money markets priced about a 67% chance of a December move. A UBS economist called it a hawkish pause rather than the end of the hiking cycle.</p>
+ <h3>Lagarde's surprise</h3>
+ <p>Hours before the decision, Lagarde announced she will step down in February 2027, about nine months before her term ends. The ECB is also watching France closely: French government bond yields have climbed to their highest since 2002. Lagarde said the ECB has tools to respond if bond markets become disorderly, but suggested no intervention is imminent.</p>
+ <h3>Bank of Japan: October 30</h3>
+ <p>The Bank of Japan announces its decision on Friday, October 30, and is widely expected to hold at 1.25%. Traders see December as the more likely month for another hike, as a weak yen and higher energy costs add to inflation in Japan.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>Three big central banks are all saying the same thing: inflation from energy isn't going away, and more hikes may be needed. When several countries tighten at once, global borrowing costs rise together, which matters for everything from mortgages to corporate bonds.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.irishtimes.com/business/2026/10/29/ecb-holds-rates-steady-as-lagardes-departure-overshadows-decision/" target="_blank" rel="noopener">Irish Times</a><a class="source-tag" href="https://kuwaittimes.com/article/52630/business/ecb-holds-rates-says-it-has-tools-to-calm-markets-as-french-debt-fears-rise/" target="_blank" rel="noopener">Kuwait Times (AFP)</a><a class="source-tag" href="https://www.fxstreet.com/news/japanese-yen-struggles-for-direction-as-boj-interest-rate-decision-looms-202610291819" target="_blank" rel="noopener">FXStreet</a><a class="source-tag" href="https://www.fxstreet.com/analysis/160-is-still-the-yens-red-line-202610291555" target="_blank" rel="noopener">FXStreet</a></div>
+      <div class="article-nav">
+        <a href="#article-consumers" onclick="openArticle(event,'article-consumers')">Previous: Consumers</a>
+        <a href="#article-fed" onclick="openArticle(event,'article-fed')">Next: The Fed</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-equities" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Equities</div>
+      <h1 class="article-headline">Equities: AI Leadership Gets Tested</h1>
+      <p class="article-deck">Tech carried the market to new highs in early October. By month end, investors were asking which AI bets are paying off.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/NYC_NYSE.jpg?width=1280" alt="The New York Stock Exchange on Wall Street." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>The New York Stock Exchange on Wall Street. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:NYC_NYSE.jpg" target="_blank" rel="noopener">Arnoldius</a> / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a></span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">7,743.98</div><div class="article-stat-label">S&amp;P 500, Oct 28</div></div><div class="article-stat"><div class="article-stat-val">26,549.85</div><div class="article-stat-label">Nasdaq, Oct 28</div></div><div class="article-stat"><div class="article-stat-val">52,475.10</div><div class="article-stat-label">Dow, Oct 28</div></div><div class="article-stat"><div class="article-stat-val">~7,845</div><div class="article-stat-label">S&amp;P 52-week high</div></div></div>
+      <div class="article-body"><p>The S&amp;P 500 closed October 28 at 7,743.98 after three straight gains, the Nasdaq at 26,549.85, and the Dow at 52,475.10. The Nasdaq is still a few percent below its October 6 record of 27,599.89.</p>
+ <h3>Winners and losers</h3>
+ <p>Microsoft rose after strong cloud results, while Alphabet had its worst day ever. Software names like ServiceNow and Fortinet fell sharply. Outside tech, Eli Lilly lifted health care stocks to a record on October 29, and energy stocks led on October 28 as oil climbed.</p>
+ <h3>Why breadth matters</h3>
+ <p>On October 28, the equal-weight S&amp;P 500 ETF was slightly down even as the regular index rose. When a few huge companies drive the gains, one bad earnings report can move the whole index, as Alphabet showed the next day.</p>
+ <h3>Volatility</h3>
+ <p>The VIX, Wall Street's "fear gauge," fell to about 16.9 after the Fed decision, which is calm by historical standards.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What to watch</div><p>Amazon reports October 29 and Apple on November 2. Then come the midterm elections on November 3 and the October jobs report on November 6. Each one could test whether the market's leaders can hold up.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://cappnotes.substack.com/p/closing-look-wednesday-october-28" target="_blank" rel="noopener">Cappnotes</a><a class="source-tag" href="https://en.wikipedia.org/wiki/Closing_milestones_of_the_Nasdaq_Composite" target="_blank" rel="noopener">Wikipedia (Nasdaq milestones)</a><a class="source-tag" href="https://www.stocktitan.net/articles/stock-market-today-live-october-29-2026" target="_blank" rel="noopener">Stock Titan</a><a class="source-tag" href="https://www.fool.com/coverage/stock-market-today/2026/10/28/stock-market-today-oct-28-markets-edge-higher-as-fed-holds-rates-steady/" target="_blank" rel="noopener">Motley Fool</a></div>
+      <div class="article-nav">
+        <a href="#article-commodities" onclick="openArticle(event,'article-commodities','markets')">Previous: Commodities &amp; crypto</a>
+        <a href="#article-rates" onclick="openArticle(event,'article-rates','markets')">Next: Fixed income &amp; rates</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-rates" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Fixed Income & Rates</div>
+      <h1 class="article-headline">Rates: The Fed Waits, the Bond Market Doesn't Relax</h1>
+      <p class="article-deck">Even with the Fed on hold, the 10-year Treasury yield stayed near 5%.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">3.75–4.00%</div><div class="article-stat-label">Fed funds (held Oct 28)</div></div><div class="article-stat"><div class="article-stat-val">~5.0%</div><div class="article-stat-label">10-year Treasury yield</div></div><div class="article-stat"><div class="article-stat-val">~83%</div><div class="article-stat-label">December hike odds</div></div><div class="article-stat"><div class="article-stat-val">+0.3%</div><div class="article-stat-label">Core PCE, September (m/m)</div></div></div>
+      <div class="article-body"><p>The Fed held rates in October, but bond yields didn't come down much. The 10-year Treasury yield was near 5.00% after the decision, close to the highest levels since 2007 reached in September.</p>
+ <h3>Why yields stayed high</h3>
+ <p>Inflation is running at 3.7%, oil is back near $115, and markets expect another Fed hike in December. All three keep pressure on yields. After the Fed decision, Treasury yields steepened, meaning long-term yields rose relative to short-term ones.</p>
+ <h3>The PCE check</h3>
+ <p>The Fed's preferred inflation gauge, core PCE, rose 0.3% in September, matching expectations. No surprise there, which helped the Fed justify waiting.</p>
+ <h3>A global story</h3>
+ <p>Bond yields are rising in Europe too. French government yields hit their highest since 2002 amid political and budget turmoil, and the ECB said it's ready to step in if markets become disorderly.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>When the 10-year yield sits near 5%, mortgages, car loans, and corporate borrowing all stay expensive. For investors, safe bonds paying 5% make stocks look less attractive by comparison. Watch whether yields fall if the Fed signals it's done hiking.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://nexo.com/blog/markets-today-october-29" target="_blank" rel="noopener">Nexo Markets Today</a><a class="source-tag" href="https://www.fool.com/coverage/stock-market-today/2026/10/28/stock-market-today-oct-28-markets-edge-higher-as-fed-holds-rates-steady/" target="_blank" rel="noopener">Motley Fool</a><a class="source-tag" href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Fox Business</a><a class="source-tag" href="https://kuwaittimes.com/article/52630/business/ecb-holds-rates-says-it-has-tools-to-calm-markets-as-french-debt-fears-rise/" target="_blank" rel="noopener">Kuwait Times (AFP)</a></div>
+      <div class="article-nav">
+        <a href="#article-equities" onclick="openArticle(event,'article-equities','markets')">Previous: Equities</a>
+        <a href="#article-fx" onclick="openArticle(event,'article-fx','markets')">Next: Foreign exchange</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-fx" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Foreign Exchange</div>
+      <h1 class="article-headline">Currencies: The Yen and Japan's 160 'Red Line'</h1>
+      <p class="article-deck">The dollar has been stuck between about 156 and 159 yen all month, just below the level where Japan has stepped in before.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~158</div><div class="article-stat-label">Yen per dollar</div></div><div class="article-stat"><div class="article-stat-val">160</div><div class="article-stat-label">Japan's informal red line</div></div><div class="article-stat"><div class="article-stat-val">¥27.13T</div><div class="article-stat-label">Spent defending the yen in 2026</div></div><div class="article-stat"><div class="article-stat-val">~102.2</div><div class="article-stat-label">Dollar index (DXY)</div></div></div>
+      <div class="article-body"><p>Since October 1, the dollar has traded between just above 156 and just under 159 yen. It touched about 158.95 on October 14 after the hot U.S. inflation report, then dropped toward 156 on October 23 when Bank of Japan Governor Kazuo Ueda sounded hawkish.</p>
+ <h3>Why 160 matters</h3>
+ <p>Japan's Finance Ministry has spent about ¥27.13 trillion this year buying yen whenever the dollar rose above 160. Officials have never officially named 160 as a target, but traders treat it as the line where intervention risk jumps.</p>
+ <h3>The rate gap</h3>
+ <p>The Fed's rate is 3.75–4.00% while the Bank of Japan's is 1.25%. That gap makes holding dollars more rewarding than holding yen, which keeps pressure on the yen even after Japan raised rates twice this year.</p>
+ <h3>Euro and the dollar</h3>
+ <p>The dollar index sat near 102.2 at month end, and the dollar gained against the euro after the ECB's October 29 hold.</p></div>
+      <div class="article-callout"><div class="article-callout-title">Why this matters</div><p>Currency intervention is when a government buys or sells its own currency to change its price. It can move the yen 3–4% in a single day. If you're interested in FX or global macro, this is the setup to watch around the Bank of Japan's October 30 decision.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.fxstreet.com/analysis/160-is-still-the-yens-red-line-202610291555" target="_blank" rel="noopener">FXStreet</a><a class="source-tag" href="https://www.tradingnews.com/news/usdjpy-158-tests-its-200-day-average-as-a-hawkish-fed-slpit-keeps-the-275bp" target="_blank" rel="noopener">TradingNews</a><a class="source-tag" href="https://www.fxstreet.com/news/japanese-yen-struggles-for-direction-as-boj-interest-rate-decision-looms-202610291819" target="_blank" rel="noopener">FXStreet</a><a class="source-tag" href="https://nexo.com/blog/markets-today-october-29" target="_blank" rel="noopener">Nexo Markets Today</a><a class="source-tag" href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a></div>
+      <div class="article-nav">
+        <a href="#article-rates" onclick="openArticle(event,'article-rates','markets')">Previous: Fixed income &amp; rates</a>
+        <a href="#article-commodities" onclick="openArticle(event,'article-commodities','markets')">Next: Commodities &amp; crypto</a>
+      </div>
+    </article>
+  </div>
+  <div id="article-commodities" class="page article-page">
+    <article class="article">
+      <button class="back-btn" onclick="goTo(event,'markets')">← Back to Markets</button>
+      <div class="article-kicker">Markets · Commodities & Crypto</div>
+      <h1 class="article-headline">Oil, Gold, and Bitcoin in October</h1>
+      <p class="article-deck">Oil climbed, while gold and bitcoin both slipped as yields stayed high.</p>
+      <div class="article-byline">By <strong>Aman Lathiya</strong>, Secretary &nbsp;·&nbsp; Finance Club NYC &nbsp;·&nbsp; 29th October 2026</div><figure class="article-fig"><div class="fig-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/West_Texas_Pumpjack.JPG?width=1280" alt="An oil pumpjack in West Texas." loading="lazy" decoding="async" onerror="this.closest('figure').style.display='none'"></div><figcaption>An oil pumpjack in West Texas. <span class="fig-credit">Photo: <a href="https://commons.wikimedia.org/wiki/File:West_Texas_Pumpjack.JPG" target="_blank" rel="noopener">Eric Kounce</a> / Wikimedia Commons, Public domain</span></figcaption></figure>
+      <div class="article-stats"><div class="article-stat"><div class="article-stat-val">~$114.50</div><div class="article-stat-label">Brent, Oct 29</div></div><div class="article-stat"><div class="article-stat-val">~$101.75</div><div class="article-stat-label">WTI, Oct 29</div></div><div class="article-stat"><div class="article-stat-val">~$4,020</div><div class="article-stat-label">Gold per ounce</div></div><div class="article-stat"><div class="article-stat-val">~$80,000</div><div class="article-stat-label">Bitcoin</div></div></div>
+      <div class="article-body"><p>Brent crude was around $114.50 a barrel on October 29, up about 17% over the past month and about 78% from a year ago. U.S. crude (WTI) was near $101.75.</p>
+ <h3>Gold cooled off</h3>
+ <p>Gold traded around $4,020 an ounce, down about 3.6% over the past month and well below its January record of about $5,608. Gold pays no interest, so when bond yields sit near 5%, it gets harder for gold to compete.</p>
+ <h3>Bitcoin lost momentum</h3>
+ <p>Bitcoin was near $80,000 on October 29, down from mid-month highs near $87,000 and about 27% below where it was a year ago. It briefly dipped under $80,000 after Alphabet's results and a chip-profit miss at Samsung, which shows how closely bitcoin now trades with tech stocks.</p>
+ <h3>Corporate buyers</h3>
+ <p>Publicly listed companies now hold about 1.3 million bitcoin, up 31% over the past 14 months, with Strategy responsible for most of that increase.</p></div>
+      <div class="article-callout"><div class="article-callout-title">What to watch</div><p>Oil is still the swing factor for inflation. A real peace deal could send it down quickly, while new attacks could push it higher. Gold and bitcoin will likely keep reacting to bond yields and tech stocks.</p></div>
+      <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://tradingeconomics.com/commodity/brent-crude-oil" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://www.cnbc.com/amp/2026/10/29/oil-prices-fall-as-peace-hopes-offset-fears-of-growing-middle-east-conflict.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.cnbc.com/select/the-price-of-gold-today-oct-29-2026/" target="_blank" rel="noopener">CNBC Select</a><a class="source-tag" href="https://tradingeconomics.com/commodity/gold" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://fortune.com/article/price-of-bitcoin-10-29-2026/" target="_blank" rel="noopener">Fortune</a><a class="source-tag" href="https://www.cryptotimes.io/2026/10/29/bitcoin-price-live-track-btc-movements-today-as-80k-holds-after-fed/" target="_blank" rel="noopener">Crypto Times</a><a class="source-tag" href="https://www.kucoin.com/news/articles/crypto-daily-market-report-october-29-2026" target="_blank" rel="noopener">KuCoin</a></div>
+      <div class="article-nav">
+        <a href="#article-fx" onclick="openArticle(event,'article-fx','markets')">Previous: Foreign exchange</a>
+        <a href="#article-equities" onclick="openArticle(event,'article-equities','markets')">Next: Equities</a>
+      </div>
+    </article>
+  </div>
+
+  <!-- ═══════════════════ MARKETS ═══════════════════ -->
+  <div id="markets" class="page">
+
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Markets Deep Dive — October 2026</div><div class="sec-head-line"></div></div>
+
+    <div class="breaking">
+      <span class="breaking-label">Month End</span>
+      <span class="breaking-text">Stock figures are as of the October 28 close. Oil, gold, bitcoin, and currencies are as of October 29, from the sources linked below.</span>
+    </div>
+
+    <div class="markets-grid">
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-equities','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-equities','markets')"><span class="mcard-icon">📈</span> Equities</div>
+        <div class="mcard-stat"><span class="mcard-label">S&amp;P 500</span><span><span class="mcard-value">7,744</span> &nbsp;<span class="mcard-chg up">+0.3% Oct 28</span></span></div><div class="mcard-stat"><span class="mcard-label">NASDAQ Comp.</span><span><span class="mcard-value">26,550</span> &nbsp;<span class="mcard-chg fl">Record 27,600 Oct 6</span></span></div><div class="mcard-stat"><span class="mcard-label">Dow Jones</span><span><span class="mcard-value">52,475</span> &nbsp;<span class="mcard-chg up">+0.2% Oct 28</span></span></div><div class="mcard-stat"><span class="mcard-label">Alphabet</span><span><span class="mcard-value">~−13%</span> &nbsp;<span class="mcard-chg dn">Oct 29, worst day ever</span></span></div>
+        <div class="mcard-desc">Tech hit a record early in the month, then AI doubts and higher oil made the ride bumpier. Gains are concentrated in a few giant stocks, which makes the indexes sensitive to single earnings reports.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-equities','markets')" aria-label="Learn more about equities">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-rates','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-rates','markets')"><span class="mcard-icon">🏦</span> Fixed Income &amp; Rates</div>
+        <div class="mcard-stat"><span class="mcard-label">Fed Funds Rate</span><span><span class="mcard-value">3.75–4.00%</span> &nbsp;<span class="mcard-chg fl">— Held Oct 28 (10–2)</span></span></div><div class="mcard-stat"><span class="mcard-label">10-Year Treasury</span><span><span class="mcard-value">~5.0%</span> &nbsp;<span class="mcard-chg dn">▲ Near 2007 highs</span></span></div><div class="mcard-stat"><span class="mcard-label">Core PCE (Sept)</span><span><span class="mcard-value">+0.3%</span> &nbsp;<span class="mcard-chg fl">As expected</span></span></div><div class="mcard-stat"><span class="mcard-label">Next Fed Decision</span><span><span class="mcard-value">Dec 9</span> &nbsp;<span class="mcard-chg dn">~83% hike odds</span></span></div>
+        <div class="mcard-desc">The Fed waited, but two officials wanted to hike and markets expect a move in December. The 10-year yield stayed near 5% as inflation and oil kept pressure on.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-rates','markets')" aria-label="Learn more about fixed income and rates">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-fx','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-fx','markets')"><span class="mcard-icon">🌐</span> Foreign Exchange</div>
+        <div class="mcard-stat"><span class="mcard-label">USD / JPY</span><span><span class="mcard-value">~158</span> &nbsp;<span class="mcard-chg fl">Range 156–159 in Oct</span></span></div><div class="mcard-stat"><span class="mcard-label">ECB Deposit Rate</span><span><span class="mcard-value">2.50%</span> &nbsp;<span class="mcard-chg fl">— Held Oct 29</span></span></div><div class="mcard-stat"><span class="mcard-label">Bank of Japan</span><span><span class="mcard-value">1.25%</span> &nbsp;<span class="mcard-chg fl">Decision Oct 30</span></span></div><div class="mcard-stat"><span class="mcard-label">Dollar Index</span><span><span class="mcard-value">~102.2</span> &nbsp;<span class="mcard-chg fl">Steady</span></span></div>
+        <div class="mcard-desc">The yen is hovering just below 160 per dollar, where Japan has intervened before. The ECB paused but kept a December hike on the table.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-fx','markets')" aria-label="Learn more about foreign exchange">Learn More →</button>
+      </div>
+      <div class="mcard">
+        <div class="mcard-title mcard-link" role="link" tabindex="0" onclick="openArticle(event,'article-commodities','markets')" onkeydown="if(event.key==='Enter')openArticle(event,'article-commodities','markets')"><span class="mcard-icon">🛢️</span> Commodities &amp; Crypto</div>
+        <div class="mcard-stat"><span class="mcard-label">Brent Crude</span><span><span class="mcard-value">~$114.50</span> &nbsp;<span class="mcard-chg dn">▲ ~+17% in a month</span></span></div><div class="mcard-stat"><span class="mcard-label">WTI Crude</span><span><span class="mcard-value">~$101.75</span> &nbsp;<span class="mcard-chg dn">▲ Above $100</span></span></div><div class="mcard-stat"><span class="mcard-label">Gold</span><span><span class="mcard-value">~$4,020</span> &nbsp;<span class="mcard-chg dn">▼ ~−3.6% in a month</span></span></div><div class="mcard-stat"><span class="mcard-label">Bitcoin</span><span><span class="mcard-value">~$80,000</span> &nbsp;<span class="mcard-chg dn">▼ From ~$87K mid-Oct</span></span></div>
+        <div class="mcard-desc">Oil swung from under $100 back to about $115 as attacks on Gulf energy sites continued. Gold and bitcoin slipped as yields stayed high.</div>
+        <button class="mcard-btn" onclick="openArticle(event,'article-commodities','markets')" aria-label="Learn more about commodities and crypto">Learn More →</button>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">What This Means for Finance Students</div><div class="sec-head-line"></div></div>
+    <div style="background:var(--white);border:1px solid var(--rule);border-radius:var(--radius);padding:20px 22px;margin-bottom:28px;">
+      <div class="students-grid">
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-text);margin-bottom:8px;">Your Money</div>
+          <div style="font-size:13px;color:var(--ink-soft);line-height:1.7;">Inflation is at 3.7% and wages are rising only about 3%, so your money buys a little less each month. Gas is the biggest culprit. Savings accounts, CDs, and Treasury bills still pay some of the best rates in years, and another Fed hike in December could push them a bit higher. Avoid carrying a credit card balance; those rates stay high too.</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-text);margin-bottom:8px;">Your Career</div>
+          <div style="font-size:13px;color:var(--ink-soft);line-height:1.7;">Bank earnings were better than feared, and a possible mega-IPO from Anthropic would keep capital markets teams busy. The hiring picture is mixed: only 29,000 jobs were added in September. Practice two stories for interviews this month: why the Fed held despite rising inflation, and why investors punished Alphabet but rewarded Microsoft.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Coming Up in November</div><div class="sec-head-line"></div></div>
+    <div class="timeline" style="margin-bottom:8px;">
+      <div class="tl-row"><span class="tl-date">Oct 30</span><div><div class="tl-title">Bank of Japan rate decision</div><div class="tl-body">A hold at 1.25% is expected.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Nov 2</span><div><div class="tl-title">Apple earnings</div></div></div>
+      <div class="tl-row"><span class="tl-date">Nov 3</span><div><div class="tl-title">U.S. midterm elections</div><div class="tl-body">Watch how markets react in the days after.</div></div></div>
+      <div class="tl-row"><span class="tl-date">Nov 6</span><div><div class="tl-title">October jobs report</div></div></div>
+      <div class="tl-row"><span class="tl-date">Nov 10</span><div><div class="tl-title">October CPI inflation report</div></div></div>
+      <div class="tl-row"><span class="tl-date">Dec 8–9</span><div><div class="tl-title">Fed rate decision and new dot plot</div><div class="tl-body">Markets see about an 83% chance of a hike.</div></div></div>
+    </div>
+
+    <div class="sources-bar"><span class="sources-label">Sources</span><a class="source-tag" href="https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://cappnotes.substack.com/p/closing-look-wednesday-october-28" target="_blank" rel="noopener">Cappnotes</a><a class="source-tag" href="https://en.wikipedia.org/wiki/Closing_milestones_of_the_Nasdaq_Composite" target="_blank" rel="noopener">Wikipedia (Nasdaq milestones)</a><a class="source-tag" href="https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://www.foxbusiness.com/economy/federal-reserve-interest-rate-decision-october-28-2026" target="_blank" rel="noopener">Fox Business</a><a class="source-tag" href="https://nexo.com/blog/markets-today-october-29" target="_blank" rel="noopener">Nexo Markets Today</a><a class="source-tag" href="https://www.fxstreet.com/analysis/160-is-still-the-yens-red-line-202610291555" target="_blank" rel="noopener">FXStreet</a><a class="source-tag" href="https://www.cnbc.com/2026/10/29/european-central-bank-interest-rates.html" target="_blank" rel="noopener">CNBC</a><a class="source-tag" href="https://tradingeconomics.com/commodity/brent-crude-oil" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://tradingeconomics.com/commodity/gold" target="_blank" rel="noopener">Trading Economics</a><a class="source-tag" href="https://fortune.com/article/price-of-bitcoin-10-29-2026/" target="_blank" rel="noopener">Fortune</a><a class="source-tag" href="https://www.bls.gov/news.release/empsit.nr0.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://www.bls.gov/news.release/archives/cpi_10142026.htm" target="_blank" rel="noopener">BLS</a><a class="source-tag" href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-29-dow-sp-500-nasdaq-alphabet-microsoft-earnings-130305714.html" target="_blank" rel="noopener">Yahoo Finance</a></div>
+  </div>
+
+  <!-- ═══════════════════ OPPORTUNITIES ═══════════════════ -->
+  <div id="opportunities" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Opportunity Corner</div><div class="sec-head-line"></div></div>
+    <div class="opp-subhead">Open Now · Apply Before the Deadline</div>
+    <div class="opp-grid">
+      <a class="opp-card" href="https://evercore.tal.net/" target="_blank" rel="noopener"><div class="opp-badge">Internship · Deadline Nov 15</div><div class="opp-title">Evercore — 2028 Summer Analyst Program</div><div class="opp-sub">Investment banking internships for summer 2028 in NYC and other U.S. offices (M&amp;A, Restructuring, Capital Markets &amp; more). For students graduating Dec 2028–Jun 2029. Max two applications; not reviewed on a rolling basis.</div><div class="opp-cta">Apply on Evercore's portal ↗</div></a>
+      <a class="opp-card" href="https://careers.rockco.com/careers-home/jobs/5420?lang=en-us" target="_blank" rel="noopener"><div class="opp-badge">Internship · NYC</div><div class="opp-title">Rockefeller Capital Management — 2027 Investment Banking Summer Analyst</div><div class="opp-sub">10-week program (June–August 2027) in New York with the Global Investment Banking team. Listed pay: $48/hour.</div><div class="opp-cta">Apply now ↗</div></a>
+      <a class="opp-card" href="https://www.goldmansachs.com/careers/students/programs-and-internships/americas/2027-summer-analyst-program" target="_blank" rel="noopener"><div class="opp-badge">Internship · Select Divisions</div><div class="opp-title">Goldman Sachs — 2027 Summer Analyst Program</div><div class="opp-sub">Applications are still open for select businesses in the Americas. The core investment banking posting has closed, so check which divisions are still live.</div><div class="opp-cta">Apply on Goldman Sachs ↗</div></a>
+      <a class="opp-card" href="https://portal.bloombergforeducation.com/sign_up" target="_blank" rel="noopener"><div class="opp-badge">Certification · Free for NYIT</div><div class="opp-title">Bloomberg Market Concepts (BMC)</div><div class="opp-sub">Self-paced intro to markets and the Bloomberg Terminal, about 8–12 hours. Sign up as a Learner with your NYIT email; you get one year to finish.</div><div class="opp-cta">Sign up free ↗</div></a>
+      <a class="opp-card" href="https://www.gutenberg.org/ebooks/26841" target="_blank" rel="noopener"><div class="opp-badge">Free Classic · Gutenberg</div><div class="opp-title">Successful Stock Speculation (1922)</div><div class="opp-sub">A short, public-domain classic explaining market terms, when to buy and sell, and how the money market moves stock prices. A fun look at how investors thought 100 years ago.</div><div class="opp-cta">Download free ↗</div></a>
+    </div>
+    <p class="opp-note" style="margin-top:12px;">Coming soon: most big banks (Goldman Sachs, J.P. Morgan, Morgan Stanley, Bank of America) are expected to open summer 2028 investment banking applications around December 2026 to January 2027, and windows often close within weeks. Get your résumé ready now. <a href="https://soreno.ai/articles/investment-banking-recruiting-timeline" target="_blank" rel="noopener" style="color:var(--primary)">Recruiting timeline source</a>.</p>
+
+    <p class="opp-note">Links open in a new tab. Deadlines and availability change often, so confirm details on each posting before applying. Know an opportunity we missed? <a href="mailto:financenyc@nyit.edu?subject=Opportunity for The Finance Ledger" style="color:var(--primary)">Send it to us</a>.</p>
+  </div>
+
+  <!-- ═══════════════════ CLUB EVENTS ═══════════════════ -->
+  <div id="club-events" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Club Events — November 2026</div><div class="sec-head-line"></div></div>
+    <div class="update-box">
+      <div class="update-title">November 2026 Events</div>
+      <div class="update-body" style="margin:-2px 0 6px;font-size:12.5px;">Room details and sign-ups will be posted on Campus Groups and Instagram.</div>
+      <div class="update-body">
+        <div class="event-row"><span class="event-date">Nov 10</span><div><div class="event-name">Monopoly Event</div><div class="event-loc">Room TBA · 12:45–2:00 PM · Open to all students</div></div></div>
+        <div class="event-row"><span class="event-date">Nov 17</span><div><div class="event-name">Panel Discussion</div><div class="event-loc">16 West, 11th Floor · 12:45–2:30 PM · Open to all students</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SPOTLIGHT ═══════════════════ -->
+  <div id="spotlight" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Faculty Spotlight</div><div class="sec-head-line"></div></div>
+    <div class="spotlight">
+      <div class="avatar">WH</div>
+      <div>
+        <div class="spot-name">Dr. Wenyao Hu, CFA</div>
+        <div class="spot-role">Assistant Professor of Finance &nbsp;·&nbsp; Honors College Faculty Fellow &nbsp;·&nbsp; School of Management, New York Tech &nbsp;·&nbsp; Ph.D., Rensselaer Polytechnic Institute</div>
+        <div class="spot-bio">Dr. Wenyao Hu is an Assistant Professor of Finance and Honors College Faculty Fellow at New York Institute of Technology. He earned his Ph.D. from Rensselaer Polytechnic Institute and is a CFA charterholder. His research interests include corporate finance, financial disclosure, financial technology, artificial intelligence, and textual analysis. At New York Tech, he teaches courses in corporate finance, investments, and financial management, with an emphasis on experiential learning and integrating emerging technologies into finance education.</div>
+        <div class="spot-bio" style="margin-top:10px">His advice to students interested in finance is to build a strong foundation in financial knowledge while gaining practical experience and developing analytical skills. He particularly encourages students to pursue industry-recognized professional credentials, such as the Securities Industry Essentials (SIE) exam, Chartered Financial Analyst (CFA), and Financial Risk Manager (FRM) certifications. These qualifications can strengthen their resumes, demonstrate professional commitment, and enhance their competitiveness in the financial job market.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FINANCE TIP ═══════════════════ -->
+  <div id="finance-tip" class="page">
+    <div class="sec-head" style="margin-top:0"><div class="sec-head-text">Finance Tip of the Month</div><div class="sec-head-line"></div></div>
+    <div class="tip-box">
+      <div class="tip-num">#2</div>
+      <div>
+        <div class="tip-label">October 2026 — Know Your Own Inflation Rate</div>
+        <div class="tip-text">"The news says inflation is 3.7%, but your own number could be higher or lower. Here's how to check: open your bank or card statement from this month and the same month last year, and compare what you spent on your three biggest categories, like gas, food, and your phone bill. If one jumped a lot, that's where to look for savings first, maybe by carpooling, cooking a few more meals, or switching plans. And keep a small emergency fund in a high-yield savings account. With rates still high, it earns you real interest while it sits there."</div>
+      </div>
+    </div>
+
+    <div class="sec-head"><div class="sec-head-text">Ask the Ledger</div><div class="sec-head-line"></div></div>
+    <div class="ask" id="ask-the-ledger">
+      <div class="ask-title">Got a finance question? Want to share your take?</div>
+      <p class="ask-intro">Send us anything about money, markets, careers, or this month's news. Confused about why the Fed paused? Wondering how to start investing, or how to prep for a finance interview? Disagree with something we wrote? We'll answer the best questions and feature student opinions in next month's issue.</p>
+      <div class="ask-form">
+        <div class="ask-field full">
+          <label>What are you sending?</label>
+          <div class="ask-type" role="radiogroup">
+            <input type="radio" name="ask-kind" id="kind-q" value="Question" checked><label for="kind-q">A question</label>
+            <input type="radio" name="ask-kind" id="kind-o" value="Opinion"><label for="kind-o">An opinion</label>
+          </div>
+        </div>
+        <div class="ask-field">
+          <label for="ask-name">Name <span class="hint">(optional)</span></label>
+          <input type="text" id="ask-name" placeholder="First name is fine">
+        </div>
+        <div class="ask-field">
+          <label for="ask-topic">Topic</label>
+          <select id="ask-topic">
+            <option>Personal finance &amp; budgeting</option>
+            <option>Investing &amp; the stock market</option>
+            <option>Interest rates &amp; the economy</option>
+            <option>Careers, internships &amp; interviews</option>
+            <option>Crypto &amp; alternative assets</option>
+            <option>Something in this issue</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="ask-field full">
+          <label for="ask-msg" id="ask-msg-label">Your question</label>
+          <textarea id="ask-msg" placeholder="e.g. Should I pay off my credit card first or start investing?"></textarea>
+        </div>
+        <div class="ask-field full">
+          <label class="ask-check"><input type="checkbox" id="ask-anon"> Keep me anonymous if this gets published</label>
+        </div>
+        <div class="ask-actions">
+          <button class="ask-submit" type="button" onclick="sendAsk()">Send to the Ledger</button>
+          <span class="ask-status" id="ask-status" role="status"></span>
+        </div>
+      </div>
+      <p class="ask-foot">This opens your email app with your message ready to send to financenyc@nyit.edu. Answers are for learning, not personal financial advice.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div>
+      <a href="#top-stories" class="footer-brand home-link" onclick="goHome(event)" title="Go to Top Stories">The Finance Ledger</a>
+      <div class="footer-sub">Finance Club NYC &nbsp;·&nbsp; New York Institute of Technology &nbsp;·&nbsp; School of Management &nbsp;·&nbsp; Published monthly</div>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:financenyc@nyit.edu?subject=Story Submission for The Finance Ledger">Submit a Story</a>
+      <a href="https://www.linkedin.com/in/nyit-finance-club-nyc-638096440/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://discord.gg/p4aPgcM6g" target="_blank" rel="noopener">Discord</a>
+      <a href="mailto:financenyc@nyit.edu?subject=Contact - The Finance Ledger">Contact</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('on');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Open a full article. navId = the nav tab that stays highlighted (default: Top Stories)
+  function openArticle(e, id, navId) {
+    if (e) e.preventDefault();
+    navId = navId || 'top-stories';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('on', n.dataset.page === navId));
+    // Update the address bar so the article can be shared. Some previews
+    // (like Claude's file viewer) block this, so fail quietly there.
+    try { history.replaceState(null, '', '#' + id); } catch (err) {}
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Jump to a main section by id (used by "Back to Markets")
+  function goTo(e, id) {
+    if (e) e.preventDefault();
+    showPage(id, document.querySelector('.nav-item[data-page="' + id + '"]'));
+  }
+
+  // Clicking "The Finance Ledger" (masthead or footer) returns to Top Stories
+  function goHome(e) {
+    if (e) e.preventDefault();
+    const firstTab = document.querySelector('.nav-item');
+    showPage('top-stories', firstTab);
+    firstTab.scrollIntoView({block: 'nearest', inline: 'start'});
+  }
+
+  // Ask the Ledger: switch label/placeholder between question and opinion
+  document.querySelectorAll('input[name="ask-kind"]').forEach(r => r.addEventListener('change', () => {
+    const q = document.getElementById('kind-q').checked;
+    document.getElementById('ask-msg-label').textContent = q ? 'Your question' : 'Your opinion';
+    document.getElementById('ask-msg').placeholder = q
+      ? 'e.g. Should I pay off my credit card first or start investing?'
+      : 'e.g. I think the Fed is hiking too fast because...';
+  }));
+
+  // Ask the Ledger: build the email and open the mail app
+  function sendAsk() {
+    const status = document.getElementById('ask-status');
+    const msg = document.getElementById('ask-msg').value.trim();
+    if (!msg) {
+      status.textContent = 'Write your message first, then send.';
+      status.className = 'ask-status error';
+      document.getElementById('ask-msg').focus();
+      return;
+    }
+    const kind = document.querySelector('input[name="ask-kind"]:checked').value;
+    const name = document.getElementById('ask-name').value.trim() || 'Not given';
+    const topic = document.getElementById('ask-topic').value;
+    const anon = document.getElementById('ask-anon').checked ? 'Yes' : 'No';
+    const subject = 'Ask the Ledger: ' + kind + ' (' + topic + ')';
+    const body = 'Type: ' + kind + '\nTopic: ' + topic + '\nName: ' + name + '\nAnonymous if published: ' + anon + '\n\n' + msg;
+    window.location.href = 'mailto:financenyc@nyit.edu?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    status.textContent = 'Your email app should open now. Hit send there to submit.';
+    status.className = 'ask-status';
+  }
+
+  // Open a page directly from a shared link like ...#article-rates
+  (function () {
+    const id = location.hash.slice(1);
+    const el = id && document.getElementById(id);
+    if (!el || !el.classList.contains('page')) return;
+    if (el.classList.contains('article-page')) {
+      openArticle(null, id, ['article-equities','article-rates','article-fx','article-commodities'].includes(id) ? 'markets' : 'top-stories');
+    } else {
+      goTo(null, id);
+    }
+  })();
+</script>
+</body>
+</html>
